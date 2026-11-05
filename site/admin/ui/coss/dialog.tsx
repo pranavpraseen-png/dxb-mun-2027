@@ -36,7 +36,7 @@ export function DialogBackdrop({
   return (
     <DialogPrimitive.Backdrop
       className={cn(
-        "fixed inset-0 z-50 bg-black/32 dusk:bg-background backdrop-blur-sm transition-all duration-200 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-[-webkit-touch-callout:none]:absolute",
+        "fixed inset-0 z-50 bg-black/32 dash:bg-background backdrop-blur-sm transition-all duration-200 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-[-webkit-touch-callout:none]:absolute",
         className,
       )}
       data-slot="dialog-backdrop"
@@ -142,7 +142,7 @@ export function DialogFooter({
   const defaultProps = {
     className: cn(
       "flex flex-col-reverse gap-2 px-6 sm:flex-row sm:justify-end sm:rounded-b-[calc(var(--radius-2xl)-1px)]",
-      variant === "default" && "border-t bg-muted/72 dusk:bg-raised py-4",
+      variant === "default" && "border-t bg-muted/72 dash:bg-raised py-4",
       variant === "bare" &&
         "in-[[data-slot=dialog-popup]:has([data-slot=dialog-panel])]:pt-3 pt-4 pb-6",
       className,
@@ -163,7 +163,7 @@ export function DialogTitle({
 }: DialogPrimitive.Title.Props): React.ReactElement {
   return (
     <DialogPrimitive.Title
-      className={cn("font-bold font-heading text-xl leading-none dusk:font-semibold dusk:leading-tight", className)}
+      className={cn("font-bold font-heading text-xl leading-none dash:font-semibold dash:leading-tight", className)}
       data-slot="dialog-title"
       {...props}
     />

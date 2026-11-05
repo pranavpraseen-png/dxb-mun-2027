@@ -1,65 +1,70 @@
 /* Tailwind + the coss ui theme contract (shadcn-style CSS variables), filled with DXB MUN tokens.
-   Theme: "Dusk + Official Record", the owner's pick (site/THEME.md). Dark only. Every token is an opaque oklch():
-   no alpha anywhere. Status colours are re-tuned into the Dusk family and checked with APCA (concepts/board/color.ts). */
+   Theme: C1 "Night Lab" colours + T1 type (Mona Sans, Geist Mono, Instrument Serif), the owner's pick of 2026-11-05
+   (site/BLUEPRINT.md sections 6 and 7). Dark only. Every token is opaque: no alpha anywhere. APCA Lc values were
+   computed with concepts/board/color.ts (APCA 0.0.98G-4g); the full table is in the dashboard restyle report. */
 @import "tailwindcss" source(".");
 
 @custom-variant dark (&:where(.dark, .dark *));
-/* `dusk:` = "on a dashboard". Only this file defines it, so the dusk: classes added to the shared coss ui components
-   (portal/ui/coss, also used by the concept pages) take effect on the three dashboards and are ignored everywhere else. */
-@custom-variant dusk (&:where(:root, :root *));
+/* `dash:` = "on a dashboard". Only this file defines it, so the dash: classes added to the shared coss ui components
+   (portal/ui/coss, also imported by the concept pages) take effect on the three dashboards and are ignored everywhere
+   else. (It was called `dusk:` under the previous theme.) */
+@custom-variant dash (&:where(:root, :root *));
 
 :root {
-  /* Dubai Dusk (THEME.md; concepts/board/palettes.ts id "dusk") */
-  --dusk-ground: oklch(19% 0.028 225);      /* #05161d page */
-  --dusk-surface: oklch(23% 0.030 224);     /* #0b2027 panels, nav bars, sheets */
-  --dusk-raised: oklch(28% 0.032 222);      /* #162c34 inputs, hover, pressed */
-  --dusk-hover: oklch(32% 0.034 222);       /* #1e373f hover on raised (one ramp step up) */
-  --dusk-ink: oklch(95% 0.016 80);          /* #f4eee3 body text */
-  --dusk-muted: oklch(79.5% 0.030 70);      /* #c9b9a8 secondary text */
-  --dusk-line: oklch(36% 0.035 224);        /* #28414b 1px hairlines */
-  --dusk-line-strong: oklch(46% 0.035 224); /* #435d67 input and outline-button edges */
-  --dusk-action: oklch(86% 0.055 78);       /* #e5cda9 sand: the ONE action colour */
-  --dusk-action-ink: oklch(19% 0.028 225);  /* #05161d text on sand */
-  --dusk-accent: oklch(71% 0.115 44);       /* #dd8964 terracotta: focus, rules (never small text) */
-  --dusk-maroon: oklch(38% 0.100 25);       /* #6e2826 IHS host strip */
-  --dusk-gold: oklch(80% 0.130 80);         /* #e9b452 awards only */
-  --dusk-cream: oklch(85% 0.040 62);        /* #e2c9b4 host text on maroon; sand hover */
+  /* C1 Night Lab. Lc = APCA as text on ground / surface / raised. */
+  --nl-ground: #100904;        /* oklch(14.7% 0.018 64)  page */
+  --nl-surface: #1c130c;       /* oklch(19.6% 0.020 59)  panels, nav bars, sheets */
+  --nl-raised: #2a1d13;        /* oklch(24.4% 0.027 59)  inputs, cards inside panels, pressed (+4.8 L) */
+  --nl-hover: #36261a;         /* oklch(28.4% 0.032 58)  hover on raised (one more step) */
+  --nl-ink: #faf7ef;           /* cream ink: Lc 102.5 / 101.8 / 100.5 */
+  --nl-muted: #c2beb7;         /* 76% ink + 24% ground, opaque: Lc 67.5 / 66.8 / 65.6 */
+  --nl-line: #382416;          /* 1px hairlines */
+  --nl-line-strong: #6c5f51;   /* input and outline-button edges */
+  --nl-action: #dc5000;        /* the ONE accent: primary actions, focus rings. Never small text (Lc 34.9 on ground). */
+  --nl-action-ink: #faf7ef;    /* text on the accent: cream Lc 66.9 beats near-black #100904 (Lc 37.2) */
+  --nl-action-hover: #b84300;  /* opaque hover/pressed: one step deeper, so cream on it rises to Lc 76.4 */
+  --nl-plate: #f6e0c6;         /* nameplate card (night-lab sand) */
+  --nl-plate-ink: #382416;     /* nameplate letters: Lc 85.0 */
+  --nl-maroon: #600e0e;        /* IHS host strip: ink on it Lc 96.8 */
+  --nl-gold: #ffb606;          /* IHS gold: awards and the host rule only. Lc 70.7 on ground */
+  --nl-cream: #dcbdab;         /* IHS cream: host text on maroon, Lc 64.5 */
 
-  /* Status, in the Dusk family. APCA Lc as text on ground / surface / raised. */
-  --st-success: oklch(86% 0.140 150);       /* #89eb9f  81 / 80 / 78 */
-  --st-success-soft: oklch(27% 0.045 155);  /* #122d1d  success text on it 78 */
-  --st-success-line: oklch(58% 0.110 152);  /* #418d59 */
-  --st-warning: oklch(88% 0.150 96);        /* #f5d754  82 / 81 / 79 */
-  --st-warning-soft: oklch(28% 0.045 92);   /* #31280c  warning text on it 79 */
-  --st-warning-line: oklch(64% 0.110 94);   /* #a28b32 */
-  --st-danger: oklch(82% 0.095 22);         /* #fcaca8  68 / 67 / 65 (red tops out in sRGB here) */
-  --st-danger-soft: oklch(27% 0.055 20);    /* #3d1a1b  danger text on it 66 */
-  --st-danger-line: oklch(60% 0.130 22);    /* #c25d5c */
-  --st-danger-hover: oklch(88% 0.060 22);   /* #fdc9c6 */
-  --st-live: oklch(86% 0.095 205);          /* #7fe3ef  80 / 79 / 77: running, speaking, voting */
-  --st-live-soft: oklch(28% 0.040 210);     /* #0c2e34  live text on it 77 */
-  --st-live-line: oklch(60% 0.080 205);     /* #3c8e97 */
+  /* Status, in the warm night family (no mint, no neon). Text colour, soft fill, edge line.
+     Lc as text on ground / surface / raised / its own soft fill. */
+  --st-success: #bfdd9a;       /* sage-olive  79.7 / 79.1 / 77.8 / 76.7 */
+  --st-success-soft: #242915;
+  --st-success-line: #6d8352;
+  --st-warning: #efd780;       /* straw       82.7 / 82.0 / 80.8 / 79.2 */
+  --st-warning-soft: #312810;
+  --st-warning-line: #9d8745;
+  --st-danger: #fcb8b5;        /* rose        73.7 / 73.1 / 71.8 / 70.9 (red tops out in sRGB here); ground text on it 74.6 */
+  --st-danger-soft: #3b1c1b;
+  --st-danger-line: #bd615b;
+  --st-danger-hover: #fbd3d0;  /* ground text on it 85.4 */
+  --st-live: #fdc495;          /* apricot     77.5 / 76.9 / 75.6 / 74.2: running, speaking, voting, your turn */
+  --st-live-soft: #3a2213;
+  --st-live-line: #c67544;
 
-  /* IHS (host school), re-tuned for Dusk */
-  --ihs-maroon: var(--dusk-maroon);
-  --ihs-gold: var(--dusk-gold);
-  --ihs-cream: var(--dusk-cream);
+  /* IHS (host school) */
+  --ihs-maroon: var(--nl-maroon);
+  --ihs-gold: var(--nl-gold);
+  --ihs-cream: var(--nl-cream);
 
   /* coss ui contract */
-  --background: var(--dusk-ground);
-  --foreground: var(--dusk-ink);
-  --card: var(--dusk-surface);
-  --card-foreground: var(--dusk-ink);
-  --popover: var(--dusk-surface);
-  --popover-foreground: var(--dusk-ink);
-  --primary: var(--dusk-action);
-  --primary-foreground: var(--dusk-action-ink);
-  --secondary: var(--dusk-raised);
-  --secondary-foreground: var(--dusk-ink);
-  --muted: var(--dusk-raised);
-  --muted-foreground: var(--dusk-muted);
-  --accent: var(--dusk-raised);
-  --accent-foreground: var(--dusk-ink);
+  --background: var(--nl-ground);
+  --foreground: var(--nl-ink);
+  --card: var(--nl-surface);
+  --card-foreground: var(--nl-ink);
+  --popover: var(--nl-surface);
+  --popover-foreground: var(--nl-ink);
+  --primary: var(--nl-action);
+  --primary-foreground: var(--nl-action-ink);
+  --secondary: var(--nl-raised);
+  --secondary-foreground: var(--nl-ink);
+  --muted: var(--nl-raised);
+  --muted-foreground: var(--nl-muted);
+  --accent: var(--nl-raised);
+  --accent-foreground: var(--nl-ink);
   --destructive: var(--st-danger);
   --destructive-foreground: var(--st-danger);
   --success: var(--st-success);
@@ -68,18 +73,18 @@
   --warning-foreground: var(--st-warning);
   --info: var(--st-live);
   --info-foreground: var(--st-live);
-  --border: var(--dusk-line);
-  --input: var(--dusk-line-strong);
-  --ring: var(--dusk-accent);
+  --border: var(--nl-line);
+  --input: var(--nl-line-strong);
+  --ring: var(--nl-action);
   --radius: 2px;
-  --sidebar: var(--dusk-surface);
-  --sidebar-foreground: var(--dusk-muted);
-  --sidebar-accent: var(--dusk-raised);
-  --sidebar-accent-foreground: var(--dusk-ink);
-  --sidebar-border: var(--dusk-line);
-  --sidebar-primary: var(--dusk-action);
-  --sidebar-primary-foreground: var(--dusk-action-ink);
-  --sidebar-ring: var(--dusk-accent);
+  --sidebar: var(--nl-surface);
+  --sidebar-foreground: var(--nl-muted);
+  --sidebar-accent: var(--nl-raised);
+  --sidebar-accent-foreground: var(--nl-ink);
+  --sidebar-border: var(--nl-line);
+  --sidebar-primary: var(--nl-action);
+  --sidebar-primary-foreground: var(--nl-action-ink);
+  --sidebar-ring: var(--nl-action);
 }
 
 @theme inline {
@@ -91,6 +96,7 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--nl-action-hover);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -125,13 +131,14 @@
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
   --color-sidebar-ring: var(--sidebar-ring);
-  --color-ground: var(--dusk-ground);
-  --color-surface: var(--dusk-surface);
-  --color-raised: var(--dusk-raised);
-  --color-hover: var(--dusk-hover);
-  --color-line: var(--dusk-line);
-  --color-line-strong: var(--dusk-line-strong);
-  --color-terracotta: var(--dusk-accent);
+  --color-ground: var(--nl-ground);
+  --color-surface: var(--nl-surface);
+  --color-raised: var(--nl-raised);
+  --color-hover: var(--nl-hover);
+  --color-line: var(--nl-line);
+  --color-line-strong: var(--nl-line-strong);
+  --color-plate: var(--nl-plate);
+  --color-plate-ink: var(--nl-plate-ink);
   --color-maroon: var(--ihs-maroon);
   --color-gold: var(--ihs-gold);
   --color-cream: var(--ihs-cream);
@@ -146,12 +153,28 @@
   }
 }
 
-/* Official Record (THEME.md; concepts/board/fonts.ts id "record"). Not inline, so a component can re-point a family. */
+/* T1 type (BLUEPRINT.md section 6). Not inline, so a component can re-point a family.
+   font-synthesis is off, so only real weights are used: Mona Sans 200–900 and widths 75–125%, Geist Mono 100–900,
+   Instrument Serif 400 italic only. */
 @theme {
-  --font-sans: 'Public Sans Variable', system-ui, sans-serif;     /* all UI and text */
-  --font-label: 'Public Sans Variable', system-ui, sans-serif;    /* labels, nav, buttons, status words */
-  --font-heading: 'Source Serif 4 Variable', Georgia, serif;       /* page titles and big headings only */
-  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;           /* timers, codes, numbers (400 and 500 only) */
+  --font-sans: 'Mona Sans Variable', system-ui, sans-serif;          /* all UI and text */
+  --font-label: 'Mona Sans Variable', system-ui, sans-serif;         /* nav, buttons, status words */
+  --font-heading: 'Mona Sans Variable', system-ui, sans-serif;       /* titles: semi-expanded; big titles wide + heavy */
+  --font-mono: 'Geist Mono Variable', ui-monospace, monospace;       /* timers, codes, numbers, small caps labels */
+  --font-serif: 'Instrument Serif', Georgia, serif;                  /* italic, the motto only */
+}
+
+/* Timers and counts: Mona Sans with fixed-width figures. Geist Mono's zero is always slashed (no feature turns it
+   off), which reads as "Ø" at timer size, so figures that people read at a glance use this instead. */
+@utility font-figures {
+  font-family: var(--font-sans);
+  font-stretch: 112.5%;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Big titles: Mona Sans expanded and heavy (`font-wide font-extrabold`). */
+@utility font-wide {
+  font-stretch: 125%;
 }
 
 @layer base {
@@ -166,12 +189,15 @@
     font-size: 17px; line-height: 1.45; overflow-x: clip;
   }
   strong { font-weight: 700; }
-  /* Mono is for figures: they never change width as they count. */
-  code, kbd, samp, pre, .font-mono { font-variant-numeric: tabular-nums slashed-zero; }
+  /* Every title is Mona Sans semi-expanded; `font-wide` (a utility, so it wins) takes the big ones to 125%. */
+  .font-heading { font-stretch: 112.5%; }
+  /* Mono is for figures: they never change width as they count. Codes keep a slashed zero (0 vs O). */
+  .font-mono { font-variant-numeric: tabular-nums; }
+  code, kbd, samp, pre { font-variant-numeric: tabular-nums slashed-zero; }
   input[type='number'], time, td, .tabular-nums { font-variant-numeric: tabular-nums; }
 }
 
-/* Clarity (THEME.md, concepts/board/NOTES.md "Clarity checklist"). Unlayered, so they beat the library utilities.
+/* Clarity (concepts/board/NOTES.md "Clarity checklist"). Unlayered, so they beat the library utilities.
    - No soft shadows: Tailwind's shadow and inset-shadow layers are switched off. Rings (focus, selection) stay.
    - No blur behind anything. */
 *, ::before, ::after { --tw-shadow: 0 0 #0000; --tw-inset-shadow: 0 0 #0000; backdrop-filter: none; -webkit-backdrop-filter: none; }

@@ -2,9 +2,9 @@
    Allowed here (DELEGATE.md): tokens (in theme.css), layout glue, brand marks and the DXB MUN nameplate.
    Every other building block is a library component (see LIBRARY.md), styled with Tailwind utilities.
    Rules sit in @layer components so library utilities still win, except the focus ring below.
-   Theme: Dusk + Official Record (THEME.md). Opaque tokens only, 1px lines, no shadows. */
+   Theme: C1 Night Lab + T1 type (BLUEPRINT.md sections 6 and 7). Opaque tokens only, 1px lines, no shadows. */
 
-/* One focus ring for everything, keyboard only: 3px solid terracotta. Unlayered on purpose, so it beats the
+/* One focus ring for everything, keyboard only: 3px solid Night Lab orange. Unlayered on purpose, so it beats the
    library's own `outline-none` and every control shows the same ring. */
 :focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
 [tabindex='-1']:focus { outline: none; }
@@ -41,9 +41,10 @@
     .col { gap: 16px; }
   }
 
-  /* ---------------------------------------------------------- wordmark (logo slot): a serif seal in two blocks */
-  .wm { display: inline-flex; font-family: var(--font-heading); font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1; font-size: 22px; }
+  /* ---------------------------------------------------------- wordmark (logo slot): two blocks, Mona Sans wide and heavy */
+  .wm { display: inline-flex; font-family: var(--font-heading); font-weight: 800; font-stretch: 125%; text-transform: uppercase; letter-spacing: 0.01em; line-height: 1; font-size: 20px; }
   .wm-a, .wm-b { padding: 0.16em 0.3em 0.12em; }
+  @media (max-width: 767px) { .wm { font-size: 18px; } }
   .wm-a { background: var(--primary); color: var(--primary-foreground); }
   .wm-b { background: var(--foreground); color: var(--background); }
   .logo { height: 36px; width: auto; }
@@ -55,38 +56,39 @@
     line-height: 1.15;
   }
   .host__k { font-size: 14px; color: var(--ihs-cream); }
-  .host__v { font-family: var(--font-label); font-weight: 600; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--foreground); }
+  .host__v { font-family: var(--font-mono); font-weight: 500; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--foreground); }
 
   /* ---------------------------------------------------------- nameplate: the DXB MUN signature.
-     Sand placard, action-ink letters, a terracotta rule on top, the IHS maroon fold underneath. */
+     Sand placard, dark brown letters (Lc 85.0), an orange rule on top, the IHS maroon fold underneath. */
   .plate {
     container-type: inline-size; position: relative; display: flex; flex-direction: column; gap: 4px;
-    background: var(--primary); color: var(--primary-foreground); border-top: 6px solid var(--ring); padding: 16px 22px 0;
+    background: var(--nl-plate); color: var(--nl-plate-ink); border-top: 6px solid var(--ring); padding: 16px 22px 0;
   }
-  .plate__k { font-family: var(--font-mono); font-size: 14px; font-weight: 500; color: var(--primary-foreground); text-transform: uppercase; letter-spacing: 0.06em; }
+  .plate__k { font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: var(--nl-plate-ink); text-transform: uppercase; letter-spacing: 0.08em; }
   .plate__seat {
-    font-family: var(--font-heading); font-weight: 600; line-height: 1; text-transform: uppercase; letter-spacing: 0.01em;
+    /* Mona Sans at normal width (not .font-heading's 112.5%), so the fit below holds: caps average under 0.74 em. */
+    font-family: var(--font-heading); font-weight: 800; font-stretch: 100%; line-height: 1; text-transform: uppercase; letter-spacing: 0;
     white-space: nowrap; overflow: hidden;
-    font-size: min(88px, calc((100cqi - 44px) / (var(--len) * 0.72)));
-    font-size: round(down, min(88px, calc((100cqi - 44px) / (var(--len) * 0.72))), 1px);
+    font-size: min(88px, calc((100cqi - 44px) / (var(--len) * 0.74)));
+    font-size: round(down, min(88px, calc((100cqi - 44px) / (var(--len) * 0.74))), 1px);
     padding: 6px 0 12px;
   }
-  /* The fold: IHS maroon, the host's band under every seat. Ink code (86.8 Lc), cream name (66.1 Lc). */
+  /* The fold: IHS maroon, the host's band under every seat. Ink code (Lc 96.8), cream name (Lc 64.5). */
   .plate__fold {
     display: flex; align-items: baseline; gap: 4px 12px; flex-wrap: wrap; margin: 0 -22px; padding: 10px 22px 12px;
     background: var(--ihs-maroon);
   }
   .plate__abbr { font-family: var(--font-mono); font-weight: 500; font-size: 22px; line-height: 1; color: var(--foreground); }
-  .plate__name { font-family: var(--font-label); font-weight: 600; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ihs-cream); line-height: 1.25; }
+  .plate__name { font-family: var(--font-mono); font-weight: 500; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ihs-cream); line-height: 1.25; }
   .plate--empty { border-top-color: var(--input); padding-bottom: 18px; gap: 6px; }
-  .plate__none { font-family: var(--font-heading); font-weight: 600; font-size: 34px; line-height: 1.1; letter-spacing: -0.01em; color: var(--primary-foreground); }
-  .plate__line { font-size: 16px; color: var(--primary-foreground); }
+  .plate__none { font-family: var(--font-heading); font-weight: 800; font-stretch: 112.5%; font-size: 34px; line-height: 1.1; letter-spacing: -0.01em; color: var(--nl-plate-ink); }
+  .plate__line { font-size: 16px; color: var(--nl-plate-ink); }
   @media (max-width: 767px) {
     .plate { padding: 12px 16px 0; }
     .plate__seat { padding: 4px 0 10px; }
     .plate__fold { margin: 0 -16px; padding: 8px 16px 10px; }
     .plate__abbr { font-size: 20px; }
-    .plate__name { font-size: 13px; }
+    .plate__name { font-size: 12px; }
     .plate__none { font-size: 28px; }
     .plate--empty { padding-bottom: 14px; }
   }

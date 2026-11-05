@@ -31,7 +31,7 @@ export function BigTimer({ timer: t, mySeatId }: { timer: Timer; mySeatId: strin
   return (
     <div className="flex w-full min-w-0 flex-col gap-3">
       <div className="flex flex-wrap items-center gap-2.5">
-        <span className="font-label text-[15px] font-semibold uppercase text-muted-foreground tracking-[0.06em]">{KIND[t.kind]}</span>
+        <span className="font-mono text-[14px] font-medium uppercase text-muted-foreground tracking-[0.08em]">{KIND[t.kind]}</span>
         {!empty && <Status s={stateOf(t, tone)} />}
         {me && <Status s={{ tone: 'action', icon: Mic, word: "You're speaking" }} />}
       </div>
@@ -42,7 +42,7 @@ export function BigTimer({ timer: t, mySeatId }: { timer: Timer; mySeatId: strin
       ) : (
         <div className="w-full min-w-0 [container-type:inline-size]">
           <p
-            className={cn('timer-fit font-mono font-medium leading-[0.9] tabular-nums tracking-[-0.02em]', TONE_TEXT[tone])}
+            className={cn('timer-fit font-figures font-bold leading-[0.9] tabular-nums tracking-[-0.02em]', TONE_TEXT[tone])}
             style={{ ['--fit' as string]: `calc(100cqi / ${(text.length * 0.62).toFixed(2)})` }}
             role="timer"
             aria-live="off"
@@ -78,7 +78,7 @@ export function SlimTimer({ timer: t, className }: { timer: Timer; className?: s
       aria-label={`Timer: ${clockWords(left)} left, ${s.word}, ${who}. Open Now`}
     >
       <Icon aria-hidden="true" className={cn('size-4.5 shrink-0', tone === 'normal' ? (t.running ? 'text-primary' : 'text-muted-foreground') : TONE_TEXT[tone])} />
-      <span className={cn('font-mono text-[22px] font-medium tabular-nums leading-none', TONE_TEXT[tone])}>{clockText(left)}</span>
+      <span className={cn('font-figures text-[22px] font-bold tabular-nums leading-none', TONE_TEXT[tone])}>{clockText(left)}</span>
       <span className="min-w-0 truncate text-[15px] text-muted-foreground">{who}</span>
     </a>
   );

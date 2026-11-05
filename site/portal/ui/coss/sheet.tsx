@@ -31,7 +31,7 @@ export function SheetBackdrop({
   return (
     <SheetPrimitive.Backdrop
       className={cn(
-        "fixed inset-0 z-50 bg-black/32 backdrop-blur-sm dusk:bg-background transition-all duration-200 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-[-webkit-touch-callout:none]:absolute",
+        "fixed inset-0 z-50 bg-black/32 backdrop-blur-sm dash:bg-background transition-all duration-200 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-[-webkit-touch-callout:none]:absolute",
         className,
       )}
       data-slot="sheet-backdrop"
@@ -88,7 +88,7 @@ export function SheetPopup({
       <SheetViewport side={side} variant={variant}>
         <SheetPrimitive.Popup
           className={cn(
-            "relative flex max-h-full min-h-0 w-full min-w-0 flex-col bg-popover not-dark:bg-clip-padding text-popover-foreground shadow-lg/5 transition-[opacity,translate] duration-200 ease-in-out will-change-transform before:pointer-events-none before:absolute before:inset-0 before:shadow-[0_1px_--theme(--color-black/4%)] data-ending-style:opacity-0 data-starting-style:opacity-0 max-sm:before:hidden dark:before:shadow-[0_-1px_--theme(--color-white/6%)] dusk:before:hidden",
+            "relative flex max-h-full min-h-0 w-full min-w-0 flex-col bg-popover not-dark:bg-clip-padding text-popover-foreground shadow-lg/5 transition-[opacity,translate] duration-200 ease-in-out will-change-transform before:pointer-events-none before:absolute before:inset-0 before:shadow-[0_1px_--theme(--color-black/4%)] data-ending-style:opacity-0 data-starting-style:opacity-0 max-sm:before:hidden dark:before:shadow-[0_-1px_--theme(--color-white/6%)] dash:before:hidden",
             side === "bottom" &&
               "row-start-2 border-t data-ending-style:translate-y-8 data-starting-style:translate-y-8",
             side === "top" &&
@@ -152,7 +152,7 @@ export function SheetFooter({
   const defaultProps = {
     className: cn(
       "flex flex-col-reverse gap-2 px-6 sm:flex-row sm:justify-end",
-      variant === "default" && "border-t bg-muted/72 py-4 dusk:bg-raised",
+      variant === "default" && "border-t bg-muted/72 py-4 dash:bg-raised",
       variant === "bare" &&
         "in-[[data-slot=sheet-popup]:has([data-slot=sheet-panel])]:pt-3 pt-4 pb-6",
       className,
@@ -173,7 +173,7 @@ export function SheetTitle({
 }: SheetPrimitive.Title.Props): React.ReactElement {
   return (
     <SheetPrimitive.Title
-      className={cn("font-bold font-heading text-xl leading-none dusk:font-semibold dusk:leading-tight", className)}
+      className={cn("font-bold font-heading text-xl leading-none dash:font-semibold dash:leading-tight", className)}
       data-slot="sheet-title"
       {...props}
     />

@@ -116,7 +116,7 @@ export function Shell({ children }: { children: ReactNode }) {
       <div className="admin-body flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-30 flex min-h-15 items-center gap-3 border-b bg-background px-7 max-md:min-h-14 max-md:gap-2 max-md:px-4">
           <a className="inline-flex min-h-11 items-center md:hidden" href={first('live')} aria-label="DXB MUN secretariat, live overview"><Wordmark /></a>
-          <span className="font-label text-[15px] font-semibold uppercase text-muted-foreground max-lg:hidden tracking-[0.06em]">Secretariat dashboard</span>
+          <span className="font-mono text-[14px] font-medium uppercase text-muted-foreground max-lg:hidden tracking-[0.08em]">Secretariat dashboard</span>
           <div className="ms-auto flex min-w-0 items-center gap-2">
             <PhaseTag />
             {api.mode === 'demo' && (
@@ -147,7 +147,7 @@ export function Shell({ children }: { children: ReactNode }) {
 
       <SegmentedControl
         render={<nav aria-label="Main" data-nav="tabs" />}
-        className="fixed inset-x-0 bottom-0 z-60 grid w-full grid-cols-5 gap-0 rounded-none border-t bg-background p-0 pb-[env(safe-area-inset-bottom,0px)] md:hidden"
+        className="fixed inset-x-0 bottom-0 z-60 grid w-full grid-cols-5 gap-0 rounded-none border-t bg-background p-0 pb-[env(safe-area-inset-bottom,0px)] md:hidden dash:[&>[data-slot=segmented-control-indicator]]:bg-raised"
       >
         {phone.map((p) => {
           const on = p.id === here.id;

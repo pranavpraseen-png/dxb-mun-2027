@@ -265,7 +265,7 @@ export function MenuShortcut({
   return (
     <kbd
       className={cn(
-        "ms-auto font-medium font-sans text-muted-foreground/72 text-xs tracking-widest dusk:text-muted-foreground",
+        "ms-auto font-medium font-sans text-muted-foreground/72 text-xs tracking-widest dash:text-muted-foreground",
         className,
       )}
       data-slot="menu-shortcut"

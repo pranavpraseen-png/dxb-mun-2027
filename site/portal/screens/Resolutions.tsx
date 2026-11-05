@@ -104,8 +104,8 @@ function ResolutionRow({ r }: { r: Resolution }) {
     <Row className="flex-col items-stretch gap-2 py-4">
       <div className="flex flex-wrap items-center gap-2">
         <Status s={RESOLUTION[r.status]} />
-        {r.number && <span className="font-mono text-[17px] font-medium text-primary">{r.number}</span>}
-        <span className="font-label text-sm font-semibold uppercase text-muted-foreground tracking-[0.06em]">{KIND[r.kind]}{r.clause ? ` · ${r.clause}` : ''}</span>
+        {r.number && <span className="font-mono text-[17px] font-medium text-foreground">{r.number}</span>}
+        <span className="font-mono text-sm font-medium uppercase text-muted-foreground tracking-[0.08em]">{KIND[r.kind]}{r.clause ? ` · ${r.clause}` : ''}</span>
       </div>
       <p className="text-xl font-semibold leading-snug">{r.title}{r.mine && <You>Mine</You>}</p>
       {r.status === 'returned' && r.returnComment && (
@@ -123,7 +123,7 @@ function ResolutionRow({ r }: { r: Resolution }) {
       </dl>
       {r.body && (
         <details className="group">
-          <summary className="min-h-11 cursor-pointer content-center font-label text-lg font-semibold text-primary">Read the text</summary>
+          <summary className="min-h-11 cursor-pointer content-center font-label text-lg font-semibold text-foreground underline decoration-primary decoration-2 underline-offset-[6px]">Read the text</summary>
           <p className="whitespace-pre-wrap border-s-2 ps-3 text-[17px]">{r.body}</p>
         </details>
       )}

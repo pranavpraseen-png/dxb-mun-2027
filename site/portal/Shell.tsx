@@ -80,7 +80,7 @@ export function Shell({ api, badges, children }: { api: DelegateApi; badges: Par
           <SidebarHeader className="h-15 flex-row items-center border-b px-4.5 py-0">
             <a className="flex min-h-11 items-center gap-2.5 no-underline" href={href('now')} aria-label="DXB MUN delegate dashboard, Now">
               <Wordmark />
-              <span className="font-label text-[13px] font-semibold uppercase text-muted-foreground max-[1100px]:hidden tracking-[0.06em]">Delegate</span>
+              <span className="font-mono text-[13px] font-medium uppercase text-muted-foreground max-[1100px]:hidden tracking-[0.08em]">Delegate</span>
             </a>
           </SidebarHeader>
           <SidebarContent>
@@ -124,11 +124,11 @@ export function Shell({ api, badges, children }: { api: DelegateApi; badges: Par
             <button
               type="button"
               onClick={() => setSeatOpen(true)}
-              className="flex min-h-11 min-w-0 shrink items-baseline gap-2 text-left hover:text-primary"
+              className="flex min-h-11 min-w-0 shrink items-baseline gap-2 text-left hover:underline hover:decoration-primary hover:decoration-2 hover:underline-offset-[6px]"
               aria-label={`My seat: ${seat.seat.label}, ${seat.committee.abbr}, room ${room ?? TBA}. Show seat and check-in QR`}
             >
               <span className="truncate font-heading text-[24px] font-semibold leading-[1.1] max-md:text-[20px] tracking-[-0.01em]">{seat.seat.label}</span>
-              <span className="shrink-0 font-mono text-lg font-medium text-primary max-md:text-base">{seat.committee.abbr}</span>
+              <span className="shrink-0 font-mono text-lg font-medium text-foreground max-md:text-base">{seat.committee.abbr}</span>
               <span className="truncate text-[15px] text-muted-foreground max-md:hidden">{room ? `Room ${room}` : 'Room to be announced'}</span>
             </button>
             {agenda && <span className="min-w-0 flex-1 truncate border-s ps-3 text-[16px] max-lg:hidden" title={agenda}>{agenda}</span>}
@@ -161,7 +161,7 @@ export function Shell({ api, badges, children }: { api: DelegateApi; badges: Par
       {/* Phones: bottom bar, four places plus More (coss ui Segmented Control items as links). */}
       <SegmentedControl
         render={<nav aria-label="Main" data-nav="tabs" />}
-        className="fixed inset-x-0 bottom-0 z-40 grid w-full grid-cols-5 gap-0 rounded-none border-t bg-background p-0 pb-[env(safe-area-inset-bottom,0px)] md:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 grid w-full grid-cols-5 gap-0 rounded-none border-t bg-background p-0 pb-[env(safe-area-inset-bottom,0px)] md:hidden dash:[&>[data-slot=segmented-control-indicator]]:bg-raised"
       >
         {PHONE_BAR.map((id) => {
           const p = place(id);
@@ -199,10 +199,10 @@ export function Shell({ api, badges, children }: { api: DelegateApi; badges: Par
                 return (
                   <a
                     key={p.id} href={href(p.id)} onClick={() => setMore(false)} aria-current={p.id === here ? 'page' : undefined}
-                    className="flex min-h-14 items-center gap-3.5 font-label text-xl font-semibold no-underline aria-[current=page]:text-primary"
+                    className="flex min-h-14 items-center gap-3.5 font-label text-xl font-semibold no-underline aria-[current=page]:underline aria-[current=page]:decoration-primary aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-[6px]"
                   >
                     <Icon aria-hidden="true" className="size-6 text-primary" /> {p.label}
-                    {badges[p.id] && <span className="ms-auto text-base font-semibold normal-case text-primary">{badges[p.id]}</span>}
+                    {badges[p.id] && <span className="ms-auto text-base font-semibold normal-case text-info">{badges[p.id]}</span>}
                   </a>
                 );
               })}

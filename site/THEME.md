@@ -1,5 +1,7 @@
 # DXB MUN theme: Dubai Dusk + Official Record
 
+> **Superseded, 2026-11-05.** Later the same day, the owner explicitly picked "C1 Night Lab (Recommended)" and "T1 Mona Sans set (Recommended)" from the liked references. The structure, colours and fonts now live in `BLUEPRINT.md`. The dashboards' Night Lab tokens are in `portal/theme.css`. This file is kept as a record. The clarity checklist still applies.
+
 **This is the owner's explicit pick, 2026-11-05, word for word: "Dusk + Official Record".**
 Every homepage redesign uses it now, and later the dashboards. It replaces all earlier colours and fonts.
 

@@ -49,10 +49,10 @@ export function SpeakersScreen() {
       <PageHead title="Speakers" line="The order delegates speak in." aside={action} />
       <Card className={cn('flex flex-col gap-2 rounded-sm p-5 shadow-none before:hidden max-md:p-4', me && 'border-l-4 border-l-primary')}>
         {me?.status === 'speaking' ? (
-          <p className="font-heading text-[48px] font-semibold leading-[1.1] text-primary max-md:text-[38px] tracking-[-0.02em]">You're speaking</p>
+          <p className="font-heading font-wide text-[48px] font-extrabold leading-[1.1] text-info max-md:text-[38px] tracking-[-0.02em]">You're speaking</p>
         ) : me ? (
           <>
-            <p className="font-heading text-[48px] font-semibold leading-[1.1] max-md:text-[38px] tracking-[-0.02em]">You're {ordinal(place)} in line</p>
+            <p className="font-heading font-wide text-[48px] font-extrabold leading-[1.1] max-md:text-[38px] tracking-[-0.02em]">You're {ordinal(place)} in line</p>
             <Plain muted>{ahead === 0 ? "You're up next. Get ready." : `${ahead} ahead of you.`}</Plain>
           </>
         ) : (
@@ -60,7 +60,7 @@ export function SpeakersScreen() {
         )}
         {live && speaking && (
           <div className="mt-1 flex flex-wrap items-center gap-2.5">
-            <span className="font-label text-sm font-semibold uppercase text-muted-foreground tracking-[0.06em]">Speaking now</span>
+            <span className="font-mono text-sm font-medium uppercase text-muted-foreground tracking-[0.08em]">Speaking now</span>
             <SlimTimer timer={live.timer} />
           </div>
         )}
@@ -73,7 +73,7 @@ export function SpeakersScreen() {
             {speakers.map((s) => (
               <Row key={s.id} mine={s.isMe} className="items-center gap-3 px-2 py-2.5 first:pt-2.5 last:pb-2.5">
                 <span className="w-8 shrink-0 text-right font-mono text-[16px] text-muted-foreground">{s.position}</span>
-                <span className={cn('min-w-0 flex-1 text-lg font-semibold', s.status === 'speaking' && 'text-primary', s.status === 'done' && 'text-muted-foreground')}>
+                <span className={cn('min-w-0 flex-1 text-lg font-semibold', s.status === 'speaking' && 'text-info', s.status === 'done' && 'text-muted-foreground')}>
                   {s.seat.label}{s.isMe && <You />}
                 </span>
                 <Status s={SPEAKER[s.status]} />

@@ -50,7 +50,7 @@ export function CommitteesScreen() {
                         <p className="mt-1 max-w-72 whitespace-normal text-sm text-muted-foreground">{c.name}</p>
                       </TableCell>
                       <TableCell>{c.room ?? <Tba />}</TableCell>
-                      <TableCell className="font-mono">{c.filled}<span className="text-muted-foreground"> / {c.seats}</span></TableCell>
+                      <TableCell className="font-figures">{c.filled}<span className="text-muted-foreground"> / {c.seats}</span></TableCell>
                       <TableCell><Chairs list={chairsOf(c.id)} committee={c} onAdd={() => setAddTo(c)} /></TableCell>
                       <TableCell className="pe-5 text-right">
                         <Button variant="outline" size="sm" onClick={() => setEdit(c)} aria-label={`Edit ${c.abbr}`}><Pencil aria-hidden="true" /> Edit</Button>

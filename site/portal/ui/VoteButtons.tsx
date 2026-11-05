@@ -1,4 +1,4 @@
-// Yes / No / Abstain (coss ui Button, as toggle buttons). Big placards: light on dark, sand once chosen.
+// Yes / No / Abstain (coss ui Button, as toggle buttons). Big placards: light on dark, orange once chosen.
 import { Check, Minus, X } from 'lucide-react';
 import type { VoteChoice } from '@/platform/v2';
 import { Button } from './coss/button';
@@ -23,10 +23,10 @@ export function VoteButtons({
             className={cn(
               'h-22 gap-3 rounded-none border-2 border-foreground bg-foreground text-[38px] tracking-[0.03em] text-background shadow-none before:hidden max-md:h-17 max-md:text-[32px]',
               'hover:border-primary hover:bg-foreground dark:bg-foreground dark:hover:bg-foreground [&_svg]:size-8! [&_svg]:opacity-100!',
-              // Dusk: opaque placards. Ink at rest, a sand edge on hover; once locked, the others drop to raised + muted.
-              'dusk:bg-foreground dusk:hover:border-primary dusk:hover:bg-foreground dusk:disabled:border-line dusk:disabled:bg-raised',
+              // Night Lab: opaque placards. Ink at rest, an orange edge on hover; once locked, the others drop to raised + muted.
+              'dash:bg-foreground dash:hover:border-primary dash:hover:bg-foreground dash:disabled:border-line dash:disabled:bg-raised',
               compact && 'h-15 text-[28px] max-md:h-15 max-md:text-[28px] [&_svg]:size-6!',
-              on && 'border-primary bg-primary text-primary-foreground dark:bg-primary dusk:bg-primary dusk:disabled:border-primary dusk:disabled:bg-primary dusk:disabled:text-primary-foreground',
+              on && 'border-primary bg-primary text-primary-foreground dark:bg-primary dash:bg-primary dash:disabled:border-primary dash:disabled:bg-primary dash:disabled:text-primary-foreground',
             )}
             aria-pressed={on}
             disabled={pending || !!mine || off || disabled}

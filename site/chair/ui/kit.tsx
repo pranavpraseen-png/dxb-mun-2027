@@ -74,7 +74,7 @@ export function PageHead({ title, line, aside }: { title: string; line?: ReactNo
   return (
     <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
       <div className="min-w-0">
-        <h1 className="font-heading text-[42px] font-semibold leading-[1.05] max-md:text-[34px] tracking-[-0.02em]" tabIndex={-1}>{title}</h1>
+        <h1 className="font-heading font-wide text-[42px] font-extrabold leading-[1.05] max-md:text-[34px] tracking-[-0.02em]" tabIndex={-1}>{title}</h1>
         {line && <p className="mt-1.5 text-lg text-muted-foreground max-md:text-base">{line}</p>}
       </div>
       {aside && <div className="flex flex-wrap items-center gap-2.5 max-md:w-full">{aside}</div>}

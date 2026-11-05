@@ -59,7 +59,7 @@ function PhaseSwitch() {
   const info = PHASES.find((p) => p.id === next);
   return (
     <div className="flex flex-col gap-1">
-      <span id="phase-l" className="font-label text-[13px] font-semibold uppercase text-muted-foreground tracking-[0.06em]">Conference phase</span>
+      <span id="phase-l" className="font-mono text-[13px] font-medium uppercase text-muted-foreground tracking-[0.08em]">Conference phase</span>
       <SegmentedControl aria-labelledby="phase-l" className="grid grid-cols-3 rounded-none max-md:w-full">
         {PHASES.map((p) => {
           const on = phase.data === p.id;
@@ -98,7 +98,7 @@ function TimerView({ t, big }: { t: Timer; big?: boolean }) {
     <div className="flex min-w-0 flex-col gap-0.5">
       <span className="flex items-center gap-2">
         {t.running ? <Play size={big ? 18 : 15} aria-hidden="true" className="shrink-0 text-success" /> : <Pause size={big ? 18 : 15} aria-hidden="true" className="shrink-0 text-muted-foreground" />}
-        <span className={cn('font-mono font-medium leading-none tabular-nums', big ? 'text-[34px]' : 'text-[26px]', t.running && left <= 10 && 'text-warning')} aria-label={`${clock(left)} ${t.running ? 'running' : 'paused'}`}>
+        <span className={cn('font-figures font-bold leading-none', big ? 'text-[34px]' : 'text-[26px]', t.running && left <= 10 && 'text-warning')} aria-label={`${clock(left)} ${t.running ? 'running' : 'paused'}`}>
           {clock(left)}
         </span>
         <span className="sr-only">{t.running ? 'Running' : 'Paused'}</span>
@@ -111,7 +111,7 @@ const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
 
 function Present({ r, short }: { r: OverviewRow; short?: boolean }) {
   if (r.present === null) return <span className="text-sm text-muted-foreground">{short ? 'No roll' : 'No roll call yet'}</span>;
-  return <span className="font-mono text-lg">{r.present}<span className="text-muted-foreground"> / {r.seats}</span></span>;
+  return <span className="font-figures text-lg">{r.present}<span className="text-muted-foreground"> / {r.seats}</span></span>;
 }
 
 function VoteCell({ r }: { r: OverviewRow }) {
@@ -153,9 +153,9 @@ function RoomsTable({ rows }: { rows: OverviewRow[] }) {
               <TableCell className="w-44 max-w-44"><TimerView t={r.timer} /></TableCell>
               <TableCell><Present r={r} /></TableCell>
               <TableCell className="max-w-52 whitespace-normal"><VoteCell r={r} /></TableCell>
-              <TableCell className="text-right font-mono text-lg">{r.resolutionsPassed}</TableCell>
-              <TableCell className={cn('text-right font-mono text-lg', r.chitsWaiting > 0 && 'text-warning')}>{r.chitsWaiting}</TableCell>
-              <TableCell className="pe-5 text-right font-mono text-lg">{r.papersIn}<span className="text-muted-foreground"> / {r.seats}</span></TableCell>
+              <TableCell className="text-right font-figures text-lg">{r.resolutionsPassed}</TableCell>
+              <TableCell className={cn('text-right font-figures text-lg', r.chitsWaiting > 0 && 'text-warning')}>{r.chitsWaiting}</TableCell>
+              <TableCell className="pe-5 text-right font-figures text-lg">{r.papersIn}<span className="text-muted-foreground"> / {r.seats}</span></TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -181,9 +181,9 @@ function RoomsCards({ rows }: { rows: OverviewRow[] }) {
           {r.openVote && <VoteCell r={r} />}
           <div className="grid grid-cols-4 gap-2 border-t pt-2.5">
             <Mini icon={Users} label="Present"><Present r={r} short /></Mini>
-            <Mini icon={ScrollText} label="Passed"><span className="font-mono text-lg">{r.resolutionsPassed}</span></Mini>
-            <Mini icon={Mail} label="Chits"><span className={cn('font-mono text-lg', r.chitsWaiting > 0 && 'text-warning')}>{r.chitsWaiting}</span></Mini>
-            <Mini icon={FileText} label="Papers"><span className="font-mono text-lg">{r.papersIn}<span className="text-muted-foreground">/{r.seats}</span></span></Mini>
+            <Mini icon={ScrollText} label="Passed"><span className="font-figures text-lg">{r.resolutionsPassed}</span></Mini>
+            <Mini icon={Mail} label="Chits"><span className={cn('font-figures text-lg', r.chitsWaiting > 0 && 'text-warning')}>{r.chitsWaiting}</span></Mini>
+            <Mini icon={FileText} label="Papers"><span className="font-figures text-lg">{r.papersIn}<span className="text-muted-foreground">/{r.seats}</span></span></Mini>
           </div>
         </li>
       ))}
@@ -194,7 +194,7 @@ function RoomsCards({ rows }: { rows: OverviewRow[] }) {
 function Mini({ icon: Icon, label, children }: { icon: typeof Users; label: string; children: ReactNode }) {
   return (
     <div className="flex min-w-0 flex-col gap-0.5">
-      <span className="flex items-center gap-1 font-label text-[13px] font-semibold uppercase text-muted-foreground tracking-[0.06em]"><Icon size={13} aria-hidden="true" />{label}</span>
+      <span className="flex items-center gap-1 font-mono text-[13px] font-medium uppercase text-muted-foreground tracking-[0.08em]"><Icon size={13} aria-hidden="true" />{label}</span>
       <span className="min-w-0">{children}</span>
     </div>
   );

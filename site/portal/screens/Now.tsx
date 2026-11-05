@@ -125,10 +125,10 @@ function RollCard({ roll }: { roll: RollCall }) {
   const { readOnly } = useConf();
   return (
     <Card render={<section aria-labelledby="roll-title" />} className={TAKEOVER}>
-      <p className="flex items-center gap-2 font-label text-[15px] font-semibold uppercase text-primary tracking-[0.06em]">
+      <p className="flex items-center gap-2 font-mono text-[14px] font-medium uppercase text-info tracking-[0.08em]">
         <Hand size={20} aria-hidden="true" /> Your turn
       </p>
-      <h2 id="roll-title" className="font-heading text-[52px] font-semibold leading-[1.05] max-md:text-[40px] tracking-[-0.02em]">
+      <h2 id="roll-title" className="font-heading font-wide text-[52px] font-extrabold leading-[1.05] max-md:text-[40px] tracking-[-0.02em]">
         Roll call{roll.sessionNumber ? `, session ${roll.sessionNumber}` : ''}
       </h2>
       <div className="mt-1 grid w-full grid-cols-2 gap-3 max-md:grid-cols-1 max-md:gap-2.5">
@@ -169,11 +169,11 @@ function VoteCard({ vote: v, myRoll, compact }: { vote: Vote; myRoll: RollCall['
   const noAbstain = myRoll === 'present_voting';
   return (
     <Card render={<section aria-labelledby={`vote-${v.id}`} />} className={cn(TAKEOVER, v.myVote && 'border-input border-t-success')}>
-      <p className={cn('flex items-center gap-2 font-label text-[15px] font-semibold uppercase tracking-[0.06em]', v.myVote ? 'text-success' : 'text-primary')}>
+      <p className={cn('flex items-center gap-2 font-mono text-[14px] font-medium uppercase tracking-[0.08em]', v.myVote ? 'text-success' : 'text-info')}>
         {v.myVote ? <CircleCheck size={20} aria-hidden="true" /> : <VoteIcon size={20} aria-hidden="true" />}
         {v.myVote ? 'Vote recorded' : 'Vote open: your turn'}
       </p>
-      <h2 id={`vote-${v.id}`} className={cn('font-heading font-semibold leading-[1.05] tracking-[-0.02em]', compact ? 'text-[34px]' : 'text-[52px] max-md:text-[38px]')}>{v.title}</h2>
+      <h2 id={`vote-${v.id}`} className={cn('font-heading font-wide font-extrabold leading-[1.05] tracking-[-0.02em]', compact ? 'text-[34px]' : 'text-[52px] max-md:text-[38px]')}>{v.title}</h2>
       <p className="font-mono text-[15px] text-muted-foreground">{v.majority === 'two_thirds' ? 'Two-thirds majority' : 'Simple majority'}</p>
       <VoteButtons
         mine={v.myVote} pending={pending} label={`Vote on ${v.title}`} noAbstain={noAbstain} disabled={readOnly} compact={compact}
@@ -197,8 +197,8 @@ function ResultPanel({ vote: v }: { vote: Vote }) {
         <dl className="grid w-full grid-cols-4 gap-2 text-center max-md:grid-cols-2">
           {([['Yes', v.counts.yes], ['No', v.counts.no], ['Abstain', v.counts.abstain], ['Not voted', v.counts.notVoted]] as const).map(([k, n]) => (
             <div key={k} className="border bg-background px-2 py-2">
-              <dt className="font-label text-sm font-semibold uppercase text-muted-foreground tracking-[0.06em]">{k}</dt>
-              <dd className="font-mono text-[28px] font-medium leading-tight">{n}</dd>
+              <dt className="font-mono text-sm font-medium uppercase text-muted-foreground tracking-[0.08em]">{k}</dt>
+              <dd className="font-figures text-[28px] font-bold leading-tight">{n}</dd>
             </div>
           ))}
         </dl>
@@ -219,10 +219,10 @@ function MySpeakerPlace({ speakers }: { speakers: Speaker[] }) {
   return (
     <Panel title="Speakers' list" icon={Mic} aside={me ? <Status s={SPEAKER[me.status]} /> : undefined}>
       {me?.status === 'speaking' ? (
-        <p className="font-heading text-[34px] font-semibold leading-[1.1] text-primary tracking-[-0.02em]">You're speaking</p>
+        <p className="font-heading text-[34px] font-extrabold leading-[1.1] text-info tracking-[-0.02em]">You're speaking</p>
       ) : me ? (
         <>
-          <p className="font-heading text-[40px] font-semibold leading-[1.1] tracking-[-0.02em]">{ordinal(place)} in line</p>
+          <p className="font-heading font-wide text-[40px] font-extrabold leading-[1.1] tracking-[-0.02em]">{ordinal(place)} in line</p>
           <Plain muted>{ahead === 0 ? "You're up next." : `${ahead} ahead of you.`}</Plain>
         </>
       ) : (
@@ -271,7 +271,7 @@ function DeadlinesPanel({ deadlines }: { deadlines: Deadline[] }) {
               <div key={d.key} className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0.5 py-2.5 first:pt-0 last:pb-0">
                 <span className="font-semibold">{d.label}</span>
                 <span className={cn('text-[17px]', !d.dueAt && 'text-muted-foreground')}>
-                  {dayTime(d.dueAt)}{left && <span className={cn('ms-2 font-mono text-[15px]', left === 'Passed' ? 'text-muted-foreground' : 'text-primary')}>{left === 'Passed' ? 'passed' : `in ${left}`}</span>}
+                  {dayTime(d.dueAt)}{left && <span className={cn('ms-2 font-mono text-[15px]', left === 'Passed' ? 'text-muted-foreground' : 'text-foreground')}>{left === 'Passed' ? 'passed' : `in ${left}`}</span>}
                 </span>
               </div>
             );

@@ -3,12 +3,11 @@
 import { createRoot } from 'react-dom/client';
 import { useEffect, useState, type ReactElement } from 'react';
 import { ArrowRight, LogOut, ShieldAlert } from 'lucide-react';
-// Official Record (THEME.md): Source Serif 4 for headings, Public Sans for UI and text, IBM Plex Mono for figures.
-import '@fontsource-variable/source-serif-4/opsz.css';
-import '@fontsource-variable/source-serif-4/opsz-italic.css';
-import '@fontsource-variable/public-sans';
-import '@fontsource/ibm-plex-mono/400.css';
-import '@fontsource/ibm-plex-mono/500.css';
+// T1 type (BLUEPRINT.md section 6): Mona Sans (weight + width axes) for UI, text and titles; Geist Mono for timers,
+// codes, numbers and small labels; Instrument Serif italic for the motto only.
+import '@fontsource-variable/mona-sans/wdth.css';
+import '@fontsource-variable/geist-mono';
+import '@fontsource/instrument-serif/400-italic.css';
 import './admin.css';
 import { getSecretariatApi, type Me } from '@/platform/v2';
 import { SignIn } from '../portal/screens/SignIn';
@@ -92,7 +91,7 @@ function NoAccess({ email }: { email: string }) {
       <main id="main" className="grid flex-1 place-items-center px-4 py-10">
         <section className="flex w-full max-w-[520px] flex-col gap-4 border bg-card p-7 max-md:p-5" aria-labelledby="na-t">
           <ShieldAlert size={32} aria-hidden="true" className="text-muted-foreground" />
-          <h1 id="na-t" className="font-heading text-[40px] font-semibold leading-[1.05] tracking-[-0.02em]">This area is for the DXB MUN secretariat</h1>
+          <h1 id="na-t" className="font-heading font-wide text-[40px] font-extrabold leading-[1.05] tracking-[-0.02em]">This area is for the DXB MUN secretariat</h1>
           <p className="text-lg text-muted-foreground">You're signed in as <strong className="break-all text-foreground">{email}</strong>.</p>
           <div className="flex flex-wrap gap-2.5">
             <Button render={<a href="../portal/" />} size="lg">Go to the delegate dashboard <ArrowRight aria-hidden="true" /></Button>

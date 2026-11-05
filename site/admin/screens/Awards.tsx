@@ -71,9 +71,9 @@ function Ranking({ committeeId, abbr }: { committeeId: string; abbr: string }) {
                         <p className="font-semibold">{r.seat.label}</p>
                         <p className="text-sm text-muted-foreground">{r.delegates.join(', ') || 'No delegate'}</p>
                       </TableCell>
-                      <TableCell className={cn('text-right font-mono text-lg font-medium', i === 0 && 'text-gold')}>{fmt(r.total)}</TableCell>
-                      <TableCell className="text-right font-mono">{r.sessionsScored}</TableCell>
-                      {chairs.map((c) => <TableCell key={c.chairId} className="text-right font-mono last:pe-5">{fmt(r.byChair.find((x) => x.chairId === c.chairId)?.total)}</TableCell>)}
+                      <TableCell className={cn('text-right font-figures text-lg font-bold', i === 0 && 'text-gold')}>{fmt(r.total)}</TableCell>
+                      <TableCell className="text-right font-figures">{r.sessionsScored}</TableCell>
+                      {chairs.map((c) => <TableCell key={c.chairId} className="text-right font-figures last:pe-5">{fmt(r.byChair.find((x) => x.chairId === c.chairId)?.total)}</TableCell>)}
                     </TableRow>
                   ))}
                 </TableBody>
@@ -87,7 +87,7 @@ function Ranking({ committeeId, abbr }: { committeeId: string; abbr: string }) {
                     <p className="font-semibold">{r.seat.label}</p>
                     <p className="truncate text-sm text-muted-foreground">{r.delegates.join(', ') || 'No delegate'} · {r.sessionsScored} sessions</p>
                   </div>
-                  <span className={cn('font-mono text-lg font-medium', i === 0 && 'text-gold')}>{fmt(r.total)}</span>
+                  <span className={cn('font-figures text-lg font-bold', i === 0 && 'text-gold')}>{fmt(r.total)}</span>
                 </li>
               ))}
             </ol>

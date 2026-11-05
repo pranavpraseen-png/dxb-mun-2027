@@ -91,7 +91,7 @@ export function Shell({ children }: { children: ReactNode }) {
           <SidebarHeader className="h-15 flex-row items-center border-b px-4 py-0">
             <a className="flex min-h-11 items-center gap-2.5 no-underline" href={href('run')} aria-label="DXB MUN dais, run session">
               <Wordmark />
-              <span className="font-label text-[15px] font-semibold uppercase text-muted-foreground tracking-[0.06em]">Dais</span>
+              <span className="font-mono text-[14px] font-medium uppercase text-muted-foreground tracking-[0.08em]">Dais</span>
             </a>
           </SidebarHeader>
           <SidebarContent>
@@ -136,7 +136,7 @@ export function Shell({ children }: { children: ReactNode }) {
       <div className="chair-body flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-30 flex h-15 items-center gap-4 border-b bg-background px-7 max-md:h-14 max-md:gap-2.5 max-md:px-4">
           <a className="inline-flex min-h-11 shrink-0 items-center md:hidden" href={href('run')} aria-label="DXB MUN dais, run session"><Wordmark /></a>
-          <p className="flex min-w-0 items-center gap-2 font-label text-[15px] font-semibold uppercase max-md:hidden tracking-[0.06em]">
+          <p className="flex min-w-0 items-center gap-2 font-mono text-[14px] font-medium uppercase max-md:hidden tracking-[0.08em]">
             <Gavel size={18} aria-hidden="true" className="text-primary" />
             <span className="truncate">{committee.name}</span>
             <span className="text-muted-foreground">· {committee.room ? `Room ${committee.room}` : 'Room: To be announced'}</span>
@@ -149,7 +149,7 @@ export function Shell({ children }: { children: ReactNode }) {
 
       <SegmentedControl
         render={<nav aria-label="Main" data-nav="tabs" />}
-        className="fixed inset-x-0 bottom-0 z-60 grid w-full grid-cols-5 gap-0 rounded-none border-t bg-background p-0 pb-[env(safe-area-inset-bottom,0px)] md:hidden"
+        className="fixed inset-x-0 bottom-0 z-60 grid w-full grid-cols-5 gap-0 rounded-none border-t bg-background p-0 pb-[env(safe-area-inset-bottom,0px)] md:hidden dash:[&>[data-slot=segmented-control-indicator]]:bg-raised"
       >
         {phone.map((p) => {
           const on = p.id === page;

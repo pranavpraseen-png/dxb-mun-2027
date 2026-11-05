@@ -67,7 +67,7 @@ export function ScrollBar({
       {...props}
     >
       <ScrollAreaPrimitive.Thumb
-        className="relative flex-1 rounded-full bg-foreground/20 dusk:bg-raised"
+        className="relative flex-1 rounded-full bg-foreground/20 dash:bg-raised"
         data-slot="scroll-area-thumb"
       />
     </ScrollAreaPrimitive.Scrollbar>

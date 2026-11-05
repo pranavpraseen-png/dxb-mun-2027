@@ -95,7 +95,7 @@ export function EmptyTitle({
 }: React.ComponentProps<"div">): React.ReactElement {
   return (
     <div
-      className={cn("font-bold font-heading text-xl dusk:font-semibold", className)}
+      className={cn("font-bold font-heading text-xl dash:font-semibold", className)}
       data-slot="empty-title"
       {...props}
     />

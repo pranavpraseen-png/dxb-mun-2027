@@ -219,7 +219,7 @@ function Grid({ session, criteria, seats }: { session: number; criteria: Criteri
                       />
                     </TableCell>
                   ))}
-                  <TableCell className="text-center font-mono text-lg font-medium">{total ? `${total}/${maxTotal}` : '—'}</TableCell>
+                  <TableCell className="text-center font-figures text-lg font-bold">{total ? `${total}/${maxTotal}` : '—'}</TableCell>
                   <TableCell className="p-1.5">
                     <Input aria-label={`Comment on ${d.seat.label}`} value={r.comment} maxLength={300} placeholder="Comment"
                       onChange={(e) => edit(d.seat.id, (x) => ({ ...x, comment: e.target.value }))}
@@ -287,7 +287,7 @@ function Ranking({ rows, criteria }: { rows: RankingRow[]; criteria: Criterion[]
                     </span>
                   </span>
                 </TableCell>
-                <TableCell className="text-center font-mono text-xl font-medium">{fmt(r.total)}</TableCell>
+                <TableCell className="text-center font-figures text-xl font-bold">{fmt(r.total)}</TableCell>
                 {criteria.map((c) => <TableCell key={c.key} className="text-center font-mono">{r.byCriterion[c.key] !== undefined ? fmt(r.byCriterion[c.key]) : '—'}</TableCell>)}
                 <TableCell className="text-center font-mono">{r.sessionsScored}</TableCell>
                 {chairs.map(([id]) => {

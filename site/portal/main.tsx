@@ -2,12 +2,11 @@
 // or the dashboard with seven places. Data comes only from '@/platform/v2'.
 import { createRoot } from 'react-dom/client';
 import { useEffect, useRef, useState } from 'react';
-// Official Record (THEME.md): Source Serif 4 for headings, Public Sans for UI and text, IBM Plex Mono for figures.
-import '@fontsource-variable/source-serif-4/opsz.css';
-import '@fontsource-variable/source-serif-4/opsz-italic.css';
-import '@fontsource-variable/public-sans';
-import '@fontsource/ibm-plex-mono/400.css';
-import '@fontsource/ibm-plex-mono/500.css';
+// T1 type (BLUEPRINT.md section 6): Mona Sans (weight + width axes) for UI, text and titles; Geist Mono for timers,
+// codes, numbers and small labels; Instrument Serif italic for the motto only.
+import '@fontsource-variable/mona-sans/wdth.css';
+import '@fontsource-variable/geist-mono';
+import '@fontsource/instrument-serif/400-italic.css';
 import './theme.css';
 import './portal.css';
 import { getDelegateApi, type DelegateApi } from '@/platform/v2';

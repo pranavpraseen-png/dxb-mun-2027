@@ -84,7 +84,7 @@ function Result({ out, day }: { out: Outcome; day: number }) {
   if (out.kind === 'error') {
     return (
       <section className="flex flex-col gap-2 border-2 border-destructive bg-destructive-soft p-6 max-md:p-4">
-        <p className="flex items-center gap-3 font-heading text-[44px] font-semibold leading-[1.1] text-destructive max-md:text-[32px] tracking-[-0.02em]"><AlertTriangle size={40} aria-hidden="true" /> Not checked in</p>
+        <p className="flex items-center gap-3 font-heading font-wide text-[44px] font-extrabold leading-[1.1] text-destructive max-md:text-[32px] tracking-[-0.02em]"><AlertTriangle size={40} aria-hidden="true" /> Not checked in</p>
         <p className="text-xl">{out.text}</p>
         <p className="font-mono text-sm text-muted-foreground">Code: {out.code}</p>
       </section>
@@ -94,11 +94,11 @@ function Result({ out, day }: { out: Outcome; day: number }) {
   const ok = out.kind === 'ok';
   return (
     <section className={cn('flex flex-col gap-3 border-2 p-6 max-md:p-4', ok ? 'border-success bg-success-soft' : 'border-warning bg-warning-soft')}>
-      <p className={cn('flex items-center gap-3 font-heading text-[46px] font-semibold leading-[1.1] max-md:text-[32px] tracking-[-0.02em]', ok ? 'text-success' : 'text-warning')}>
+      <p className={cn('flex items-center gap-3 font-heading font-wide text-[46px] font-extrabold leading-[1.1] max-md:text-[32px] tracking-[-0.02em]', ok ? 'text-success' : 'text-warning')}>
         {ok ? <CheckCircle2 size={44} aria-hidden="true" /> : <Hourglass size={44} aria-hidden="true" />}
         {ok ? 'Checked in' : 'Already checked in'}
       </p>
-      <p className="font-heading text-[56px] font-semibold leading-[1.05] break-words max-md:text-[38px] tracking-[-0.02em]">{r.fullName}</p>
+      <p className="font-heading font-wide text-[56px] font-extrabold leading-[1.05] break-words max-md:text-[38px] tracking-[-0.02em]">{r.fullName}</p>
       <p className="font-heading text-[30px] font-semibold leading-[1.1] max-md:text-[24px] tracking-[-0.01em]">
         {r.committee && r.seat ? `${r.seat.label} · ${r.committee.abbr}` : r.committee ? r.committee.abbr : 'No seat yet'}
       </p>

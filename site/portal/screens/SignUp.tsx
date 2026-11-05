@@ -18,7 +18,7 @@ function Frame({ children }: { children: ReactNode }) {
       <HostMark className="w-full flex-row items-baseline justify-center gap-2 border-l-0 border-t-2 border-t-gold py-1.5" />
       <header className="sticky top-0 z-30 flex h-15 items-center gap-3 border-b bg-background px-6 max-md:h-14 max-md:px-4">
         <Wordmark />
-        <span className="font-label text-[15px] font-semibold uppercase text-muted-foreground max-md:hidden tracking-[0.06em]">Delegate</span>
+        <span className="font-mono text-[14px] font-medium uppercase text-muted-foreground max-md:hidden tracking-[0.08em]">Delegate</span>
         <span className="ms-auto flex items-center gap-2">
           <DemoControls api={api} className="flex min-w-0 items-center" />
           <Button variant="ghost" onClick={() => void api.signOut()}><LogOut aria-hidden="true" /> <span className="max-md:sr-only">Sign out</span></Button>

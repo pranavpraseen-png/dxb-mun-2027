@@ -1,10 +1,10 @@
 /* Secretariat dashboard: the shared tokens and Tailwind setup (portal/theme.css), plus this folder as a
    Tailwind source. Only layout glue and the brand marks here; every building block is a library component.
-   Colours come only from theme.css tokens (Dusk + Official Record, THEME.md). */
+   Colours come only from theme.css tokens (C1 Night Lab + T1 type, BLUEPRINT.md sections 6 and 7). */
 @import "../portal/theme.css";
 @source "./";
 
-/* One focus ring for everything, keyboard only: 3px solid terracotta. */
+/* One focus ring for everything, keyboard only: 3px solid Night Lab orange. */
 :focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
 [tabindex='-1']:focus { outline: none; }
 
@@ -29,10 +29,11 @@
   }
 
   /* Wordmark (the logo slot) */
-  .wm { display: inline-flex; font-family: var(--font-heading); font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1; font-size: 22px; }
+  .wm { display: inline-flex; font-family: var(--font-heading); font-weight: 800; font-stretch: 125%; text-transform: uppercase; letter-spacing: 0.01em; line-height: 1; font-size: 20px; }
   .wm-a, .wm-b { padding: 0.16em 0.3em 0.12em; }
+  @media (max-width: 767px) { .wm { font-size: 18px; } }
   .wm-a { background: var(--primary); color: var(--primary-foreground); }
-  .wm-b { background: var(--foreground); color: var(--primary-foreground); }
+  .wm-b { background: var(--foreground); color: var(--background); }
   .logo { height: 36px; width: auto; }
 
   /* Host mark: IHS maroon, a thin gold rule */
@@ -41,7 +42,7 @@
     padding: 6px 12px 6px 10px; background: var(--ihs-maroon); border-left: 3px solid var(--ihs-gold); line-height: 1.15;
   }
   .host__k { font-size: 14px; color: var(--ihs-cream); }
-  .host__v { font-family: var(--font-label); font-weight: 600; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--foreground); }
+  .host__v { font-family: var(--font-mono); font-weight: 500; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--foreground); }
 
   /* The big check-in code field */
   .code-input [data-slot=input] { height: 72px; line-height: 72px; font-family: var(--font-mono); font-weight: 500; font-size: 28px; letter-spacing: 0.08em; }

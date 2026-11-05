@@ -36,7 +36,7 @@ export function AnnouncementRow({ a, compact }: { a: Announcement; compact?: boo
     <div className="flex min-w-0 flex-col gap-1">
       <div className="flex flex-wrap items-center gap-2">
         {a.urgent && <Status s={URGENT} />}
-        <span className="inline-flex items-center gap-1.5 font-label text-sm font-semibold uppercase text-muted-foreground tracking-[0.06em]">
+        <span className="inline-flex items-center gap-1.5 font-mono text-sm font-medium uppercase text-muted-foreground tracking-[0.08em]">
           {a.from === 'chair' ? <Landmark size={15} aria-hidden="true" /> : <Megaphone size={15} aria-hidden="true" />}
           {a.from === 'chair' ? 'Your chair' : 'Secretariat'} · {when(a.publishedAt, true)}
         </span>

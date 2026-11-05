@@ -78,7 +78,7 @@ export function PageHead({ title, line, aside }: { title: string; line?: ReactNo
   return (
     <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
       <div className="min-w-0">
-        <h1 className="font-heading text-[46px] font-semibold leading-[1.05] max-md:text-[36px] tracking-[-0.02em]" tabIndex={-1}>{title}</h1>
+        <h1 className="font-heading font-wide text-[46px] font-extrabold leading-[1.05] max-md:text-[36px] tracking-[-0.02em]" tabIndex={-1}>{title}</h1>
         {line && <p className="phead__line mt-1.5 text-lg text-muted-foreground max-md:text-base">{line}</p>}
       </div>
       {aside && <div className="flex items-center gap-2.5 max-md:w-full max-md:*:w-full">{aside}</div>}
@@ -294,7 +294,7 @@ export function Row({ children, className, mine, href }: { children: ReactNode; 
 
 /** "You" / "Yours": a small UN-blue marker on your own row (coss Badge). */
 export function You({ children = 'You' }: { children?: ReactNode }) {
-  return <Badge className="ms-2 h-6 px-1.5 align-[2px] font-label text-sm font-semibold uppercase sm:h-6 sm:text-sm tracking-[0.06em]">{children}</Badge>;
+  return <Badge className="ms-2 h-6 px-1.5 align-[2px] font-mono text-sm font-medium uppercase sm:h-6 sm:text-sm tracking-[0.08em]">{children}</Badge>;
 }
 
 /** Label/value pairs, as a description list. */
@@ -305,7 +305,7 @@ export function Facts({ items }: { items: [ReactNode, ReactNode, string?][] }) {
         const last = i === items.length - 1;
         return (
           <div key={i} className="contents">
-            <dt className={cn('border-b py-2.5 font-label text-sm font-semibold uppercase text-muted-foreground max-md:border-b-0 max-md:pb-0 tracking-[0.06em]', i === 0 && 'pt-0', last && 'md:border-b-0 md:pb-0')}>{k}</dt>
+            <dt className={cn('border-b py-2.5 font-mono text-sm font-medium uppercase text-muted-foreground max-md:border-b-0 max-md:pb-0 tracking-[0.08em]', i === 0 && 'pt-0', last && 'md:border-b-0 md:pb-0')}>{k}</dt>
             <dd className={cn('min-w-0 border-b py-2.5 text-[17px] max-md:pt-0.5', i === 0 && 'md:pt-0', last && 'border-b-0 pb-0', cls)}>{v}</dd>
           </div>
         );
@@ -317,7 +317,7 @@ export function Facts({ items }: { items: [ReactNode, ReactNode, string?][] }) {
 /** A small heading inside a card. */
 export function Sub({ icon: Icon, children }: { icon?: ComponentType<LucideProps>; children: ReactNode }) {
   return (
-    <h3 className="flex items-center gap-2 font-label text-[15px] font-semibold uppercase text-muted-foreground tracking-[0.06em]">
+    <h3 className="flex items-center gap-2 font-mono text-[14px] font-medium uppercase text-muted-foreground tracking-[0.08em]">
       {Icon && <Icon size={18} aria-hidden="true" className="text-primary" />}{children}
     </h3>
   );

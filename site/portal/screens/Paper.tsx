@@ -57,7 +57,7 @@ export function PaperScreen() {
           <Panel title="Deadline" icon={CalendarClock}>
             {due ? (
               <>
-                <p className={cn('font-mono text-[44px] font-medium leading-none max-md:text-[36px]', left === 'Passed' ? 'text-muted-foreground' : 'text-foreground')}>
+                <p className={cn('font-figures text-[44px] font-bold leading-none max-md:text-[36px]', left === 'Passed' ? 'text-muted-foreground' : 'text-foreground')}>
                   {left === 'Passed' ? 'Passed' : left}
                 </p>
                 <Plain muted>{left === 'Passed' ? 'Was due' : 'Due'} {dayTime(due)}</Plain>

@@ -28,7 +28,7 @@ export function AlertDialogBackdrop({
   return (
     <AlertDialogPrimitive.Backdrop
       className={cn(
-        "fixed inset-0 z-50 bg-black/32 dusk:bg-background backdrop-blur-sm transition-all duration-200 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-[-webkit-touch-callout:none]:absolute",
+        "fixed inset-0 z-50 bg-black/32 dash:bg-background backdrop-blur-sm transition-all duration-200 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-[-webkit-touch-callout:none]:absolute",
         className,
       )}
       data-slot="alert-dialog-backdrop"
@@ -113,7 +113,7 @@ export function AlertDialogFooter({
     <div
       className={cn(
         "flex flex-col-reverse gap-2 px-6 sm:flex-row sm:justify-end sm:rounded-b-[calc(var(--radius-2xl)-1px)]",
-        variant === "default" && "border-t bg-muted/72 dusk:bg-raised py-4",
+        variant === "default" && "border-t bg-muted/72 dash:bg-raised py-4",
         variant === "bare" && "pb-6",
         className,
       )}
@@ -129,7 +129,7 @@ export function AlertDialogTitle({
 }: AlertDialogPrimitive.Title.Props): React.ReactElement {
   return (
     <AlertDialogPrimitive.Title
-      className={cn("font-bold font-heading text-xl leading-none dusk:font-semibold dusk:leading-tight", className)}
+      className={cn("font-bold font-heading text-xl leading-none dash:font-semibold dash:leading-tight", className)}
       data-slot="alert-dialog-title"
       {...props}
     />

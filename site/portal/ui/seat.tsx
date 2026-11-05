@@ -38,7 +38,7 @@ export function CheckinQr({ seat, name }: { seat: MySeat; name?: string | null }
       </div>
       <div className="flex min-w-0 flex-[1_1_160px] flex-col gap-1.5">
         {name && <p className="font-heading text-[26px] font-semibold leading-[1.1] tracking-[-0.01em]">{name}</p>}
-        <p className="font-label text-xl font-semibold text-primary">{seat.seat.label}</p>
+        <p className="font-label text-xl font-semibold text-foreground">{seat.seat.label}</p>
         <p className="text-[17px]">Show this at the check-in desk.</p>
         <p className="break-all font-mono text-[15px] text-muted-foreground" aria-label={`Code ${seat.checkinCode}`}>{seat.checkinCode}</p>
       </div>

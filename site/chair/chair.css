@@ -10,8 +10,8 @@
   .run-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 18px; align-items: start; }
   .two-col { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
   .col { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
-  /* The shared timer: very large IBM Plex Mono digits that never change width as they count, floored to whole pixels. */
-  .timer-digits { font-family: var(--font-mono); font-variant-numeric: tabular-nums slashed-zero; font-weight: 500; line-height: 0.95; letter-spacing: -0.02em; font-size: clamp(72px, 9vw, 148px); font-size: round(down, clamp(72px, 9vw, 148px), 1px); }
+  /* The shared timer: very large Geist Mono digits that never change width as they count, floored to whole pixels. */
+  .timer-digits { font-family: var(--font-sans); font-stretch: 112.5%; font-variant-numeric: tabular-nums; font-weight: 700; line-height: 0.95; letter-spacing: -0.02em; font-size: clamp(72px, 9vw, 148px); font-size: round(down, clamp(72px, 9vw, 148px), 1px); }
   /* Roll call seat grid. */
   .seat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
   /* A dragged speaker row. */

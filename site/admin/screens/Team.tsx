@@ -85,7 +85,7 @@ function PersonRow({ p }: { p: TeamMember }) {
   return (
     <TableRow>
       <TableCell className="ps-5">
-        <p className="font-semibold">{p.fullName ?? 'No name yet'}{c.self && <span className="ms-2 text-sm font-normal text-primary">You</span>}</p>
+        <p className="font-semibold">{p.fullName ?? 'No name yet'}{c.self && <span className="ms-2 font-mono text-[13px] font-medium uppercase tracking-[0.08em] text-muted-foreground">You</span>}</p>
         <p className="text-sm text-muted-foreground">{p.email}</p>
       </TableCell>
       <TableCell>{c.tag}</TableCell>
@@ -102,7 +102,7 @@ function PersonCard({ p }: { p: TeamMember }) {
     <li className="flex flex-col gap-2.5 border bg-background p-3.5">
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
-          <p className="font-semibold">{p.fullName ?? 'No name yet'}{c.self && <span className="ms-2 text-sm font-normal text-primary">You</span>}</p>
+          <p className="font-semibold">{p.fullName ?? 'No name yet'}{c.self && <span className="ms-2 font-mono text-[13px] font-medium uppercase tracking-[0.08em] text-muted-foreground">You</span>}</p>
           <p className="truncate text-sm text-muted-foreground">{p.email}</p>
         </div>
         {c.tag}

@@ -259,7 +259,7 @@ function NoteRow({ n }: { n: MyNote }) {
         <span className="flex flex-col gap-1">
           <span className={cn('break-words text-[18px]', n.done && 'text-muted-foreground line-through')}>{n.body}</span>
           <span className="flex flex-wrap items-center gap-2">
-            <Badge variant="outline" className="h-6 px-1.5 font-label text-[13px] font-semibold uppercase sm:h-6 sm:text-[13px] tracking-[0.06em]">{TAG_LABEL[n.tag]}</Badge>
+            <Badge variant="outline" className="h-6 px-1.5 font-mono text-[13px] font-medium uppercase sm:h-6 sm:text-[13px] tracking-[0.08em]">{TAG_LABEL[n.tag]}</Badge>
             <span className="font-mono text-[14px] text-muted-foreground">{dayTime(n.createdAt)}</span>
             <span className="sr-only">{n.done ? 'Done' : 'Not done'}</span>
           </span>

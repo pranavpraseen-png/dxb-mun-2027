@@ -136,7 +136,7 @@ function TimerPanel({ live, speakers }: { live: CommitteeLive; speakers: Speaker
       bodyClass="gap-5"
     >
       <div className="flex flex-col gap-1">
-        <p className="font-label text-[15px] font-semibold uppercase text-muted-foreground tracking-[0.06em]">
+        <p className="font-mono text-[14px] font-medium uppercase text-muted-foreground tracking-[0.08em]">
           {KINDS.find((k) => k.value === t.kind)?.label}{t.label ? ` · ${t.label}` : ''}
         </p>
         <p className={cn('timer-digits', over && 'text-destructive')} aria-live="off" data-testid="timer-digits">

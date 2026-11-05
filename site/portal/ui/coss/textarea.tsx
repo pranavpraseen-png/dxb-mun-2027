@@ -22,7 +22,7 @@ export function Textarea({
       className={
         cn(
           !unstyled &&
-            "relative inline-grid w-full rounded-lg border border-input bg-background not-dark:bg-clip-padding text-base shadow-xs/5 ring-ring/24 dusk:ring-ring transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] has-focus-visible:has-aria-invalid:border-destructive/64 dusk:has-focus-visible:has-aria-invalid:border-destructive has-focus-visible:has-aria-invalid:ring-destructive/16 dusk:has-focus-visible:has-aria-invalid:ring-destructive has-aria-invalid:border-destructive/36 dusk:has-aria-invalid:border-destructive has-focus-visible:border-ring has-disabled:opacity-64 has-[:disabled,:focus-visible,[aria-invalid]]:shadow-none has-focus-visible:ring-[3px] not-has-disabled:has-not-focus-visible:not-has-aria-invalid:before:shadow-[0_1px_--theme(--color-black/4%)] sm:text-sm dark:bg-input/32 dusk:bg-raised dark:has-aria-invalid:ring-destructive/24 dusk:has-aria-invalid:ring-destructive dark:not-has-disabled:has-not-focus-visible:not-has-aria-invalid:before:shadow-[0_-1px_--theme(--color-white/6%)]",
+            "relative inline-grid w-full rounded-lg border border-input bg-background not-dark:bg-clip-padding text-base shadow-xs/5 ring-ring/24 dash:ring-ring transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] has-focus-visible:has-aria-invalid:border-destructive/64 dash:has-focus-visible:has-aria-invalid:border-destructive has-focus-visible:has-aria-invalid:ring-destructive/16 dash:has-focus-visible:has-aria-invalid:ring-destructive has-aria-invalid:border-destructive/36 dash:has-aria-invalid:border-destructive has-focus-visible:border-ring has-disabled:opacity-64 has-[:disabled,:focus-visible,[aria-invalid]]:shadow-none has-focus-visible:ring-[3px] not-has-disabled:has-not-focus-visible:not-has-aria-invalid:before:shadow-[0_1px_--theme(--color-black/4%)] sm:text-sm dark:bg-input/32 dash:bg-raised dark:has-aria-invalid:ring-destructive/24 dash:has-aria-invalid:ring-destructive dark:not-has-disabled:has-not-focus-visible:not-has-aria-invalid:before:shadow-[0_-1px_--theme(--color-white/6%)]",
           className,
         ) || undefined
       }
@@ -39,7 +39,7 @@ export function Textarea({
         render={(defaultProps: React.ComponentProps<"textarea">) => (
           <textarea
             className={cn(
-              "field-sizing-content min-h-17.5 w-full rounded-[inherit] px-[calc(--spacing(3)-1px)] py-[calc(--spacing(1.5)-1px)] text-foreground outline-none placeholder:text-muted-foreground/72 dusk:placeholder:text-muted-foreground max-sm:min-h-20.5",
+              "field-sizing-content min-h-17.5 w-full rounded-[inherit] px-[calc(--spacing(3)-1px)] py-[calc(--spacing(1.5)-1px)] text-foreground outline-none placeholder:text-muted-foreground/72 dash:placeholder:text-muted-foreground max-sm:min-h-20.5",
               size === "sm" &&
                 "min-h-16.5 px-[calc(--spacing(2.5)-1px)] py-[calc(--spacing(1)-1px)] max-sm:min-h-19.5",
               size === "lg" &&

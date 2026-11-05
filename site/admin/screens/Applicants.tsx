@@ -94,7 +94,7 @@ function RowActions({ a, onAssign }: { a: Applicant; onAssign: (a: Applicant) =>
   return (
     <div className="flex items-center justify-end gap-1.5">
       {!closed && (
-        <Button variant="outline" size="sm" className={a.seat ? '' : 'border-primary text-primary'} onClick={() => onAssign(a)}>
+        <Button variant="outline" size="sm" className={a.seat ? '' : 'border-primary text-foreground'} onClick={() => onAssign(a)}>
           <Armchair aria-hidden="true" /> {a.seat ? 'Change seat' : 'Assign seat'}
         </Button>
       )}
