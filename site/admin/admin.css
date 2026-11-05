@@ -1,0 +1,48 @@
+/* Secretariat dashboard: the shared tokens and Tailwind setup (portal/theme.css), plus this folder as a
+   Tailwind source. Only layout glue and the brand marks here; every building block is a library component.
+   Colours come only from theme.css tokens (Dusk + Official Record, THEME.md). */
+@import "../portal/theme.css";
+@source "./";
+
+/* One focus ring for everything, keyboard only: 3px solid terracotta. */
+:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
+[tabindex='-1']:focus { outline: none; }
+
+@layer components {
+  .skip {
+    position: fixed; left: 12px; top: 8px; z-index: 300; padding: 12px 16px;
+    background: var(--primary); color: var(--primary-foreground); font-family: var(--font-label); font-weight: 600; font-size: 17px;
+    text-decoration: none; transform: translateY(-200%);
+  }
+  .skip:focus { transform: none; }
+  .boot { min-height: 100vh; }
+
+  .admin-main { width: 100%; max-width: 1560px; padding: 22px 28px 64px; display: flex; flex-direction: column; gap: 18px; }
+  .admin-main:focus { outline: none; }
+  /* A scroll box for dense tables, so the header row can stick. */
+  .tbl-scroll { max-height: calc(100svh - 260px); overflow: auto; }
+  .tbl-scroll thead th { position: sticky; top: 0; z-index: 2; background: var(--card); }
+  @media (max-width: 767px) {
+    body { font-size: 16px; }
+    .admin-body { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+    .admin-main { padding: 16px 16px 28px; gap: 14px; }
+  }
+
+  /* Wordmark (the logo slot) */
+  .wm { display: inline-flex; font-family: var(--font-heading); font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1; font-size: 22px; }
+  .wm-a, .wm-b { padding: 0.16em 0.3em 0.12em; }
+  .wm-a { background: var(--primary); color: var(--primary-foreground); }
+  .wm-b { background: var(--foreground); color: var(--primary-foreground); }
+  .logo { height: 36px; width: auto; }
+
+  /* Host mark: IHS maroon, a thin gold rule */
+  .host {
+    display: inline-flex; flex-direction: column; justify-content: center; gap: 2px;
+    padding: 6px 12px 6px 10px; background: var(--ihs-maroon); border-left: 3px solid var(--ihs-gold); line-height: 1.15;
+  }
+  .host__k { font-size: 14px; color: var(--ihs-cream); }
+  .host__v { font-family: var(--font-label); font-weight: 600; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--foreground); }
+
+  /* The big check-in code field */
+  .code-input [data-slot=input] { height: 72px; line-height: 72px; font-family: var(--font-mono); font-weight: 500; font-size: 28px; letter-spacing: 0.08em; }
+}

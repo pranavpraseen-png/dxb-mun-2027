@@ -1,0 +1,93 @@
+/* DXB MUN delegate dashboard: the only hand-written CSS.
+   Allowed here (DELEGATE.md): tokens (in theme.css), layout glue, brand marks and the DXB MUN nameplate.
+   Every other building block is a library component (see LIBRARY.md), styled with Tailwind utilities.
+   Rules sit in @layer components so library utilities still win, except the focus ring below.
+   Theme: Dusk + Official Record (THEME.md). Opaque tokens only, 1px lines, no shadows. */
+
+/* One focus ring for everything, keyboard only: 3px solid terracotta. Unlayered on purpose, so it beats the
+   library's own `outline-none` and every control shows the same ring. */
+:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
+[tabindex='-1']:focus { outline: none; }
+.on-blue :focus-visible { outline-color: var(--primary-foreground); }
+
+@layer components {
+  /* ---------------------------------------------------------- layout glue */
+  .skip {
+    position: fixed; left: 12px; top: 8px; z-index: 300; padding: 12px 16px;
+    background: var(--primary); color: var(--primary-foreground); font-family: var(--font-label); font-weight: 600; font-size: 17px;
+    text-decoration: none; transform: translateY(-200%);
+  }
+  .skip:focus { transform: none; }
+  .boot { min-height: 100vh; }
+
+  .main { width: 100%; max-width: 1280px; padding: 28px 32px 64px; display: flex; flex-direction: column; gap: 20px; }
+  .main:focus { outline: none; }
+  .grid-2 { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+  .grid-2--wide-left { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
+  .col { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+  [id] { scroll-margin-top: 76px; }
+
+  /* The live timer: fitted to its box, then floored to a whole pixel so the digits stay crisp. */
+  .timer-fit { font-size: min(220px, var(--fit)); font-size: round(down, min(220px, var(--fit)), 1px); }
+
+  @media (max-width: 1100px) {
+    .main { padding: 24px 24px 56px; }
+    .grid-2, .grid-2--wide-left { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 767px) {
+    body { font-size: 16px; }
+    .app-body { padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
+    .main { padding: 18px 16px 28px; gap: 16px; }
+    .col { gap: 16px; }
+  }
+
+  /* ---------------------------------------------------------- wordmark (logo slot): a serif seal in two blocks */
+  .wm { display: inline-flex; font-family: var(--font-heading); font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1; font-size: 22px; }
+  .wm-a, .wm-b { padding: 0.16em 0.3em 0.12em; }
+  .wm-a { background: var(--primary); color: var(--primary-foreground); }
+  .wm-b { background: var(--foreground); color: var(--background); }
+  .logo { height: 36px; width: auto; }
+
+  /* ---------------------------------------------------------- host mark: IHS maroon, a thin gold rule */
+  .host {
+    display: inline-flex; flex-direction: column; justify-content: center; gap: 2px;
+    padding: 6px 12px 6px 10px; background: var(--ihs-maroon); border-left: 3px solid var(--ihs-gold);
+    line-height: 1.15;
+  }
+  .host__k { font-size: 14px; color: var(--ihs-cream); }
+  .host__v { font-family: var(--font-label); font-weight: 600; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--foreground); }
+
+  /* ---------------------------------------------------------- nameplate: the DXB MUN signature.
+     Sand placard, action-ink letters, a terracotta rule on top, the IHS maroon fold underneath. */
+  .plate {
+    container-type: inline-size; position: relative; display: flex; flex-direction: column; gap: 4px;
+    background: var(--primary); color: var(--primary-foreground); border-top: 6px solid var(--ring); padding: 16px 22px 0;
+  }
+  .plate__k { font-family: var(--font-mono); font-size: 14px; font-weight: 500; color: var(--primary-foreground); text-transform: uppercase; letter-spacing: 0.06em; }
+  .plate__seat {
+    font-family: var(--font-heading); font-weight: 600; line-height: 1; text-transform: uppercase; letter-spacing: 0.01em;
+    white-space: nowrap; overflow: hidden;
+    font-size: min(88px, calc((100cqi - 44px) / (var(--len) * 0.72)));
+    font-size: round(down, min(88px, calc((100cqi - 44px) / (var(--len) * 0.72))), 1px);
+    padding: 6px 0 12px;
+  }
+  /* The fold: IHS maroon, the host's band under every seat. Ink code (86.8 Lc), cream name (66.1 Lc). */
+  .plate__fold {
+    display: flex; align-items: baseline; gap: 4px 12px; flex-wrap: wrap; margin: 0 -22px; padding: 10px 22px 12px;
+    background: var(--ihs-maroon);
+  }
+  .plate__abbr { font-family: var(--font-mono); font-weight: 500; font-size: 22px; line-height: 1; color: var(--foreground); }
+  .plate__name { font-family: var(--font-label); font-weight: 600; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ihs-cream); line-height: 1.25; }
+  .plate--empty { border-top-color: var(--input); padding-bottom: 18px; gap: 6px; }
+  .plate__none { font-family: var(--font-heading); font-weight: 600; font-size: 34px; line-height: 1.1; letter-spacing: -0.01em; color: var(--primary-foreground); }
+  .plate__line { font-size: 16px; color: var(--primary-foreground); }
+  @media (max-width: 767px) {
+    .plate { padding: 12px 16px 0; }
+    .plate__seat { padding: 4px 0 10px; }
+    .plate__fold { margin: 0 -16px; padding: 8px 16px 10px; }
+    .plate__abbr { font-size: 20px; }
+    .plate__name { font-size: 13px; }
+    .plate__none { font-size: 28px; }
+    .plate--empty { padding-bottom: 14px; }
+  }
+}

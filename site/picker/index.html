@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DXB MUN design picker</title>
+<style>
+  :root { --bg: #0b0f17; --panel: #121826; --line: #243049; --text: #eef1f6; --muted: #93a0b8; --accent: #009edb; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font: 15px/1.4 system-ui, sans-serif; }
+  .app { display: grid; grid-template-columns: 300px 1fr; height: 100vh; }
+  aside { background: var(--panel); border-right: 1px solid var(--line); padding: 18px 14px; overflow: auto; }
+  h1 { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 4px 6px 14px; }
+  h2 { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 18px 6px 8px; }
+  button.opt { display: block; width: 100%; text-align: left; background: transparent; color: var(--text); border: 1px solid transparent;
+    border-radius: 6px; padding: 10px 12px; margin-bottom: 4px; cursor: pointer; font: inherit; }
+  button.opt:hover { background: #1a2234; }
+  button.opt[aria-current="true"] { border-color: var(--accent); background: #10233a; }
+  button.opt b { display: block; font-size: 15px; }
+  button.opt span { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; }
+  button.opt[disabled] { opacity: .45; cursor: default; }
+  .sizes { display: flex; gap: 6px; margin: 18px 6px 0; }
+  .sizes button { flex: 1; background: #1a2234; color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 8px; cursor: pointer; font: inherit; }
+  .sizes button[aria-pressed="true"] { border-color: var(--accent); }
+  main { display: flex; align-items: stretch; justify-content: center; background: #05070b; overflow: auto; }
+  iframe { border: 0; width: 100%; height: 100%; background: #fff; }
+  main.phone iframe { width: 390px; height: 844px; margin: 24px auto; border: 1px solid var(--line); border-radius: 18px; }
+  .open { display: block; margin: 12px 6px 0; color: var(--accent); font-size: 13px; }
+  @media (max-width: 760px) { .app { grid-template-columns: 1fr; grid-template-rows: auto 1fr; } aside { max-height: 42vh; } .sizes { display: none; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <h1>DXB MUN · designs</h1>
+    <div id="list"></div>
+    <div class="sizes">
+      <button type="button" data-size="desktop" aria-pressed="true">Desktop</button>
+      <button type="button" data-size="phone" aria-pressed="false">Phone</button>
+    </div>
+    <a class="open" id="open" href="#" target="_blank" rel="noopener">Open this design in a new tab ↗</a>
+  </aside>
+  <main id="stage"><iframe id="frame" title="Design preview"></iframe></main>
+</div>
+<script>
+  // Every homepage design, newest group first. "ready: false" = still being built.
+  const GROUPS = [
+    { title: 'References (tick what you like)', items: [
+      { id: 'refs', name: 'Reference board', note: 'Clean award sites with one insane move, every sector', ready: true },
+    ] },
+    { title: 'Motion moves (tick what you like)', items: [
+      { id: 'moves', name: 'Motion moves', note: '8 live demos + 26 effects with licence and cost', ready: true },
+    ] },
+    { title: 'Colours + fonts (pick one of each)', items: [
+      { id: 'board', name: 'Colour & font board', note: '6 real-world palettes, 6 font pairings, mix them', ready: true },
+    ] },
+    { title: 'Full redesigns (new layouts)', items: [
+      { id: 'redesign-1', name: '1 · The Assembly', note: 'Immersive 3D world', ready: true },
+      { id: 'redesign-2', name: '2 · The Resolution', note: 'Luxury magazine, kinetic clauses', ready: true },
+      { id: 'redesign-3', name: '3 · On Air', note: 'Live broadcast control room', ready: true },
+    ] },
+    { title: 'Restyles of the current layout', items: [
+      { id: 'final', name: 'B + full motion', note: 'Night Assembly with the award-site motion', ready: true },
+      { id: 'option-a', name: 'A · UN Paper', note: 'Light, navy ink, maroon', ready: true },
+      { id: 'option-b', name: 'B · Night Assembly', note: 'Charcoal, white, one gold accent', ready: true },
+      { id: 'option-c', name: 'C · IHS Maroon', note: 'Maroon and cream bands, gold', ready: true },
+    ] },
+    { title: 'Dashboards (demo, code 123456)', items: [
+      { id: 'dash-delegate', href: '../portal/#/now', name: 'Delegate dashboard', note: 'Any email, code 123456', ready: true },
+      { id: 'dash-chair', href: '../chair/', name: 'Chair dashboard', note: 'Email with "chair", code 123456', ready: true },
+      { id: 'dash-admin', href: '../admin/', name: 'Secretariat dashboard', note: 'Email with "admin", code 123456', ready: true },
+    ] },
+    { title: 'Earlier concepts', items: [
+      { id: 'broadcast', name: 'Broadcast', note: 'Earlier concept', ready: true },
+      { id: 'chamber', name: 'Chamber', note: 'Earlier concept', ready: true },
+      { id: 'majlis', name: 'Majlis', note: 'Earlier concept', ready: true },
+      { id: 'orbit', name: 'Orbit', note: 'Earlier concept', ready: true },
+      { id: 'placard', name: 'Placard', note: 'Earlier concept', ready: true },
+      { id: 'resolution', name: 'Resolution', note: 'Earlier concept', ready: true },
+    ] },
+    { title: 'Live now', items: [
+      { id: 'merged', name: 'Current website', note: 'What dxbmun-2027.vercel.app shows', ready: true },
+    ] },
+  ];
+  const HREF = Object.fromEntries(GROUPS.flatMap((g) => g.items).filter((i) => i.href).map((i) => [i.id, i.href]));
+  const list = document.getElementById('list'), frame = document.getElementById('frame'), open = document.getElementById('open');
+  const url = (id) => HREF[id] || `../concepts/${id}/`;
+  function pick(id) {
+    frame.src = url(id); open.href = url(id);
+    document.querySelectorAll('button.opt').forEach((b) => b.setAttribute('aria-current', String(b.dataset.id === id)));
+    try { localStorage.setItem('picker.id', id); } catch {}
+  }
+  for (const g of GROUPS) {
+    const h = document.createElement('h2'); h.textContent = g.title; list.append(h);
+    for (const it of g.items) {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.dataset.id = it.id; b.disabled = !it.ready;
+      b.innerHTML = `<b>${it.name}</b><span>${it.note}</span>`; b.onclick = () => pick(it.id); list.append(b);
+    }
+  }
+  document.querySelectorAll('.sizes button').forEach((b) => b.onclick = () => {
+    document.querySelectorAll('.sizes button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    document.getElementById('stage').classList.toggle('phone', b.dataset.size === 'phone');
+  });
+  let first = 'final'; try { first = localStorage.getItem('picker.id') || first; } catch {}
+  pick(GROUPS.flatMap((g) => g.items).find((i) => i.id === first && i.ready) ? first : 'final');
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "dxb-mun-2027",
+  "private": true,
+  "description": "DXB MUN 2027 website, dashboards and every design option. Run `npm start` to open them all.",
+  "scripts": {
+    "start": "node start.mjs"
+  },
+  "engines": {
+    "node": ">=20.19"
+  }
+}

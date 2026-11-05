@@ -1,0 +1,182 @@
+/* Tailwind + the coss ui theme contract (shadcn-style CSS variables), filled with DXB MUN tokens.
+   Theme: "Dusk + Official Record", the owner's pick (site/THEME.md). Dark only. Every token is an opaque oklch():
+   no alpha anywhere. Status colours are re-tuned into the Dusk family and checked with APCA (concepts/board/color.ts). */
+@import "tailwindcss" source(".");
+
+@custom-variant dark (&:where(.dark, .dark *));
+/* `dusk:` = "on a dashboard". Only this file defines it, so the dusk: classes added to the shared coss ui components
+   (portal/ui/coss, also used by the concept pages) take effect on the three dashboards and are ignored everywhere else. */
+@custom-variant dusk (&:where(:root, :root *));
+
+:root {
+  /* Dubai Dusk (THEME.md; concepts/board/palettes.ts id "dusk") */
+  --dusk-ground: oklch(19% 0.028 225);      /* #05161d page */
+  --dusk-surface: oklch(23% 0.030 224);     /* #0b2027 panels, nav bars, sheets */
+  --dusk-raised: oklch(28% 0.032 222);      /* #162c34 inputs, hover, pressed */
+  --dusk-hover: oklch(32% 0.034 222);       /* #1e373f hover on raised (one ramp step up) */
+  --dusk-ink: oklch(95% 0.016 80);          /* #f4eee3 body text */
+  --dusk-muted: oklch(79.5% 0.030 70);      /* #c9b9a8 secondary text */
+  --dusk-line: oklch(36% 0.035 224);        /* #28414b 1px hairlines */
+  --dusk-line-strong: oklch(46% 0.035 224); /* #435d67 input and outline-button edges */
+  --dusk-action: oklch(86% 0.055 78);       /* #e5cda9 sand: the ONE action colour */
+  --dusk-action-ink: oklch(19% 0.028 225);  /* #05161d text on sand */
+  --dusk-accent: oklch(71% 0.115 44);       /* #dd8964 terracotta: focus, rules (never small text) */
+  --dusk-maroon: oklch(38% 0.100 25);       /* #6e2826 IHS host strip */
+  --dusk-gold: oklch(80% 0.130 80);         /* #e9b452 awards only */
+  --dusk-cream: oklch(85% 0.040 62);        /* #e2c9b4 host text on maroon; sand hover */
+
+  /* Status, in the Dusk family. APCA Lc as text on ground / surface / raised. */
+  --st-success: oklch(86% 0.140 150);       /* #89eb9f  81 / 80 / 78 */
+  --st-success-soft: oklch(27% 0.045 155);  /* #122d1d  success text on it 78 */
+  --st-success-line: oklch(58% 0.110 152);  /* #418d59 */
+  --st-warning: oklch(88% 0.150 96);        /* #f5d754  82 / 81 / 79 */
+  --st-warning-soft: oklch(28% 0.045 92);   /* #31280c  warning text on it 79 */
+  --st-warning-line: oklch(64% 0.110 94);   /* #a28b32 */
+  --st-danger: oklch(82% 0.095 22);         /* #fcaca8  68 / 67 / 65 (red tops out in sRGB here) */
+  --st-danger-soft: oklch(27% 0.055 20);    /* #3d1a1b  danger text on it 66 */
+  --st-danger-line: oklch(60% 0.130 22);    /* #c25d5c */
+  --st-danger-hover: oklch(88% 0.060 22);   /* #fdc9c6 */
+  --st-live: oklch(86% 0.095 205);          /* #7fe3ef  80 / 79 / 77: running, speaking, voting */
+  --st-live-soft: oklch(28% 0.040 210);     /* #0c2e34  live text on it 77 */
+  --st-live-line: oklch(60% 0.080 205);     /* #3c8e97 */
+
+  /* IHS (host school), re-tuned for Dusk */
+  --ihs-maroon: var(--dusk-maroon);
+  --ihs-gold: var(--dusk-gold);
+  --ihs-cream: var(--dusk-cream);
+
+  /* coss ui contract */
+  --background: var(--dusk-ground);
+  --foreground: var(--dusk-ink);
+  --card: var(--dusk-surface);
+  --card-foreground: var(--dusk-ink);
+  --popover: var(--dusk-surface);
+  --popover-foreground: var(--dusk-ink);
+  --primary: var(--dusk-action);
+  --primary-foreground: var(--dusk-action-ink);
+  --secondary: var(--dusk-raised);
+  --secondary-foreground: var(--dusk-ink);
+  --muted: var(--dusk-raised);
+  --muted-foreground: var(--dusk-muted);
+  --accent: var(--dusk-raised);
+  --accent-foreground: var(--dusk-ink);
+  --destructive: var(--st-danger);
+  --destructive-foreground: var(--st-danger);
+  --success: var(--st-success);
+  --success-foreground: var(--st-success);
+  --warning: var(--st-warning);
+  --warning-foreground: var(--st-warning);
+  --info: var(--st-live);
+  --info-foreground: var(--st-live);
+  --border: var(--dusk-line);
+  --input: var(--dusk-line-strong);
+  --ring: var(--dusk-accent);
+  --radius: 2px;
+  --sidebar: var(--dusk-surface);
+  --sidebar-foreground: var(--dusk-muted);
+  --sidebar-accent: var(--dusk-raised);
+  --sidebar-accent-foreground: var(--dusk-ink);
+  --sidebar-border: var(--dusk-line);
+  --sidebar-primary: var(--dusk-action);
+  --sidebar-primary-foreground: var(--dusk-action-ink);
+  --sidebar-ring: var(--dusk-accent);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-soft: var(--st-danger-soft);
+  --color-destructive-line: var(--st-danger-line);
+  --color-destructive-hover: var(--st-danger-hover);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-soft: var(--st-success-soft);
+  --color-success-line: var(--st-success-line);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-soft: var(--st-warning-soft);
+  --color-warning-line: var(--st-warning-line);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-info-soft: var(--st-live-soft);
+  --color-info-line: var(--st-live-line);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-ground: var(--dusk-ground);
+  --color-surface: var(--dusk-surface);
+  --color-raised: var(--dusk-raised);
+  --color-hover: var(--dusk-hover);
+  --color-line: var(--dusk-line);
+  --color-line-strong: var(--dusk-line-strong);
+  --color-terracotta: var(--dusk-accent);
+  --color-maroon: var(--ihs-maroon);
+  --color-gold: var(--ihs-gold);
+  --color-cream: var(--ihs-cream);
+  --radius-sm: 1px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 3px;
+  --radius-2xl: 3px;
+  --animate-skeleton: skeleton 2s -1s infinite linear;
+  @keyframes skeleton {
+    to { background-position: -200% 0; }
+  }
+}
+
+/* Official Record (THEME.md; concepts/board/fonts.ts id "record"). Not inline, so a component can re-point a family. */
+@theme {
+  --font-sans: 'Public Sans Variable', system-ui, sans-serif;     /* all UI and text */
+  --font-label: 'Public Sans Variable', system-ui, sans-serif;    /* labels, nav, buttons, status words */
+  --font-heading: 'Source Serif 4 Variable', Georgia, serif;       /* page titles and big headings only */
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;           /* timers, codes, numbers (400 and 500 only) */
+}
+
+@layer base {
+  * { @apply border-border; }
+  html {
+    color-scheme: dark; -webkit-text-size-adjust: 100%; scroll-padding-top: 76px;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility; font-synthesis: none; font-optical-sizing: auto;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-size: 17px; line-height: 1.45; overflow-x: clip;
+  }
+  strong { font-weight: 700; }
+  /* Mono is for figures: they never change width as they count. */
+  code, kbd, samp, pre, .font-mono { font-variant-numeric: tabular-nums slashed-zero; }
+  input[type='number'], time, td, .tabular-nums { font-variant-numeric: tabular-nums; }
+}
+
+/* Clarity (THEME.md, concepts/board/NOTES.md "Clarity checklist"). Unlayered, so they beat the library utilities.
+   - No soft shadows: Tailwind's shadow and inset-shadow layers are switched off. Rings (focus, selection) stay.
+   - No blur behind anything. */
+*, ::before, ::after { --tw-shadow: 0 0 #0000; --tw-inset-shadow: 0 0 #0000; backdrop-filter: none; -webkit-backdrop-filter: none; }
+
+/* Calm tool: motion only for state changes, and none at all when the user asks for less. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0s !important; animation: none !important; scroll-behavior: auto !important; }
+}

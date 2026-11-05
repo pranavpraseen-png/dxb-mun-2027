@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.check/
+preview/
+deploy/
+
+# Top-level screenshot archive only (large). Concept boards keep their own captures, e.g. concepts/refs/shots/.
+/shots/
+
+# Local-only files: never commit secrets or machine state
+.env
+.env.local
+.env.*.local
+.vercel/
+.heavy.lock/
+*.log
