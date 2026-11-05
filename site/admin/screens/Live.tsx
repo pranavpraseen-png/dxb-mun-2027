@@ -9,6 +9,7 @@ import { cn } from '../../portal/ui/coss/utils';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/coss/table';
 import { useAction, useAdmin, useLoad, useNow } from '../lib/data';
 import { ConfirmDialog } from '../ui/confirm';
+import { Clock } from '../../portal/ui/figures';
 import { Head, Loaded, Panel, Stat, TBA, Tag, Tba, clock } from '../ui/kit';
 
 const PHASES: { id: Phase; label: string; line: string }[] = [
@@ -99,7 +100,7 @@ function TimerView({ t, big }: { t: Timer; big?: boolean }) {
       <span className="flex items-center gap-2">
         {t.running ? <Play size={big ? 18 : 15} aria-hidden="true" className="shrink-0 text-success" /> : <Pause size={big ? 18 : 15} aria-hidden="true" className="shrink-0 text-muted-foreground" />}
         <span className={cn('font-figures font-bold leading-none', big ? 'text-[34px]' : 'text-[26px]', t.running && left <= 10 && 'text-warning')} aria-label={`${clock(left)} ${t.running ? 'running' : 'paused'}`}>
-          {clock(left)}
+          <Clock text={clock(left)} />
         </span>
         <span className="sr-only">{t.running ? 'Running' : 'Paused'}</span>
       </span>

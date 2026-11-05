@@ -12,6 +12,7 @@ import { Label } from '../../portal/ui/coss/label';
 import { useAction, useChair, useLoad, useNow } from '../lib/data';
 import { Choices, Empty, Loaded, PageHead, Panel, Pick, Tag, clock, parseLength, timeOnly, typing, TBA } from '../ui/kit';
 import { Confirm } from '../ui/confirm';
+import { Clock } from '../../portal/ui/figures';
 
 const PRESETS = [30, 45, 60, 90, 120, 300, 600];
 const KINDS: { value: Timer['kind']; label: string }[] = [
@@ -140,7 +141,7 @@ function TimerPanel({ live, speakers }: { live: CommitteeLive; speakers: Speaker
           {KINDS.find((k) => k.value === t.kind)?.label}{t.label ? ` · ${t.label}` : ''}
         </p>
         <p className={cn('timer-digits', over && 'text-destructive')} aria-live="off" data-testid="timer-digits">
-          {clock(left)}
+          <Clock text={clock(left)} />
         </p>
         <div className="h-2 w-full bg-muted" role="progressbar" aria-label="Time left" aria-valuemin={0} aria-valuemax={t.durationSeconds} aria-valuenow={Math.round(left)}>
           <div className={cn('h-full', over ? 'bg-destructive' : 'bg-primary')} style={{ width: `${pct}%` }} />

@@ -164,13 +164,16 @@
   --font-serif: 'Instrument Serif', Georgia, serif;                  /* italic, the motto only */
 }
 
-/* Timers and counts: Mona Sans with fixed-width figures. Geist Mono's zero is always slashed (no feature turns it
-   off), which reads as "Ø" at timer size, so figures that people read at a glance use this instead. */
+/* Timers and counts: Mona Sans with its plain figures. Geist Mono's zero is always slashed (no feature turns it
+   off), and so is Mona Sans's tabular zero, which read as "Ø" at a glance. Timers keep their width with
+   <Clock> (portal/ui/figures.tsx): each digit sits in a `.fig` slot as wide as the widest bold digit. */
 @utility font-figures {
   font-family: var(--font-sans);
   font-stretch: 112.5%;
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric: normal;
 }
+.fig { display: inline-block; width: 0.68em; text-align: center; }
+.fig-sep { display: inline-block; padding-inline: 0.05em; }
 
 /* Big titles: Mona Sans expanded and heavy (`font-wide font-extrabold`). */
 @utility font-wide {
@@ -194,7 +197,7 @@
   /* Mono is for figures: they never change width as they count. Codes keep a slashed zero (0 vs O). */
   .font-mono { font-variant-numeric: tabular-nums; }
   code, kbd, samp, pre { font-variant-numeric: tabular-nums slashed-zero; }
-  input[type='number'], time, td, .tabular-nums { font-variant-numeric: tabular-nums; }
+  /* No tabular figures on Mona Sans text (tables, times, number fields): its tabular zero is slashed. */
 }
 
 /* Clarity (concepts/board/NOTES.md "Clarity checklist"). Unlayered, so they beat the library utilities.

@@ -7,6 +7,7 @@ import { clockText, clockWords, remainingOf, timerTone, useNow, type TimerTone }
 import { href } from '../lib/route';
 import { cn } from './coss/utils';
 import { Status, type StatusDef } from './status';
+import { Clock } from './figures';
 
 const KIND: Record<Timer['kind'], string> = { speech: 'Speech', caucus: 'Caucus', session: 'Session', other: 'Timer' };
 const TONE_TEXT: Record<TimerTone, string> = { normal: 'text-foreground', warning: 'text-warning', over: 'text-destructive' };
@@ -42,13 +43,13 @@ export function BigTimer({ timer: t, mySeatId }: { timer: Timer; mySeatId: strin
       ) : (
         <div className="w-full min-w-0 [container-type:inline-size]">
           <p
-            className={cn('timer-fit font-figures font-bold leading-[0.9] tabular-nums tracking-[-0.02em]', TONE_TEXT[tone])}
+            className={cn('timer-fit font-figures font-bold leading-[0.9] tracking-[-0.02em]', TONE_TEXT[tone])}
             style={{ ['--fit' as string]: `calc(100cqi / ${(text.length * 0.62).toFixed(2)})` }}
             role="timer"
             aria-live="off"
             aria-label={`${clockWords(left)} left`}
           >
-            {text}
+            <Clock text={text} />
           </p>
         </div>
       )}
@@ -78,7 +79,7 @@ export function SlimTimer({ timer: t, className }: { timer: Timer; className?: s
       aria-label={`Timer: ${clockWords(left)} left, ${s.word}, ${who}. Open Now`}
     >
       <Icon aria-hidden="true" className={cn('size-4.5 shrink-0', tone === 'normal' ? (t.running ? 'text-primary' : 'text-muted-foreground') : TONE_TEXT[tone])} />
-      <span className={cn('font-figures text-[22px] font-bold tabular-nums leading-none', TONE_TEXT[tone])}>{clockText(left)}</span>
+      <span className={cn('font-figures text-[22px] font-bold leading-none', TONE_TEXT[tone])}><Clock text={clockText(left)} /></span>
       <span className="min-w-0 truncate text-[15px] text-muted-foreground">{who}</span>
     </a>
   );
