@@ -92,6 +92,7 @@ export type LineOpts = {
   breathe: number; // 0..1 idle breathing (hero)
   bMin: number; bMax: number; // range for the base width
   maxSize: number; // px cap for the font size in fill mode (0 = none)
+  hoverOnly: boolean; // cursor response only while the pointer is over this line
   fill: number; // 0..1 share of the column to fill (animated for stretch-ins)
 };
 type Line = {
@@ -123,7 +124,7 @@ export type LineHandle = {
   destroy: () => void;
 };
 
-const DEFAULTS: LineOpts = { mode: 'fill', weight: 800, track: -0.01, cursor: 1, wave: 1, breathe: 0, bMin: W_MIN, bMax: W_MAX, maxSize: 0, fill: 1 };
+const DEFAULTS: LineOpts = { mode: 'fill', weight: 800, track: -0.01, cursor: 1, wave: 1, breathe: 0, bMin: W_MIN, bMax: W_MAX, maxSize: 0, fill: 1, hoverOnly: false };
 
 export function register(box: HTMLElement, el: HTMLElement, segCount: number, opts: Partial<LineOpts>): LineHandle {
   const spans = Array.from(el.querySelectorAll<HTMLElement>('[data-k]'));
@@ -222,13 +223,14 @@ function frame(time: number) {
     const F0 = l.F || l.Fd;
     let x = l.left;
     const cy = l.top + l.h / 2;
-    const R = Math.max(200, F0 * 1.3);
+    const over = !o.hoverOnly || (pointer.y >= l.top - 8 && pointer.y <= l.top + l.h + 8 && pointer.x >= l.left - 8 && pointer.x <= l.left + l.actual + 8);
+    const R = o.hoverOnly ? Math.max(90, F0 * 1.1) : Math.max(200, F0 * 1.3);
     for (let i = 0; i < n; i++) {
       const wi = charWidth(l.chars[i], l.wW[i] < 0 ? 100 : l.wW[i], l.curG[i]) * F0 * l.k;
       const cx = x + wi / 2;
       x += wi + o.track * F0 * l.k;
       let e = 0;
-      if (pActive && o.cursor > 0) {
+      if (pActive && over && o.cursor > 0) {
         const dx = pointer.x - cx, dy = (pointer.y - cy) * 1.3;
         const d = Math.sqrt(dx * dx + dy * dy);
         e = clamp(1 - d / R, 0, 1);

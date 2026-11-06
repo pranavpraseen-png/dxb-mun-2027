@@ -26,9 +26,8 @@ design-resources catalogue's font source).
   - a read-back correction factor.
   - Measuring is one batched layout of 50 characters × 15 axis points.
 - **`KLine.tsx`**: plain lines and segmented lines (the day tabs, the wellness toggles and the stats line are each one fitted line made of buttons or spans).
-- **`Wipe.tsx`**: WEIMA's colour-block page transition, with three opaque full-screen blocks.
-- **The stairs in `Sections.tsx`**: the scroll version of the same idea. Hard columns in the next motion's colour rise
-  over the previous one's empty bottom padding (never over its text).
+- *(Removed after the owner's feedback: `Wipe.tsx`, the WEIMA colour-block transition, and the scroll "stairs".
+  Nav clicks now use the shared `scrollToSection` (Lenis).)*
 - **`Loader.tsx`**: the gavel count, a hard letter swap from "ORDER, ORDER" to "DXB MUN 2027", then a hard cut.
 - **`Tally.tsx` + `floor.ts`**: the vote board. FOR = share read, AGAINST = share ahead, ABSTAIN = motions jumped past
   without stopping (kept for 650 ms or more counts as stopping).

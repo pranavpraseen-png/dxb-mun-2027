@@ -15,7 +15,14 @@ const missing = ['index.html', 'portal/index.html', 'admin/index.html', 'chair/i
 if (missing.length) { console.error(`Not deploying: missing ${missing.join(', ')}`); process.exit(1); }
 
 const vercel = process.platform === 'win32' ? 'npx.cmd -y vercel@latest' : 'npx -y vercel@latest';
-run(`${vercel} link --yes --project dxbmun-2027`, out);
+// VERCEL_PROJECT picks another project for a design preview app (e.g. dxbmun-2027-alt1, with HOME_CONCEPT=combo-1).
+// The live site is dxbmun-2027 with Night Lab; never point HOME_CONCEPT at anything else for that project.
+const project = process.env.VERCEL_PROJECT || 'dxbmun-2027';
+if (project === 'dxbmun-2027' && (process.env.HOME_CONCEPT || 'night-lab') !== 'night-lab') {
+  console.error('Not deploying: the live project dxbmun-2027 serves Night Lab only.');
+  process.exit(1);
+}
+run(`${vercel} link --yes --project ${project}`, out);
 // `vercel link` writes an OIDC token to .env.local and a .gitignore; neither may be uploaded.
 for (const f of ['.env.local', '.gitignore']) rmSync(resolve(out, f), { force: true });
 writeFileSync(resolve(out, '.vercelignore'), '.env*\n.gitignore\n');

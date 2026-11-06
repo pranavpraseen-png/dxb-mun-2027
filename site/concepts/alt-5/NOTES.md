@@ -1,5 +1,22 @@
 # Alt 5 · Motion: notes and decisions
 
+> **Revision 2026-11-06 (owner feedback: the intro is liked, below it is "too much").** The loader and the hero are
+> unchanged. Below the hero the page is calmed:
+> - **Grounds and colour:** every section is now on the hero's black. Orange is an accent only: section numbers, the
+>   active day and committee, and the Register card. The Sign in card is black with a 1px off-white border.
+> - **Transitions:** the stairs and the colour-block wipe are removed. Sections are split by one hairline and
+>   generous space, and nav clicks scroll with Lenis.
+> - **Titles:** set at `clamp(48px, 7vw, 104px)`, left-aligned at normal width, not fitted to the edges.
+> - **Kinetic response below the hero:** no scroll-speed ripple; a gentle cursor stretch (0.45) only on the line
+>   under the pointer (`hoverOnly`).
+> - **Stats, day tabs and wellness:** set calmly in Anybody 600 at normal width. Numbers are orange, and the day
+>   tabs and wellness items are normal controls with the active one orange.
+> - **Committees:** the marquee is about half the height and slower, with no squeeze. The detail code is about 60 %
+>   of its old size.
+> - **Tally:** unchanged.
+>
+> Parts of the text below that describe the stairs, the wipe and the per-section grounds are history.
+
 Page: http://127.0.0.1:5320/concepts/alt-5/ · calm version: `?still` (also used for `prefers-reduced-motion`).
 Screenshots: `site/shots/r3/alt-5/`, made by `node scripts/heavy.mjs "node concepts/alt-5/shots.mjs"` from `site/`.
 

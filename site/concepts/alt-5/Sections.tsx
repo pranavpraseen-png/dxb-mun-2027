@@ -1,5 +1,5 @@
 // The eight blocks of the page: the opening and Motions 01–07.
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { gsap } from 'gsap';
 import { committees, conference, resources, schedule, stats, tba, wellness } from '@/data/conference';
 import { isStill, useWellness } from '@/shared/hooks';
@@ -40,42 +40,28 @@ const Arrow = () => (
   <svg className="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="square" /></svg>
 );
 
-/* ------------------------------------------------------------------ section shell + colour stairs */
-const STAIR_ORDER = [3, 0, 6, 1, 5, 7, 2, 4];
-
+/* ------------------------------------------------------------------ section shell */
+// Below the hero every motion sits on the same black, separated by one hairline and generous space.
 function Sec({ m, className, children }: { m: Motion; className?: string; children: ReactNode }) {
-  const ref = useRef<HTMLElement>(null);
-  const idx = MOTIONS.indexOf(m);
-  useLayoutEffect(() => {
-    if (still || idx === 0) return;
-    const cols = Array.from(ref.current!.querySelectorAll<HTMLElement>('.stairs i'));
-    const sorted = STAIR_ORDER.map((i) => cols[i]).filter(Boolean);
-    const ctx = gsap.context(() => {
-      gsap.fromTo(sorted, { scaleY: 0 }, {
-        scaleY: 1, ease: 'none', stagger: 0.09,
-        scrollTrigger: { trigger: ref.current, start: 'top bottom', end: 'top 40%', scrub: true },
-      });
-    });
-    return () => ctx.revert();
-  }, [idx]);
   return (
-    <section id={m.id} ref={ref} className={`sec g-${m.ground} ${className ?? ''}`} style={{ zIndex: idx + 1 }} aria-label={`Motion ${m.n}: ${m.label}`}>
-      {idx > 0 && <div className="stairs" aria-hidden="true">{STAIR_ORDER.map((_, i) => <i key={i} />)}</div>}
+    <section id={m.id} className={`sec g-ink ${className ?? ''}`} aria-label={`Motion ${m.n}: ${m.label}`}>
       {children}
     </section>
   );
 }
 
+/** Calm kinetic setting for everything below the hero: no speed ripple, a gentle stretch only under the pointer. */
+const CALM = { wave: 0, cursor: 0.45, hoverOnly: true } as const;
+
 function Head({ m, title }: { m: Motion; title?: string }) {
-  const [ref, seen] = useInView<HTMLDivElement>();
   return (
-    <div className="head" ref={ref}>
+    <div className="head">
       <div className="head-rule mono">
-        <span>Motion {m.n} <i>/ 07</i></span>
+        <span>Motion <b>{m.n}</b> <i>/ 07</i></span>
         <span className="head-motion"><span className="head-label">{m.label} · </span>{m.motion}</span>
       </div>
-      <KLine as="h2" text={title ?? m.label.toUpperCase()} label={m.label} className="head-k" stretchFrom={0.3} play={seen}
-        opts={{ mode: 'fit', weight: 820, bMax: 132 }} />
+      <KLine as="h2" text={title ?? m.label.toUpperCase()} label={m.label} className="head-k"
+        opts={{ ...CALM, mode: 'fit', weight: 760, bMin: 75, bMax: 100 }} />
     </div>
   );
 }
@@ -131,9 +117,7 @@ function HeroFacts() {
 
 /* ------------------------------------------------------------------ 01 about */
 export function About() {
-  const phone = usePhone();
-  const [ref, seen] = useInView<HTMLDivElement>();
-  const pairs: [string, string][] = [[String(stats[0].value), 'COMMITTEES'], [String(stats[1].value), 'DAYS'], [String(stats[2].value), 'SESSIONS']];
+  const pairs: [string, string][] = [[String(stats[0].value), 'Committees'], [String(stats[1].value), 'Days'], [String(stats[2].value), 'Committee sessions']];
   const rows: [string, ReactNode][] = [
     ['Hosted by', <><HostMark /> {conference.host}</>],
     ['Guided by', <>“{conference.motto}”</>],
@@ -144,18 +128,9 @@ export function About() {
   return (
     <Sec m={M('about')} className="about">
       <Head m={M('about')} />
-      <div ref={ref} className={phone ? 'ab-lines' : undefined}>
-        {phone
-          ? pairs.map(([n, w], i) => (
-            <KLine key={w} className="ab-k" label={`${n} ${w.toLowerCase()}`} stretchFrom={0.35} play={seen} opts={{ weight: 700, maxSize: 96 }}
-              parts={[{ key: 'n' + i, text: n, active: true }, { key: 'w' + i, text: w }]} />
-          ))
-          : (
-            <KLine className="ab-k" label={`${stats[0].value} committees, ${stats[1].value} days, ${stats[2].value} committee sessions`}
-              stretchFrom={0.35} play={seen} opts={{ weight: 700 }}
-              parts={pairs.flatMap(([n, w], i) => [{ key: 'n' + i, text: n, active: true }, { key: 'w' + i, text: w }])} />
-          )}
-      </div>
+      <ul className="ab-stats">
+        {pairs.map(([n, w]) => <li key={w}><b>{n}</b> {w.toLowerCase()}</li>)}
+      </ul>
       <dl className="clauses">
         {rows.map(([k, v], i) => (
           <div key={k}>
@@ -180,7 +155,7 @@ export function Committees() {
 
   useEffect(() => {
     if (still) return;
-    let x = 0, speed = 0, dir = 1, mw = 100;
+    let x = 0, speed = 0, dir = 1;
     const tick = (_t: number, dtMs: number) => {
       const el = track.current;
       if (!el) return;
@@ -188,15 +163,12 @@ export function Committees() {
       const v = getVelocity();
       if (Math.abs(v) > 0.6) dir = v > 0 ? 1 : -1;
       const hold = paused.current || performance.now() < holdUntil.current;
-      const want = hold ? 0 : (64 + Math.min(900, Math.abs(v) * 30)) * dir;
+      const want = hold ? 0 : (30 + Math.min(120, Math.abs(v) * 4)) * dir;
       speed += (want - speed) * Math.min(1, dt * (hold ? 9 : 4));
       const half = el.scrollWidth / 2;
       x -= speed * dt;
       if (half > 0) { while (x <= -half) x += half; while (x > 0) x -= half; }
       el.style.transform = `translate3d(${Math.round(x)}px,0,0)`;
-      const vn = Math.min(1, Math.abs(v) / 30);
-      const nw = 100 - 48 * vn;
-      if (Math.abs(nw - mw) > 0.4) { mw = nw; el.style.setProperty('--mw', mw.toFixed(1)); }
     };
     gsap.ticker.add(tick);
     return () => gsap.ticker.remove(tick);
@@ -204,7 +176,7 @@ export function Committees() {
 
   const pick = (i: number) => setIdx(((i % n) + n) % n);
   const copies = still ? [0] : [0, 1];
-  const maxSize = Math.round(Math.min(innerHeight * (phone ? 0.16 : 0.27), phone ? 120 : 250));
+  const maxSize = Math.round(Math.min(innerHeight * (phone ? 0.1 : 0.16), phone ? 72 : 150));
 
   return (
     <Sec m={M('committees')} className="cmt">
@@ -229,8 +201,8 @@ export function Committees() {
         </div>
       </div>
       <div className="cm-focus" id="cm-focus" aria-live="polite">
-        <KLine text={c.abbr} label={`${c.abbr}: ${c.name}`} className="cm-k" stretchFrom={0.22}
-          opts={{ weight: 900, maxSize, wave: 0.6 }}><span aria-hidden="true" style={{ height: Math.round(maxSize * 0.8) }} /></KLine>
+        <KLine text={c.abbr} label={`${c.abbr}: ${c.name}`} className="cm-k" stretchFrom={0.6}
+          opts={{ ...CALM, weight: 820, maxSize }}><span aria-hidden="true" style={{ height: Math.round(maxSize * 0.8) }} /></KLine>
         <div className="cm-meta">
           <span className="mono cm-n">{String(idx + 1).padStart(2, '0')} / {n}</span>
           <p className="cm-name">{c.name}</p>
@@ -258,11 +230,14 @@ export function Schedule() {
   return (
     <Sec m={M('schedule')} className="sched">
       <Head m={M('schedule')} />
-      <KLine className="sc-k" label="Pick a day" opts={{ weight: 700, wave: 0.6 }}
-        parts={schedule.map((x) => ({
-          key: 'd' + x.day, text: x.label.toUpperCase(), active: x.day === day,
-          onClick: () => setDay(x.day), current: x.day === day, controls: 'slots', label: x.label,
-        }))} />
+      <div className="tabs" role="group" aria-label="Pick a day">
+        {schedule.map((x) => (
+          <button key={x.day} type="button" className={'tab' + (x.day === day ? ' is-on' : '')} aria-pressed={x.day === day}
+            aria-controls="slots" onClick={() => setDay(x.day)}>
+            <span className="mono">{String(x.day).padStart(2, '0')}</span> {x.label}
+          </button>
+        ))}
+      </div>
       <ol className="slots" id="slots" key={day} aria-label={d.label}>
         {d.slots.map((s, i) => (
           <li key={s.name + i} style={{ '--i': i } as React.CSSProperties}>
@@ -284,12 +259,12 @@ export function Register() {
       <div className="rg-row">
         <a className="rg-btn rg-btn--signal" href={register}>
           <span className="mono">Delegates · new here</span>
-          <KLine text="REGISTER" opts={{ weight: 880, wave: 0.5 }} className="rg-k" />
+          <KLine text="REGISTER" opts={{ ...CALM, mode: 'fit', weight: 800, bMin: 75, bMax: 100 }} className="rg-k" />
           <Arrow />
         </a>
-        <a className="rg-btn rg-btn--paper" href={signIn}>
+        <a className="rg-btn rg-btn--line" href={signIn}>
           <span className="mono">Delegates, advisors and chairs</span>
-          <KLine text="SIGN IN" opts={{ weight: 880, wave: 0.5 }} className="rg-k" />
+          <KLine text="SIGN IN" opts={{ ...CALM, mode: 'fit', weight: 800, bMin: 75, bMax: 100 }} className="rg-k" />
           <Arrow />
         </a>
       </div>
@@ -304,19 +279,21 @@ export function Register() {
 
 /* ------------------------------------------------------------------ 05 wellness */
 export function Wellness() {
-  const phone = usePhone();
   const w = useWellness();
   return (
     <Sec m={M('wellness')} className="well">
       <Head m={M('wellness')} title={wellness.title.toUpperCase()} />
       <p className="lede">{wellness.intro} Tap each one when done.</p>
-      {(phone ? w.items.map((it) => [it]) : [w.items]).map((group, gi) => (
-        <KLine key={gi} className="wl-k" label="Wellness check-in" opts={{ weight: 700, wave: 0.6, maxSize: phone ? 110 : 0 }}
-          parts={group.map((it) => ({
-            key: it.id, text: it.label.toUpperCase(), active: w.checked.includes(it.id),
-            pressed: w.checked.includes(it.id), onClick: () => w.toggle(it.id), label: it.label,
-          }))} />
-      ))}
+      <div className="tabs" role="group" aria-label="Wellness check-in">
+        {w.items.map((it, i) => {
+          const on = w.checked.includes(it.id);
+          return (
+            <button key={it.id} type="button" className={'tab' + (on ? ' is-on' : '')} aria-pressed={on} onClick={() => w.toggle(it.id)}>
+              <span className="mono">{on ? 'Done' : String(i + 1).padStart(2, '0')}</span> {it.label}
+            </button>
+          );
+        })}
+      </div>
       <p className="wl-status mono"><b>{w.status}</b> {w.note}</p>
     </Sec>
   );
@@ -353,7 +330,7 @@ export function Contact() {
         <div><dt className="mono">Host</dt><dd>{conference.host}, {conference.city}</dd></div>
       </dl>
       <footer className="foot" ref={ref}>
-        <KLine text="DXB MUN 2027" label={conference.edition} className="foot-k" stretchFrom={0.3} play={seen} opts={{ weight: 860 }} />
+        <KLine text="DXB MUN 2027" label={conference.edition} className="foot-k" stretchFrom={0.3} play={seen} opts={{ ...CALM, weight: 860 }} />
         <div className="foot-row mono">
           <span>{conference.kind} · {conference.city} · Hosted by {conference.host}</span>
           <span className="foot-links">

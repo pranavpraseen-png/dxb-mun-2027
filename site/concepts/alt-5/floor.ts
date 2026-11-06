@@ -3,7 +3,7 @@ import { useSyncExternalStore } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { isStill } from '@/shared/hooks';
-import { getLenis } from '@/shared/scroll';
+import { getLenis, scrollToSection } from '@/shared/scroll';
 import { resetScrollBaseline } from './kinetic';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -16,13 +16,13 @@ export type Ground = 'ink' | 'paper' | 'signal' | 'host';
 /** 00 is the opening; 01–07 are the nav sections, in nav order. */
 export const MOTIONS: Motion[] = [
   { id: 'home', n: '00', label: 'Opening', motion: 'To open the floor', ground: 'ink' },
-  { id: 'about', n: '01', label: 'About', motion: 'To introduce the conference', ground: 'paper' },
+  { id: 'about', n: '01', label: 'About', motion: 'To introduce the conference', ground: 'ink' },
   { id: 'committees', n: '02', label: 'Committees', motion: 'To set the agenda', ground: 'ink' },
-  { id: 'schedule', n: '03', label: 'Schedule', motion: 'To adopt the timetable', ground: 'signal' },
+  { id: 'schedule', n: '03', label: 'Schedule', motion: 'To adopt the timetable', ground: 'ink' },
   { id: 'register', n: '04', label: 'Register', motion: 'To take the floor', ground: 'ink' },
-  { id: 'wellness', n: '05', label: 'Wellness', motion: 'For a short recess', ground: 'paper' },
+  { id: 'wellness', n: '05', label: 'Wellness', motion: 'For a short recess', ground: 'ink' },
   { id: 'resources', n: '06', label: 'Resources', motion: 'To circulate the rules', ground: 'ink' },
-  { id: 'contact', n: '07', label: 'Contact', motion: 'To adjourn', ground: 'host' },
+  { id: 'contact', n: '07', label: 'Contact', motion: 'To adjourn', ground: 'ink' },
 ];
 export const NAV = MOTIONS.slice(1);
 
@@ -93,14 +93,11 @@ export function startFloor() {
 }
 
 /* ------------------------------------------------------------------ jumps */
-type Runner = (index: number, jump: () => void) => void;
-let wipeRunner: Runner | null = null;
-export const setWipeRunner = (r: Runner | null) => { wipeRunner = r; };
 
 export function instantJump(id: string) {
   const el = document.getElementById(id);
   if (!el) return;
-  const top = el.getBoundingClientRect().top + scrollY;
+  const top = el.getBoundingClientRect().top + scrollY - (id === 'home' ? 0 : NAV_H);
   const l = getLenis();
   if (l) l.scrollTo(top, { immediate: true, force: true });
   else window.scrollTo(0, top);
@@ -109,10 +106,10 @@ export function instantJump(id: string) {
   history.replaceState(null, '', id === 'home' ? location.pathname + location.search : '#' + id);
 }
 
-/** Go to a motion: a colour-block wipe covers the screen, the page jumps underneath, the blocks leave. */
+/** Go to a motion: a plain Lenis scroll (instant in still mode). The section's hairline lands just under the nav. */
 export function jumpTo(id: string) {
-  const i = MOTIONS.findIndex((m) => m.id === id);
-  if (i < 0) return;
-  if (isStill() || !wipeRunner) { instantJump(id); return; }
-  wipeRunner(i, () => instantJump(id));
+  if (!MOTIONS.some((m) => m.id === id)) return;
+  if (isStill()) { instantJump(id); return; }
+  scrollToSection(id, id === 'home' ? 0 : NAV_H);
+  history.replaceState(null, '', id === 'home' ? location.pathname + location.search : '#' + id);
 }

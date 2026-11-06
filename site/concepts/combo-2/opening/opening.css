@@ -1,0 +1,90 @@
+/* Night Lab · the opening (Alt 3's first scene + the typed loader). Same C1 tokens as night-lab.css; two extra opaque
+   wireframe tones from Alt 3. No blur, no glow, no alpha. Everything is prefixed op- so nothing leaks either way. */
+
+.op { --op-dim: #7c6e62; --op-mute: #aca398; --op-halo: 2px 0 0 var(--ground), -2px 0 0 var(--ground), 0 2px 0 var(--ground), 0 -2px 0 var(--ground), 2px 2px 0 var(--ground), -2px -2px 0 var(--ground), 2px -2px 0 var(--ground), -2px 2px 0 var(--ground);
+  position: relative; height: 100svh; min-height: 560px; overflow: hidden; isolation: isolate; background: var(--ground); }
+.op-gl { position: absolute; inset: 0; z-index: 0; }
+.op-gl canvas { display: block; }
+
+/* ------------------------------------------------------------------ scramble */
+.op-scr { position: relative; display: inline-block; }
+.op-scr-ghost { visibility: hidden; }
+.op-scr-live { position: absolute; inset: 0; white-space: pre; }
+
+/* ------------------------------------------------------------------ hero text (bottom-left), cue + host (bottom row) */
+.op-hero { position: absolute; inset: var(--nav) 0 0 0; z-index: 3; pointer-events: none; display: grid; align-content: end; gap: 28px; padding: 0 var(--gut) 22px; }
+.op-hero:not(.is-on) { visibility: hidden; }
+.op-cap { display: grid; gap: 12px; justify-items: start; }
+/* a crisp ground-coloured knock-out behind every line of text, so no wireframe line ever runs behind a letter */
+.op-cap > *, .op-foot > * { background: var(--ground); box-shadow: 0 0 0 12px var(--ground); }
+.op-kicker { color: var(--op-mute); }
+.op-title { font: 800 clamp(60px, 9.4444vw, 136px)/0.88 var(--f-sans); font-stretch: 112%; letter-spacing: -0.045em; }
+.op-line { font: 500 32px/1.1 var(--f-sans); letter-spacing: -0.01em; }
+.op-line em { font-family: var(--f-serif); font-style: italic; font-weight: 400; font-size: 1.1em; line-height: 0.8; letter-spacing: -0.01em; color: var(--accent); }
+.op-foot { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+.op-cue { pointer-events: auto; color: var(--ink); display: inline-flex; gap: 8px; padding: 4px 0; }
+.op-cue:hover { color: var(--accent); }
+.op-host { color: var(--op-mute); text-align: right; }
+/* live Dubai clock: Mona Sans plain figures in fixed slots (no slashed zeros), a steady orange beat */
+.op-clock { display: inline-flex; align-items: center; gap: 10px; color: var(--op-mute); }
+.op-clock-dot { width: 6px; height: 6px; background: var(--accent); animation: op-beat 2s steps(1) infinite; }
+@keyframes op-beat { 50% { background: var(--ground); } }
+.op-clock-t { font: 600 15px/1 var(--f-sans); font-stretch: 112%; color: var(--ink); letter-spacing: 0.02em; }
+.op-clock-t i { display: inline-block; width: 0.66em; text-align: center; font-style: normal; }
+.op-clock-t b { font-weight: inherit; padding: 0 0.04em; }
+
+/* page progress: a 2px orange hairline riding the bottom edge of the top bar */
+.nl-progress { position: fixed; left: 0; right: 0; top: calc(var(--nav) - 1px); height: 2px; z-index: 101; pointer-events: none; transform-origin: 0 50%; transform: scaleX(0); background: var(--accent); }
+.nl-boot .nl-progress { visibility: hidden; }
+
+/* ------------------------------------------------------------------ labels pinned to 3D points */
+.op-labs { position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; }
+.op-lab {
+  position: absolute; left: 0; top: 0; visibility: hidden; white-space: nowrap;
+  font-family: var(--f-mono); font-size: 11px; line-height: 1.25; letter-spacing: 0.06em; text-transform: uppercase;
+  text-shadow: var(--op-halo);
+}
+.op-lab.is-on { visibility: visible; transition: visibility 0s linear var(--ld, 0s); }
+.op-lab--px { color: var(--op-mute); font-size: 10px; }
+.op-lab--pin { color: var(--accent); }
+.op-tag { display: inline-block; margin-right: 8px; padding: 1px 4px; border: 1px solid var(--ink); text-shadow: none; background: var(--ground); }
+.op-tag--accent { border-color: var(--accent); background: var(--accent); color: var(--ground); }
+.op-tag--gold { border-color: var(--gold); background: var(--gold); color: var(--ground); }
+
+/* ------------------------------------------------------------------ loader: type → bold → through */
+.op-boot { position: fixed; inset: 0; z-index: 500; pointer-events: none; }
+.op-boot-svg { position: absolute; inset: 0; display: block; overflow: visible; }
+.op-boot-sheet { fill: var(--ground); }
+.op-boot-solid { fill: var(--ink); visibility: hidden; }
+.op-boot-hole { visibility: hidden; }
+.op-boot.is-through .op-boot-hole { visibility: visible; }
+.op-boot.is-word .op-boot-solid { visibility: visible; }
+.op-boot-word { font-family: var(--f-sans); font-size: clamp(56px, 13vw, 210px); font-weight: 300; font-stretch: 75%; letter-spacing: -0.03em; }
+.op-boot-type {
+  position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); margin: 0 auto; width: max-content;
+  display: flex; align-items: center; gap: 0.12em;
+  font: 400 clamp(26px, 4.6vw, 56px)/1 var(--f-mono); letter-spacing: 0.32em; color: var(--ink);
+}
+.op-boot.is-word .op-boot-type { visibility: hidden; }
+.op-caret { display: inline-block; width: 0.56em; height: 1em; background: var(--accent); animation: op-blink 1s steps(1) infinite; }
+@keyframes op-blink { 50% { visibility: hidden; } }
+.op-boot-count { position: absolute; left: 0; right: 0; bottom: 72px; margin: 0 auto; width: max-content; font: 500 13px/1 var(--f-sans); font-stretch: 112%; letter-spacing: 0.04em; color: var(--op-mute, #aca398); }
+.op-boot-count i { display: inline-block; width: 0.62em; text-align: center; font-style: normal; }
+.op-boot-skip { position: absolute; left: 0; right: 0; bottom: 32px; margin: 0 auto; width: max-content; color: #aca398; }
+.op-boot.is-through .op-boot-count, .op-boot.is-through .op-boot-skip { visibility: hidden; }
+
+/* ------------------------------------------------------------------ phone and portrait: text under the globe */
+@media (max-aspect-ratio: 17/20) {
+  .op-hero { gap: 18px; padding-bottom: 16px; }
+  .op-title { font-size: 60px; }
+  .op-line { font-size: 24px; }
+  .op-foot { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .op-host { text-align: left; }
+  .op-clock { order: -1; }
+  /* the Dubai call-outs stack their number over the text, so three fit side by side on a phone */
+  .op-lab:not(.op-lab--px):not(.op-lab--pin) { display: grid; justify-items: start; gap: 4px; font-size: 10px; max-width: 46vw; white-space: normal; }
+  .op-tag { margin-right: 0; }
+}
+@media (max-width: 380px) {
+  .op-title { font-size: 52px; }
+}

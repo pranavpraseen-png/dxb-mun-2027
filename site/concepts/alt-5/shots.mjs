@@ -1,7 +1,7 @@
 // Screenshots and checks for Alt 5 · Motion. Run from site/ through the lock:
 //   node scripts/heavy.mjs "node concepts/alt-5/shots.mjs"
 // 1440×900 and 390×844 (DPR 1): the loader at four moments (seeked), the hero settled, the hero under the cursor,
-// a fast scroll, a wipe caught mid-way, every section reached from the nav, the colour stairs mid-scrub,
+// a fast scroll, a nav scroll caught mid-way, every section reached from the nav, a section boundary,
 // committee hover, Day 2, a wellness toggle, the phone menu, and the ?still page full length.
 // Prints overflow (with the offending elements) and every console error.
 // ONLY=1440 or ONLY=390 or ONLY=still runs one part.
@@ -72,6 +72,7 @@ async function viaNav(page, id, phone) {
     await page.click('.nav .menu-btn');
     await wait(700);
     await page.click(`.menu-items a[href="#${id}"]`);
+    await wait(600);
   } else {
     await page.click(`.nav-items a[href="#${id}"]`);
   }
@@ -102,24 +103,15 @@ if (!only || only === '1440') {
   await log(page, tag, 'fast scroll');
   await wait(1500);
   await shot(page, '1440-13-after-scroll');
-  // the stairs mid-scrub: About → Committees boundary
+  // a section boundary: About → Committees
   const y = await page.evaluate(() => document.getElementById('committees').getBoundingClientRect().top + scrollY - innerHeight * 0.62);
   await page.evaluate((v) => window.scrollTo(0, v), y);
   await wait(1500);
-  await shot(page, '1440-14-stairs-mid');
-  // a wipe caught mid-way
+  await shot(page, '1440-14-boundary');
+  // a nav click scrolls (Lenis): catch it mid-way
   await page.click('.nav-items a[href="#schedule"]');
-  await poll(page, () => !!window.__alt5Wipe);
-  await page.evaluate(() => { window.__alt5Wipe.pause(); window.__alt5Wipe.seek(0.34, false); });
-  await wait(250);
-  await shot(page, '1440-15-wipe-a');
-  await page.evaluate(() => { window.__alt5Wipe.seek(0.8, false); });
-  await wait(250);
-  await shot(page, '1440-16-wipe-b');
-  await page.evaluate(() => { window.__alt5Wipe.seek(1.2, false); });
-  await wait(250);
-  await shot(page, '1440-17-wipe-c');
-  await page.evaluate(() => { window.__alt5Wipe.play(); });
+  await wait(450);
+  await shot(page, '1440-15-nav-scroll-mid');
   await wait(1600);
   const ids = ['about', 'committees', 'schedule', 'register', 'wellness', 'resources', 'contact'];
   for (const [i, id] of ids.entries()) {
@@ -143,13 +135,13 @@ if (!only || only === '1440') {
   // schedule: day 2
   await page.mouse.move(-40, -40);
   await viaNav(page, 'schedule', false);
-  await page.click('.sc-k .kpart:nth-of-type(2)');
+  await page.click('.sched .tab:nth-child(2)');
   await page.mouse.move(-40, -40);
   await wait(1400);
   await shot(page, '1440-31-schedule-day2');
   // wellness: tick Water
   await viaNav(page, 'wellness', false);
-  await page.click('.wl-k button');
+  await page.click('.well .tab');
   await page.mouse.move(-40, -40);
   await wait(1200);
   await shot(page, '1440-32-wellness-water');

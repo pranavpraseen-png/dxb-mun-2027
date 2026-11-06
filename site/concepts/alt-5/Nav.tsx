@@ -1,6 +1,6 @@
 // Top nav: solid black. Every motion in one click; the one on the floor is a solid signal block.
 // Phone: Register + Menu; the menu is a full-screen black sheet with huge kinetic items that stretch in.
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Dialog } from '@base-ui/react/dialog';
 import { conference } from '@/data/conference';
 import { getLenis } from '@/shared/scroll';
@@ -15,12 +15,20 @@ export function HostMark() {
 export function Nav() {
   const { active } = useFloor();
   const [open, setOpen] = useState(false);
+  const pending = useRef<string | null>(null);
   const current = MOTIONS[active].id;
   const go = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
-    e.stopPropagation(); // keep Lenis's own anchor handling out of it: the wipe does the jump
-    setOpen(false);
+    e.stopPropagation(); // keep Lenis's own anchor handling out of it: jumpTo scrolls with the shared offset
+    if (open) { pending.current = id; setOpen(false); return; } // scroll once the menu has closed and unlocked
     jumpTo(id);
+  };
+  const closed = (isOpen: boolean) => {
+    if (isOpen || !pending.current) return;
+    const id = pending.current;
+    pending.current = null;
+    getLenis()?.start();
+    requestAnimationFrame(() => jumpTo(id));
   };
   useEffect(() => { const l = getLenis(); if (open) l?.stop(); else l?.start(); }, [open]);
 
@@ -39,7 +47,7 @@ export function Nav() {
       </nav>
       <a className="nav-reg" href={register}>Register</a>
 
-      <Dialog.Root open={open} onOpenChange={setOpen}>
+      <Dialog.Root open={open} onOpenChange={setOpen} onOpenChangeComplete={closed}>
         <Dialog.Trigger className="menu-btn">Menu</Dialog.Trigger>
         <Dialog.Portal>
           <Dialog.Popup className="menu">

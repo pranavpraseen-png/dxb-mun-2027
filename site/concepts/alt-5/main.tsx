@@ -11,7 +11,6 @@ import { MOTIONS, NAV_H, instantJump, startFloor } from './floor';
 import { start as startKinetic } from './kinetic';
 import { Loader } from './Loader';
 import { Nav } from './Nav';
-import { Wipe } from './Wipe';
 import { Tally } from './Tally';
 import { About, Committees, Contact, Hero, Register, Resources, Schedule, Wellness } from './Sections';
 
@@ -53,7 +52,6 @@ function App() {
         <Contact />
       </main>
       <Tally />
-      {!still && <Wipe />}
       {loading && <Loader onDone={done} />}
     </>
   );
