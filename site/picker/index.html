@@ -45,16 +45,23 @@
 <script>
   // Every homepage design, newest group first. "ready: false" = still being built.
   const GROUPS = [
-    { title: 'Night Lab (approved build)', items: [
-      { id: 'night-lab', name: 'Night Lab', note: 'Wireframe globe to Dubai, clauses, nameplate wall, ruler, pass', ready: true },
+    { title: 'Night Lab (live on dxbmun-2027.vercel.app)', items: [
+      { id: 'night-lab', name: 'Night Lab', note: 'Typed DXBMUN27 loader, globe to Dubai, clauses, nameplate wall, ruler, pass', ready: true },
+    ] },
+    { title: 'Combined designs (own Vercel apps)', items: [
+      { id: 'combo-1', name: 'Combo 1 · dxbmun-2027-alt1', note: 'Alt 5 intro into the Alt 6 dithered home, calm sections', ready: true },
+      { id: 'combo-2', name: 'Combo 2 · dxbmun-2027-alt2', note: 'Night Lab with Alt 6 dither and lens, Alt 5 kinetic title', ready: true },
     ] },
     { title: 'Alternatives', items: [
       { id: 'alt-1', name: 'Alt 1 · Terminal Paper', note: 'Light paper, deep ink, one blue', ready: true },
       { id: 'alt-2', name: 'Alt 2 · Poster', note: 'Cream, black, IHS maroon, huge type', ready: true },
       { id: 'alt-3', name: 'Alt 3 · One Stage', note: 'Night Lab colours, one 3D camera stage', ready: true },
+      { id: 'alt-4', name: 'Alt 4 · Assembly', note: '3D General Assembly hall of 193 seats', ready: true },
+      { id: 'alt-5', name: 'Alt 5 · Motion', note: 'ORDER, ORDER loader, kinetic type, vote tally', ready: true },
+      { id: 'alt-6', name: 'Alt 6 · Dispatch', note: '1-bit dithered field, cursor lens, facts as cables', ready: true },
     ] },
     { title: 'References (tick what you like)', items: [
-      { id: 'refs', name: 'Reference board', note: 'Clean award sites with one insane move, every sector', ready: true },
+      { id: 'refs', name: 'Reference board', note: 'Award sites studied; their screenshots stay off GitHub', ready: true },
     ] },
     { title: 'Motion moves (tick what you like)', items: [
       { id: 'moves', name: 'Motion moves', note: '8 live demos + 26 effects with licence and cost', ready: true },
@@ -86,8 +93,8 @@
       { id: 'placard', name: 'Placard', note: 'Earlier concept', ready: true },
       { id: 'resolution', name: 'Resolution', note: 'Earlier concept', ready: true },
     ] },
-    { title: 'Live now', items: [
-      { id: 'merged', name: 'Current website', note: 'What dxbmun-2027.vercel.app shows', ready: true },
+    { title: 'Before Night Lab', items: [
+      { id: 'merged', name: 'Merged', note: 'What dxbmun-2027.vercel.app showed until 2026-11-06', ready: true },
     ] },
   ];
   const HREF = Object.fromEntries(GROUPS.flatMap((g) => g.items).filter((i) => i.href).map((i) => [i.id, i.href]));
