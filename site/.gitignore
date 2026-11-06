@@ -14,3 +14,7 @@ deploy/
 .vercel/
 .heavy.lock/
 *.log
+
+# Screenshots and captured page data of other companies' websites (reference study): local only, never published.
+concepts/refs/shots/
+concepts/refs/dissect/shots/
