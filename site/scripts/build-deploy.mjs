@@ -1,5 +1,5 @@
 // Builds the production site into site/deploy/:
-//   /            the Merged website (concepts/merged/index.html, moved to the root)
+//   /            the homepage concept (Night Lab: concepts/night-lab/index.html, moved to the root)
 //   /portal/     the delegate dashboard
 //   /admin/      the secretariat dashboard
 //   /chair/      the chair (dais) dashboard
@@ -18,12 +18,13 @@ if (!existsSync(resolve(site, '.env.live'))) {
 execSync('npx vite build --config vite.deploy.config.ts --mode live', {
   cwd: site,
   stdio: 'inherit',
-  env: { ...process.env, VITE_DEPLOY: '1' }, // links.ts: website served at / instead of /concepts/merged/
+  env: { ...process.env, VITE_DEPLOY: '1' }, // links.ts: website served at / instead of /concepts/<home>/
 });
 
 const out = resolve(site, 'deploy');
-const nested = resolve(out, 'concepts', 'merged', 'index.html');
-if (!existsSync(nested)) throw new Error('Merged page missing from the build');
+const HOME = process.env.HOME_CONCEPT || 'night-lab';
+const nested = resolve(out, 'concepts', HOME, 'index.html');
+if (!existsSync(nested)) throw new Error(HOME + ' page missing from the build');
 // The page moves two levels up, so its relative asset paths lose one "../../".
 const html = readFileSync(nested, 'utf8').replaceAll('"../../', '"./').replaceAll("'../../", "'./");
 writeFileSync(resolve(out, 'index.html'), html);

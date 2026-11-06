@@ -9,7 +9,7 @@ import { signIn } from './links';
 import { BIG, EASE, UI, gsap, still } from './motion';
 import { useSection } from './store';
 import { NavStub } from './Stub';
-import { go, useMedia } from './ui';
+import { go, useMedia, useScrollPause } from './ui';
 
 export function Nav() {
   const current = useSection();
@@ -58,6 +58,7 @@ export function Nav() {
 function MenuButton({ open, setOpen }: { open: boolean; setOpen: (o: boolean) => void }) {
   const current = useSection();
   const list = useRef<HTMLOListElement>(null);
+  useScrollPause(open);
   useEffect(() => {
     if (!open || still) return;
     const id = requestAnimationFrame(() => {

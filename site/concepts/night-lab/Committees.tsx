@@ -6,7 +6,7 @@ import NumberFlow from '@number-flow/react';
 import { Dialog } from '@base-ui/react/dialog';
 import { PLATES, committees } from './data';
 import { BIG, EASE, ScrollTrigger, gsap, still } from './motion';
-import { FitWord, useMedia } from './ui';
+import { FitWord, useMedia, useScrollPause } from './ui';
 
 const COLS = 5, ROWS = 4;
 // where the lines start (fractions of the wall): a tall centre cell, like Dropbox's first screen
@@ -68,6 +68,7 @@ function NameplateView({ open, setOpen }: { open: number | null; setOpen: (i: nu
     window.addEventListener('keydown', k);
     return () => window.removeEventListener('keydown', k);
   }, [open, step]);
+  useScrollPause(open !== null);
   const prev = PLATES[(i - 1 + n) % n], next = PLATES[(i + 1) % n];
   return (
     <Dialog.Root open={open !== null} onOpenChange={(o) => { if (!o) setOpen(null); }}>
@@ -78,7 +79,7 @@ function NameplateView({ open, setOpen }: { open: number | null; setOpen: (i: nu
             <Dialog.Close className="menu-pill menu-pill--ink mono">Close</Dialog.Close>
           </div>
           <div className="pv-mid">
-            <FitWord key={p.abbr} className="pv-code" as="div">{p.abbr}</FitWord>
+            <FitWord key={p.abbr} className="pv-code" as="div" maxVh={0.4}>{p.abbr}</FitWord>
             <Dialog.Title className="pv-name">{p.name}</Dialog.Title>
           </div>
           <div className="pv-bot">

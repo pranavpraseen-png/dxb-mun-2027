@@ -120,7 +120,7 @@ function HeroFoot({ footRef }: { footRef?: React.Ref<HTMLDivElement> }) {
 }
 
 /* ------------------------------------------------------------------ still / reduced motion: two calm figures */
-function StillStage() {
+export function StillStage() {
   const narrow = useMedia('(max-width: 767px)');
   const heroOv = useRef<Overlay>({ labels: [], cad: null, callout: null, readout: null });
   const dubaiOv = useRef<Overlay>({ labels: [], cad: null, callout: null, readout: null });

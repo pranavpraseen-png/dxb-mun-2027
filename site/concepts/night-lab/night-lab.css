@@ -281,7 +281,8 @@ em { font-style: normal; }
 .cm.is-pinned .cm-wall { position: absolute; top: calc(var(--nav) + 14px); left: var(--gut); right: var(--gut); bottom: 22px; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(4, minmax(0, 1fr)); grid-auto-rows: auto; }
 /* the head must fit one quarter, or row 1 grows and the hairline grid stops matching the plates */
 .cm.is-pinned .cm-cell--head { min-height: 0; overflow: hidden; }
-.cm.is-pinned .cm-num { height: 0.9em; display: flex; align-items: center; font-size:min(var(--t-cmnum), round(down, calc((100svh - 300px) / 5.5), 1px)); }
+/* row = (100svh - 92px) / 4; the head's fixed parts (paddings, mono line, label, range) take 112px; the numeral box is 0.9em */
+.cm.is-pinned .cm-num { height: 0.9em; display: flex; align-items: center; font-size:min(var(--t-cmnum), round(down, calc((100svh - 540px) / 3.6), 1px)); }
 .cm-cell { position: relative; z-index: 1; padding: 6px; }
 .cm-cell--head { grid-column: span 2; }
 .cm.is-pinned .cm-cell--head { grid-column: auto; }
@@ -511,3 +512,26 @@ em { font-style: normal; }
   .cm:not(.is-pinned) .cm-wall { grid-template-columns: repeat(4, 1fr); grid-auto-rows: 200px; }
   .cm:not(.is-pinned) .cm-cell--head { grid-column: span 1; }
 }
+
+/* ---- overlap + bug fixes (audit 2026-11-06) ---- */
+/* committees, short pinned screens (1280x720, 1024x768): the head's numeral, label and range fit one quarter */
+@media (max-height: 799px) {
+  .cm.is-pinned .cm-lab { font-size: 22px; }
+  .cm.is-pinned .cm-range { margin-top: 6px; }
+  .cm.is-pinned .cm-num { font-size: min(var(--t-cmnum), round(down, calc((100svh - 500px) / 3.6), 1px)); }
+}
+/* committees, pinned wall under 1280 px wide or under 800 px tall: long names (UNCSTD, five lines at 1024)
+   ran out of the plate, and at 1280x720 the plate number touched the code */
+@media (max-width: 1279px), (max-height: 799px) {
+  .cm.is-pinned .t-face, .cm.is-pinned .t-inv { padding: 12px 14px 13px; }
+  .cm.is-pinned .t-name { font-size: 13px; line-height: 17px; margin-top: 6px; }
+}
+/* committees, unpinned wall: the head row grows to fit its content (it spilled under the first plates,
+   hiding "Committees" and the IPMC → NATO range on phones and tablets) */
+.cm:not(.is-pinned) .cm-wall { grid-template-rows: minmax(172px, auto); }
+@media (min-width: 600px) and (max-width: 1023px) { .cm:not(.is-pinned) .cm-wall { grid-template-rows: minmax(190px, auto); } }
+@media (min-width: 1024px) { .cm:not(.is-pinned) .cm-wall { grid-template-rows: minmax(200px, auto); } }
+/* schedule: the readout's mask clipped descenders (the g of Registration); room below, same layout */
+.sch-name { padding-bottom: 0.2em; margin-bottom: -0.14em; }
+/* schedule: the playhead stops above the hour labels, so it never strikes through one (18 at the end) */
+.playhead i { bottom: auto; height: 112px; }

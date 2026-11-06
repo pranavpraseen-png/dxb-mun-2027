@@ -11,7 +11,8 @@ import { NAV, type SectionId } from './data';
 import { sectionStore } from './store';
 import { NAV_H } from './ui';
 import { Nav } from './Nav';
-import { Stage } from './Stage';
+import { StillStage } from './Stage';
+import { Opening } from './opening/Opening';
 import { Clauses } from './Clauses';
 import { Committees } from './Committees';
 import { Schedule } from './Schedule';
@@ -19,6 +20,7 @@ import { Pass } from './Pass';
 import { Desk } from './Desk';
 import { Footer } from './Footer';
 import { Cursor } from './Cursor';
+import { Progress } from './Progress';
 
 const root = document.documentElement;
 root.classList.add(still ? 'is-still' : 'motion');
@@ -71,8 +73,10 @@ function App() {
     <>
       <a className="skip" href="#about" onClick={(e) => { e.preventDefault(); document.getElementById('about')?.scrollIntoView(); }}>Skip to content</a>
       <Nav />
+      <Progress />
       <main id="main">
-        <Stage />
+        {/* Alt 3's loader + first scene (owner, 2026-11-06); reduced motion and no-WebGL keep the calm still stage */}
+        {still ? <StillStage /> : <Opening fallback={<StillStage />} />}
         <Clauses />
         <Committees />
         <Schedule />
