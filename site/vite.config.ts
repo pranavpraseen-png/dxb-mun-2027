@@ -8,7 +8,11 @@ import { readdirSync, existsSync } from 'node:fs';
 // Set CONCEPT=<id> to build only one concept (used by each designer to check their own work).
 const root = __dirname;
 const only = process.env.CONCEPT;
-const concepts = readdirSync(resolve(root, 'concepts')).filter((d) => existsSync(resolve(root, 'concepts', d, 'index.html')));
+// Set CONCEPTS=<id>,<id> to build the showcase and dashboards with only those concepts (the shareable preview).
+const pick = process.env.CONCEPTS?.split(',').map((s) => s.trim()).filter(Boolean);
+const concepts = readdirSync(resolve(root, 'concepts'))
+  .filter((d) => existsSync(resolve(root, 'concepts', d, 'index.html')))
+  .filter((d) => !pick || pick.includes(d));
 const input: Record<string, string> = only
   ? { [only]: resolve(root, 'concepts', only, 'index.html') }
   : Object.fromEntries([
