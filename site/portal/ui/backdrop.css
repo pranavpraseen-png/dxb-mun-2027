@@ -1,0 +1,84 @@
+/* Sign-in backdrop (Backdrop.tsx): the website loader's kinetic type, filling the sign-in column behind the card.
+   Same type as the loader: Anybody (width + weight axes) and Martian Mono. Crisp: no blur, no glow. */
+.bd {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bd-rows {
+  position: absolute;
+  inset: -2% 0 auto 0;
+  display: flex;
+  flex-direction: column;
+}
+.bd-row {
+  font-family: 'Anybody Variable', 'Arial Narrow', sans-serif;
+  line-height: 0.8;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+  font-kerning: none;
+  transform-origin: 0 50%;
+  visibility: hidden;
+  will-change: transform;
+}
+.bd-c { display: inline-block; color: transparent; }
+.bd-label {
+  position: absolute;
+  left: 32px;
+  bottom: 18px;
+  margin: 0;
+  font-family: 'Martian Mono Variable', ui-monospace, monospace;
+  font-variation-settings: "wdth" 87.5;
+  font-weight: 450;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: #8a867e;
+}
+.bd-label b { color: #f2efe8; font-weight: 700; }
+@media (max-width: 767px) {
+  .bd-label { display: none; }
+}
+
+/* Alt 2 · Roll call: six reels, one per letter column. */
+.bd-reel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: calc(100% / 6);
+  font-family: 'Anybody Variable', 'Arial Narrow', sans-serif;
+  line-height: 1;
+  font-kerning: none;
+}
+.bd-cell {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  text-align: center;
+  white-space: nowrap;
+  color: transparent;
+  will-change: transform;
+}
+
+/* Alt 3 · Session in progress: five gliding bands. */
+.bd-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 20%;
+  font-family: 'Anybody Variable', 'Arial Narrow', sans-serif;
+  line-height: 0.86;
+  font-kerning: none;
+  white-space: nowrap;
+}
+.bd-g {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 50%;
+  visibility: hidden;
+  color: transparent;
+  will-change: transform;
+}

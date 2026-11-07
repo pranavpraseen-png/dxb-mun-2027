@@ -8,6 +8,7 @@ import { ArrowLeft, ArrowRight, Mail, RotateCw } from 'lucide-react';
 import type { AuthApi, AuthProvider } from '@/platform/v2';
 import { useCaptcha } from '../lib/captcha';
 import { Checkbox } from '../ui/coss/checkbox';
+import { Backdrop, pickBackdrop } from '../ui/Backdrop';
 import { conference } from '@/data/conference';
 import { errorText } from '../lib/data';
 import { DemoControls } from '../ui/DemoControls';
@@ -48,6 +49,7 @@ export function SignIn({
   const [remember, setRemember] = useState(() => api.remembered());
   const [leaving, setLeaving] = useState<AuthProvider | null>(null);
   const captcha = useCaptcha();
+  const [backdrop] = useState(pickBackdrop);
   const providers = api.mode === 'demo' ? (['google', 'microsoft'] as const) : LIVE_PROVIDERS;
 
   const withProvider = async (p: AuthProvider) => {
@@ -79,13 +81,14 @@ export function SignIn({
   return (
     <div className="flex min-h-svh flex-col md:grid md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
       <HostPanel tagline={tagline} />
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="relative isolate flex min-w-0 flex-1 flex-col overflow-hidden">
+        {backdrop && <Backdrop kind={backdrop} />}
         <header className="flex min-h-15 items-center gap-3 border-b px-8 max-md:min-h-14 max-md:px-4">
           <span className="md:hidden"><Wordmark /></span>
           <DemoControls api={api} menu={showScenarios} />
         </header>
         <main id="main" tabIndex={-1} className="grid flex-1 place-items-center px-4 pt-8 pb-12 outline-none max-md:place-items-start max-md:pt-5">
-          <Card className="w-full max-w-[460px] rounded-sm shadow-none before:hidden">
+          <Card className={`w-full max-w-[460px] rounded-sm shadow-none before:hidden ${backdrop ? 'bg-card/72' : ''}`}>
             <CardHeader className="gap-2 p-7 pb-0 max-md:p-5 max-md:pb-0">
               <p className="font-mono text-[14px] font-medium uppercase text-muted-foreground tracking-[0.08em]">{conference.edition} · {title}</p>
               <CardTitle render={<h1 />} className="font-heading font-wide text-[56px] font-extrabold leading-[1.05] max-md:text-[46px] tracking-[-0.02em]">Sign in</CardTitle>
