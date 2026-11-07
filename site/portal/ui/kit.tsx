@@ -181,11 +181,6 @@ export function Hint({ children }: { children: ReactNode }) {
   );
 }
 
-/** "Sample data": shown wherever demo content appears (coss Badge, outline). */
-export function SampleTag() {
-  return <Badge variant="outline" size="lg" className="h-7 border-dashed px-2 text-sm font-normal text-muted-foreground sm:text-sm">Sample data</Badge>;
-}
-
 /* ------------------------------------------------------------------ nameplate: our signature (hand-made) */
 export function Nameplate({ seat, abbr, name, label = 'Your seat' }: { seat: string; abbr: string; name: string; label?: string }) {
   const len = Math.max(seat.length, 4);

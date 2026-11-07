@@ -3,7 +3,7 @@ import { Mic, MicOff } from 'lucide-react';
 import { useAction, useLoad } from '../lib/data';
 import { useConf } from '../lib/conf';
 import { ordinal } from '../lib/format';
-import { Empty, ErrorBox, Hint, Locked, PageHead, Panel, Plain, Row, Rows, SampleTag, ScreenSkeleton, You } from '../ui/kit';
+import { Empty, ErrorBox, Hint, Locked, PageHead, Panel, Plain, Row, Rows, ScreenSkeleton, You } from '../ui/kit';
 import { Button } from '../ui/coss/button';
 import { Card } from '../ui/coss/card';
 import { cn } from '../ui/coss/utils';
@@ -11,7 +11,7 @@ import { SPEAKER, Status } from '../ui/status';
 import { SlimTimer } from '../ui/timer';
 
 export function SpeakersScreen() {
-  const { phase, readOnly, demo } = useConf();
+  const { phase, readOnly } = useConf();
   const q = useLoad(async (a) => (phase === 'before' ? null : Promise.all([a.speakers(), a.live()])), ['speakers', 'live'], [phase]);
   const { run, pending } = useAction();
 
@@ -65,7 +65,7 @@ export function SpeakersScreen() {
           </div>
         )}
       </Card>
-      <Panel title="The list" icon={Mic} aside={demo && speakers.length ? <SampleTag /> : undefined}>
+      <Panel title="The list" icon={Mic}>
         {speakers.length === 0 ? (
           <Empty>No one on the list yet.</Empty>
         ) : (

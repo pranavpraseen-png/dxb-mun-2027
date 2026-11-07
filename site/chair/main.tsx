@@ -46,7 +46,6 @@ function App() {
         <SignIn
           api={api}
           title="Chair dashboard"
-          showScenarios={false}
           tagline="Timer, roll call, votes and resolutions for your committee, from the dais."
         />
       )}

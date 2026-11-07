@@ -3,22 +3,23 @@
 // Control, rendered as links) under the top bar.
 import type { ComponentType, ReactNode } from 'react';
 import {
-  Armchair, CalendarDays, Ellipsis, KeyRound, Landmark, LogOut, Megaphone, MonitorDot, RotateCcw, ScanLine, type LucideProps,
+  Armchair, CalendarDays, Ellipsis, KeyRound, Landmark, LogOut, Megaphone, MonitorDot, ScanLine, type LucideProps,
 } from 'lucide-react';
-import { NO_LOGIN, resetDemoData, type Me, type Phase } from '@/platform/v2';
+import { NO_LOGIN, type Me, type Phase } from '@/platform/v2';
 import { cn } from '../portal/ui/coss/utils';
 import {
   Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider,
 } from '../portal/ui/coss/sidebar';
 import { SegmentedControl, SegmentedControlItem } from '../portal/ui/coss/segmented-control';
 import { Sheet, SheetPopup, SheetHeader, SheetTitle, SheetPanel, SheetTrigger, SheetClose } from '../portal/ui/coss/sheet';
-import { Badge } from '../portal/ui/coss/badge';
 import { Button } from '../portal/ui/coss/button';
 import { PLACES, href, placeOf, useRoute, type PlaceId } from './lib/route';
 import { useAdmin, useLoad } from './lib/data';
 import { HostMark, Tag, Wordmark, type Tone } from './ui/kit';
-import { Confirm } from './ui/confirm';
-import { useToast } from './lib/toast';
+import { Ambient, ambientOn } from '../portal/ui/Ambient';
+
+/** Dashboard ambient (preview with ?calm=1 until it goes live). Read once per page load. */
+const calm = ambientOn();
 
 const ICON: Record<PlaceId, ComponentType<LucideProps>> = {
   live: MonitorDot, delegates: Armchair, committees: Landmark, programme: CalendarDays, notices: Megaphone, checkin: ScanLine, team: KeyRound,
@@ -39,19 +40,6 @@ export function PhaseTag() {
   if (!phase.data) return null;
   const t = PHASE_TAG[phase.data];
   return <Tag tone={t.tone}>{t.word}</Tag>;
-}
-
-/** Demo only: put the sample data back to its first state, in every open tab. */
-function ResetDemo({ className }: { className?: string }) {
-  const { bump } = useAdmin();
-  const toast = useToast();
-  return (
-    <Confirm
-      trigger={<Button variant="ghost" size="sm" className={className}><RotateCcw aria-hidden="true" /> Reset sample data</Button>}
-      title="Reset the sample data?" line="Every demo change in every open tab goes back to the start." confirm="Reset"
-      onConfirm={() => { resetDemoData(); bump(); toast('Sample data reset', 'ok'); }}
-    />
-  );
 }
 
 const level = (m: Me) => (m.isCore ? 'Core secretariat' : 'Secretariat');
@@ -113,18 +101,13 @@ export function Shell({ children }: { children: ReactNode }) {
         </Sidebar>
       </div>
 
-      <div className="admin-body flex min-w-0 flex-1 flex-col">
+      <div className="admin-body isolate flex min-w-0 flex-1 flex-col">
+        {calm && <Ambient />}
         <header className="sticky top-0 z-30 flex min-h-15 items-center gap-3 border-b bg-background px-7 max-md:min-h-14 max-md:gap-2 max-md:px-4">
           <a className="inline-flex min-h-11 items-center md:hidden" href={first('live')} aria-label="DXB MUN secretariat, live overview"><Wordmark /></a>
           <span className="font-mono text-[14px] font-medium uppercase text-muted-foreground max-lg:hidden tracking-[0.08em]">Secretariat dashboard</span>
           <div className="ms-auto flex min-w-0 items-center gap-2">
             <PhaseTag />
-            {api.mode === 'demo' && (
-              <Badge variant="outline" className="h-7 gap-2 border-dashed bg-transparent px-2 text-sm font-medium text-muted-foreground dark:bg-transparent sm:h-7 sm:text-sm max-sm:hidden">
-                <span className="size-2 bg-warning" aria-hidden="true" /> Demo
-              </Badge>
-            )}
-            {api.mode === 'demo' && <ResetDemo className="max-md:hidden" />}
           </div>
         </header>
         {here.pages.length > 1 && (
@@ -181,7 +164,6 @@ export function Shell({ children }: { children: ReactNode }) {
               })}
               <p className="mt-3 px-3 text-sm text-muted-foreground">{me.fullName ?? me.email} · {level(me)}</p>
               {!NO_LOGIN && <Button variant="outline" className="mt-1" onClick={signOut}><LogOut aria-hidden="true" /> Sign out</Button>}
-              {api.mode === 'demo' && <ResetDemo />}
             </SheetPanel>
           </SheetPopup>
         </Sheet>

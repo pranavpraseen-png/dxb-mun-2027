@@ -82,3 +82,29 @@
   color: transparent;
   will-change: transform;
 }
+
+/* Dashboard ambient (Ambient.tsx): one faint line of DXB MUN at the foot of the work area, half sunk. */
+.amb {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.amb-row {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transform-origin: 0 50%;
+  translate: 0 34%;
+}
+/* Phones: sit just above the bottom tab bar instead of behind it. */
+@media (max-width: 767px) {
+  .amb { bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
+  .amb-row { translate: 0 18%; }
+}
+@media print {
+  .amb { display: none; }
+}

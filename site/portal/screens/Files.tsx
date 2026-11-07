@@ -7,7 +7,7 @@ import { errorText, useAction, useApi, useLoad } from '../lib/data';
 import { useConf } from '../lib/conf';
 import { useToast } from '../lib/toast';
 import { dayOf, openInNewTab, sizeText } from '../lib/format';
-import { Empty, ErrorBox, Field, FieldError, PageHead, Panel, Row, Rows, SampleTag, ScreenSkeleton, Stack } from '../ui/kit';
+import { Empty, ErrorBox, Field, FieldError, PageHead, Panel, Row, Rows, ScreenSkeleton, Stack } from '../ui/kit';
 import { Choice, TextInput } from '../ui/controls';
 import { Button } from '../ui/coss/button';
 import { Badge } from '../ui/coss/badge';
@@ -33,7 +33,7 @@ const GROUPS: { scope: FileScope; title: string; icon: typeof FolderOpen; empty:
 ];
 
 export function FilesScreen() {
-  const { readOnly, demo } = useConf();
+  const { readOnly } = useConf();
   const q = useLoad(async (a) => Promise.all([a.files(), a.committeeSeats()]), ['files']);
   const [adding, setAdding] = useState(false);
   const [sharing, setSharing] = useState<LibraryFile | null>(null);
@@ -61,7 +61,7 @@ export function FilesScreen() {
         {GROUPS.map((g) => {
           const list = files.filter((f) => f.scope === g.scope);
           return (
-            <Panel key={g.scope} title={g.title} icon={g.icon} aside={demo && list.length ? <SampleTag /> : list.length ? <span className="font-mono text-muted-foreground">{list.length}</span> : undefined}>
+            <Panel key={g.scope} title={g.title} icon={g.icon} aside={list.length ? <span className="font-mono text-muted-foreground">{list.length}</span> : undefined}>
               {list.length === 0 ? <Empty>{g.empty}</Empty> : (
                 <Rows label={`${g.title} files`}>
                   {list.map((f) => <FileRow key={f.id} f={f} onShare={g.scope === 'mine' && !readOnly ? () => setSharing(f) : undefined} />)}

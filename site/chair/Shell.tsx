@@ -3,21 +3,23 @@
 // (a coss ui Sheet). The same pattern as the delegate and secretariat dashboards.
 import type { ComponentType, ReactNode } from 'react';
 import {
-  Ellipsis, FileText, Files, Gavel, LogOut, Medal, MessageSquareText, RotateCcw, ScrollText, Timer, Vote, type LucideProps,
+  Ellipsis, FileText, Files, Gavel, LogOut, Medal, MessageSquareText, ScrollText, Timer, Vote, type LucideProps,
 } from 'lucide-react';
-import { NO_LOGIN, resetDemoData, type ChairRole } from '@/platform/v2';
-import { Confirm } from './ui/confirm';
+import { NO_LOGIN, type ChairRole } from '@/platform/v2';
 import { cn } from '../portal/ui/coss/utils';
 import {
   Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider,
 } from '../portal/ui/coss/sidebar';
 import { SegmentedControl, SegmentedControlItem } from '../portal/ui/coss/segmented-control';
 import { Sheet, SheetPopup, SheetHeader, SheetTitle, SheetPanel, SheetTrigger, SheetClose } from '../portal/ui/coss/sheet';
-import { Badge } from '../portal/ui/coss/badge';
 import { Button } from '../portal/ui/coss/button';
 import { href, useRoute, type Page } from './lib/route';
 import { useChair } from './lib/data';
 import { HostMark, Pick, Wordmark } from './ui/kit';
+import { Ambient, ambientOn } from '../portal/ui/Ambient';
+
+/** Dashboard ambient (preview with ?calm=1 until it goes live). Read once per page load. */
+const calm = ambientOn();
 
 type Place = { id: Page; label: string; short?: string; icon: ComponentType<LucideProps> };
 const PLACES: Place[] = [
@@ -50,26 +52,6 @@ function CommitteeSwitch({ className }: { className?: string }) {
         onChange={(v) => v && setCommittee(v)}
         placeholder="Choose a committee"
         options={committees.map((c) => ({ value: c.id, label: `${c.abbr} · ${ROLE_WORD[c.myRole]}` }))}
-      />
-    </div>
-  );
-}
-
-function DemoMarker() {
-  const { bump } = useChair();
-  return (
-    <div className="flex items-center">
-      <Badge variant="outline" className="h-11 shrink-0 gap-2 rounded-none border-dashed border-e-0 bg-transparent px-3 text-sm font-medium text-muted-foreground dark:bg-transparent sm:h-11 sm:text-sm max-md:px-2">
-        <span className="size-2 bg-warning" aria-hidden="true" />
-        <span className="max-md:hidden">Sample data · demo</span><span className="md:hidden">Demo</span>
-      </Badge>
-      <Confirm
-        title="Reset the sample data?"
-        line="Every demo tab goes back to the starting samples."
-        confirm="Reset"
-        danger
-        onConfirm={() => { resetDemoData(); bump('all'); }}
-        trigger={<Button variant="outline" size="sm" className="rounded-none" aria-label="Reset sample data"><RotateCcw aria-hidden="true" /><span className="max-lg:hidden">Reset</span></Button>}
       />
     </div>
   );
@@ -133,7 +115,8 @@ export function Shell({ children }: { children: ReactNode }) {
         </Sidebar>
       </div>
 
-      <div className="chair-body flex min-w-0 flex-1 flex-col">
+      <div className="chair-body isolate flex min-w-0 flex-1 flex-col">
+        {calm && <Ambient />}
         <header className="sticky top-0 z-30 flex h-15 items-center gap-4 border-b bg-background px-7 max-md:h-14 max-md:gap-2.5 max-md:px-4">
           <a className="inline-flex min-h-11 shrink-0 items-center md:hidden" href={href('run')} aria-label="DXB MUN dais, run session"><Wordmark /></a>
           <p className="flex min-w-0 items-center gap-2 font-mono text-[14px] font-medium uppercase max-md:hidden tracking-[0.08em]">
@@ -142,7 +125,7 @@ export function Shell({ children }: { children: ReactNode }) {
             <span className="text-muted-foreground">· {committee.room ? `Room ${committee.room}` : 'Room: To be announced'}</span>
           </p>
           <CommitteeSwitch className="min-w-0 flex-1 md:hidden" />
-          <div className="ms-auto flex shrink-0 items-center">{api.mode === 'demo' && <DemoMarker />}</div>
+          <div className="ms-auto flex shrink-0 items-center"></div>
         </header>
         <main id="main" className="chair-main" tabIndex={-1}>{children}</main>
       </div>

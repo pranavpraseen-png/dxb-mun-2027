@@ -11,7 +11,6 @@ import { Checkbox } from '../ui/coss/checkbox';
 import { Backdrop, pickBackdrop } from '../ui/Backdrop';
 import { conference } from '@/data/conference';
 import { errorText } from '../lib/data';
-import { DemoControls } from '../ui/DemoControls';
 import { FieldError, HostMark, Wordmark } from '../ui/kit';
 import { Card, CardDescription, CardFooter, CardHeader, CardPanel, CardTitle } from '../ui/coss/card';
 import { Field, FieldLabel } from '../ui/coss/field';
@@ -31,14 +30,12 @@ export type SignInProps = {
   api: AuthApi;
   /** The product name in the card's eyebrow. Default "Delegate dashboard"; the admin uses "Secretariat dashboard". */
   title?: string;
-  /** Show the demo scenario menu (demo mode only). Default true. The "Sample data" marker stays either way. */
-  showScenarios?: boolean;
   /** The line under the motto on the host panel. Default is the delegate one. */
   tagline?: string;
 };
 
 export function SignIn({
-  api, title = 'Delegate dashboard', showScenarios = true,
+  api, title = 'Delegate dashboard',
   tagline = 'Your seat, the timer, your votes and your notes, in one place.',
 }: SignInProps) {
   const [step, setStep] = useState<'email' | 'code'>('email');
@@ -85,7 +82,6 @@ export function SignIn({
         {backdrop && <Backdrop kind={backdrop} />}
         <header className="flex min-h-15 items-center gap-3 border-b px-8 max-md:min-h-14 max-md:px-4">
           <span className="md:hidden"><Wordmark /></span>
-          <DemoControls api={api} menu={showScenarios} />
         </header>
         <main id="main" tabIndex={-1} className="grid flex-1 place-items-center px-4 pt-8 pb-12 outline-none max-md:place-items-start max-md:pt-5">
           <Card className={`w-full max-w-[460px] rounded-sm shadow-none before:hidden ${backdrop ? 'bg-card/72' : ''}`}>

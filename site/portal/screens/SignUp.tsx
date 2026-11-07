@@ -8,7 +8,6 @@ import { useAction, useApi, useLoad } from '../lib/data';
 import { Facts, Field, FieldError, HostMark, PageHead, Panel, Plain, Row, Rows, Skeleton, Stack, Wordmark, when } from '../ui/kit';
 import { Choice, TextInput } from '../ui/controls';
 import { Button } from '../ui/coss/button';
-import { DemoControls } from '../ui/DemoControls';
 import { Status, type StatusDef } from '../ui/status';
 
 function Frame({ children }: { children: ReactNode }) {
@@ -20,7 +19,6 @@ function Frame({ children }: { children: ReactNode }) {
         <Wordmark />
         <span className="font-mono text-[14px] font-medium uppercase text-muted-foreground max-md:hidden tracking-[0.08em]">Delegate</span>
         <span className="ms-auto flex items-center gap-2">
-          <DemoControls api={api} className="flex min-w-0 items-center" />
           <Button variant="ghost" onClick={() => void api.signOut()}><LogOut aria-hidden="true" /> <span className="max-md:sr-only">Sign out</span></Button>
         </span>
       </header>

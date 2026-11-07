@@ -14,7 +14,7 @@ import { Alert, AlertAction, AlertDescription, AlertTitle } from '../../portal/u
 import { Field as CossField, FieldDescription, FieldLabel } from '../../portal/ui/coss/field';
 import { Select, SelectItem, SelectPopup, SelectTrigger, SelectValue } from '../../portal/ui/coss/select';
 import { cn } from '../../portal/ui/coss/utils';
-import { errorText, useAdmin } from '../lib/data';
+import { errorText } from '../lib/data';
 
 /* ------------------------------------------------------------------ status */
 export type Tone = 'todo' | 'done' | 'waiting' | 'locked' | 'problem' | 'live';
@@ -72,20 +72,14 @@ export function HostMark({ className }: { className?: string }) {
 }
 
 /* ------------------------------------------------------------------ page heading */
-export function SampleTag() {
-  return <Badge variant="outline" size="lg" className="h-7 border-dashed px-2 text-sm font-normal text-muted-foreground sm:text-sm">Sample data</Badge>;
-}
-
 export function Head({ title, line, aside }: { title: string; line?: ReactNode; aside?: ReactNode }) {
-  const { api } = useAdmin();
   return (
     <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
       <div className="min-w-0">
         <h1 className="font-heading font-wide text-[42px] font-extrabold leading-[1.05] max-md:text-[34px] tracking-[-0.02em]" tabIndex={-1}>{title}</h1>
-        {(line || api.mode === 'demo') && (
+        {line && (
           <p className="mt-1.5 flex flex-wrap items-center gap-2 text-lg text-muted-foreground max-md:text-base">
-            {line && <span>{line}</span>}
-            {api.mode === 'demo' && <SampleTag />}
+            <span>{line}</span>
           </p>
         )}
       </div>

@@ -23,10 +23,13 @@ import { SegmentedControl, SegmentedControlItem } from './ui/coss/segmented-cont
 import { Sheet, SheetHeader, SheetPanel, SheetPopup, SheetTitle } from './ui/coss/sheet';
 import { Button } from './ui/coss/button';
 import { Alert, AlertDescription, AlertTitle } from './ui/coss/alert';
-import { DemoControls } from './ui/DemoControls';
 import { AnnouncementsBell } from './ui/announcements';
 import { SlimTimer } from './ui/timer';
 import { CheckinQr, SeatFacts, SeatPlate, TBA } from './ui/seat';
+import { Ambient, ambientOn } from './ui/Ambient';
+
+/** Dashboard ambient (preview with ?calm=1 until it goes live). Read once per page load. */
+const calm = ambientOn();
 
 type PlaceDef = { id: Place; label: string; icon: ComponentType<LucideProps> };
 export const PLACES: PlaceDef[] = [
@@ -119,7 +122,8 @@ export function Shell({ api, badges, children }: { api: DelegateApi; badges: Par
         </Sidebar>
       </div>
 
-      <div className="app-body flex min-w-0 flex-1 flex-col">
+      <div className="app-body isolate flex min-w-0 flex-1 flex-col">
+        {calm && <Ambient />}
         <HostMark className="w-full flex-row items-baseline justify-center gap-2 border-l-0 border-t-2 border-t-gold py-1.5 md:hidden" />
         <header className="sticky top-0 z-30 border-b bg-background">
           <div className="flex h-15 items-center gap-3 px-6 max-[1100px]:px-5 max-md:h-14 max-md:gap-2 max-md:px-4">
@@ -137,7 +141,6 @@ export function Shell({ api, badges, children }: { api: DelegateApi; badges: Par
             <span className="ms-auto flex shrink-0 items-center gap-2">
               {L && <SlimTimer timer={L.timer} className="max-w-72 max-md:hidden" />}
               <AnnouncementsBell open={bell} onOpenChange={setBell} />
-              <DemoControls api={api} className="flex min-w-0 items-center" />
             </span>
           </div>
           {L && (

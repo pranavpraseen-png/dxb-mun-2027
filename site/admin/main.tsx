@@ -44,7 +44,6 @@ function App() {
         <SignIn
           api={api}
           title="Secretariat dashboard"
-          showScenarios={false}
           tagline="Committees, seats, the schedule and every room, live, in one place."
         />
       )}

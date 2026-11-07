@@ -10,7 +10,7 @@ import { useAction, useLoad } from '../lib/data';
 import { useConf } from '../lib/conf';
 import { go, useRoute } from '../lib/route';
 import { dayTime, timeOf } from '../lib/format';
-import { Counter, Empty, ErrorBox, Field, PageHead, Panel, Plain, Row, Rows, SampleTag, ScreenSkeleton } from '../ui/kit';
+import { Counter, Empty, ErrorBox, Field, PageHead, Panel, Plain, Row, Rows, ScreenSkeleton } from '../ui/kit';
 import { Choice, CheckRow, TextArea } from '../ui/controls';
 import { Button } from '../ui/coss/button';
 import { Input } from '../ui/coss/input';
@@ -53,7 +53,7 @@ const DAIS = '__dais';
 const MAX = 300;
 
 function ChitsTab() {
-  const { seat, readOnly, demo } = useConf();
+  const { seat, readOnly } = useConf();
   const q = useLoad(async (a) => Promise.all([a.chits(), a.committeeSeats()]), ['chits']);
   const [box, setBox] = useState<'in' | 'out'>('in');
   const [to, setTo] = useState('');
@@ -129,7 +129,7 @@ function ChitsTab() {
         </Panel>
       </div>
       <div className="col">
-        <Panel title="Chits" icon={Inbox} aside={demo && all.length ? <SampleTag /> : undefined}>
+        <Panel title="Chits" icon={Inbox}>
           <Tabs value={box} onValueChange={(v) => setBox(v as 'in' | 'out')} className="w-full gap-3">
             <TabsList variant="underline" aria-label="Chit folders" className="w-full justify-start border-b p-0 data-[orientation=horizontal]:py-0">
               <TabsTab value="in" className={cn(TAB_CLS, 'text-lg sm:text-lg')}>Inbox <span className="font-mono text-base">{inbox.length}</span></TabsTab>
