@@ -18,7 +18,7 @@ import { useChair } from './lib/data';
 import { HostMark, Pick, Wordmark } from './ui/kit';
 import { Ambient, ambientOn } from '../portal/ui/Ambient';
 
-/** Dashboard ambient (preview with ?calm=1 until it goes live). Read once per page load. */
+/** Dashboard ambient (live; ?calm=0 hides it). Read once per page load. */
 const calm = ambientOn();
 
 type Place = { id: Page; label: string; short?: string; icon: ComponentType<LucideProps> };

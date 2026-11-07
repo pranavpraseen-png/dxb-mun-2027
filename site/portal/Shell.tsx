@@ -28,7 +28,7 @@ import { SlimTimer } from './ui/timer';
 import { CheckinQr, SeatFacts, SeatPlate, TBA } from './ui/seat';
 import { Ambient, ambientOn } from './ui/Ambient';
 
-/** Dashboard ambient (preview with ?calm=1 until it goes live). Read once per page load. */
+/** Dashboard ambient (live; ?calm=0 hides it). Read once per page load. */
 const calm = ambientOn();
 
 type PlaceDef = { id: Place; label: string; icon: ComponentType<LucideProps> };

@@ -18,7 +18,7 @@ import { useAdmin, useLoad } from './lib/data';
 import { HostMark, Tag, Wordmark, type Tone } from './ui/kit';
 import { Ambient, ambientOn } from '../portal/ui/Ambient';
 
-/** Dashboard ambient (preview with ?calm=1 until it goes live). Read once per page load. */
+/** Dashboard ambient (live; ?calm=0 hides it). Read once per page load. */
 const calm = ambientOn();
 
 const ICON: Record<PlaceId, ComponentType<LucideProps>> = {

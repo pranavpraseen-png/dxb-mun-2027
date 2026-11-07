@@ -26,10 +26,10 @@ const still = () => {
 const smooth = (a: number, b: number, x: number) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
 
 /**
- * Preview switch until the owner says it goes live: ?calm=1 shows it, ?calm=0 hides it.
- * AMBIENT_LIVE flips the default for everyone.
+ * Live for everyone since 2026-11-07 (owner: "yes, make it live"). ?calm=0 hides it, ?calm=1 forces it on.
+ * AMBIENT_LIVE is the switch for everyone.
  */
-const AMBIENT_LIVE = false;
+const AMBIENT_LIVE = true;
 export function ambientOn(): boolean {
   try {
     const v = new URLSearchParams(location.search).get('calm');
