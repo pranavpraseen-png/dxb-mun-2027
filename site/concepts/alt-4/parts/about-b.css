@@ -1,0 +1,53 @@
+/* About · B · The preamble. Prefix: aboutb- */
+.aboutb{background:var(--ground);color:var(--ink);padding:clamp(88px,12vw,168px) 0 clamp(96px,12vw,176px);
+  font-family:'Archivo Variable',system-ui,sans-serif}
+.aboutb-wrap{max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+
+/* left column: section label + the clause counter that rides the reading line */
+.aboutb-side{grid-column:1 / span 3;position:relative}
+.aboutb-label,.aboutb-count,.aboutb-meta dt{font:500 12px/1.2 'JetBrains Mono Variable',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+.aboutb-label span{color:var(--ink);margin-right:12px}
+.aboutb-count{position:sticky;top:62vh;margin-top:40px;display:flex;align-items:center;gap:10px;transform:translateY(-50%)}
+.aboutb-count b{color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums}
+.aboutb-tick{display:inline-block;width:28px;height:1px;background:var(--ink)}
+
+.aboutb-doc{grid-column:4 / span 9}
+.aboutb-head{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));column-gap:24px;row-gap:40px;padding-bottom:40px;border-bottom:1px solid var(--line)}
+.aboutb-meta{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:12px 48px;margin:0}
+.aboutb-meta div{display:flex;flex-direction:column;gap:8px}
+.aboutb-meta dd{margin:0;font-size:15px;font-weight:500;font-stretch:100%;color:var(--ink);display:flex;align-items:center;gap:8px}
+.aboutb-host{display:inline-block;width:8px;height:8px;background:var(--maroon);outline:1px solid #DCBDAB;outline-offset:-1px}
+.aboutb-h{grid-column:1 / -1;margin:0;font-size:clamp(36px,4.4vw,56px);line-height:1;font-weight:700;font-stretch:88%;letter-spacing:-.02em}
+
+/* the clauses */
+.aboutb-list{list-style:none;margin:0;padding:0}
+.aboutb-clause{position:relative;display:grid;grid-template-columns:48px minmax(0,1fr);padding:26px 0 28px;border-bottom:1px solid var(--line)}
+.aboutb-clause::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:0 50%;transition:transform .5s cubic-bezier(.2,.7,.1,1)}
+.aboutb-clause.is-first-op{margin-top:56px}
+.aboutb-n{font:500 13px/1 'JetBrains Mono Variable',ui-monospace,monospace;color:var(--muted);padding-top:.7em}
+.aboutb-p{margin:0;display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr);column-gap:24px;align-items:baseline;
+  font-size:clamp(20px,2.05vw,30px);line-height:1.25;font-weight:400;font-stretch:100%;color:var(--muted);transition:color .25s linear}
+.aboutb-verb{font-style:italic;font-weight:500;font-stretch:100%}
+.aboutb-a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.18em}
+.aboutb-a:hover{color:var(--un)}
+.aboutb-a:focus-visible{outline:2px solid var(--un);outline-offset:3px}
+
+/* read: the clause has crossed the reading line. Words never change, only their ink. */
+.aboutb-clause.is-read .aboutb-p{color:var(--ink)}
+.aboutb-clause.is-read::after{transform:scaleX(1)}
+.aboutb-clause.is-read .aboutb-n{color:var(--ink)}
+.aboutb-clause.is-read .aboutb-verb.is-signal{color:var(--signal)}
+.aboutb-clause.is-op .aboutb-verb{font-weight:600}
+.aboutb.is-still .aboutb-clause::after{transition:none}
+
+@media (max-width:860px){
+  .aboutb-wrap{display:block}
+  .aboutb-side{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
+  .aboutb-count{position:static;margin:0;transform:none}
+  .aboutb-head{display:block;padding-bottom:32px}
+  .aboutb-meta{gap:16px 28px;margin-bottom:32px}
+  .aboutb-clause{grid-template-columns:32px minmax(0,1fr);padding:20px 0 22px}
+  .aboutb-clause.is-first-op{margin-top:40px}
+  .aboutb-p{display:block;font-size:21px;line-height:1.3}
+  .aboutb-n{padding-top:.45em}
+}

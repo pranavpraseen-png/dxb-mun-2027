@@ -1,0 +1,74 @@
+/* Committees · B · Nameplate rail. Prefix: committeesb- */
+.committeesb{background:var(--ground);color:var(--ink);padding:clamp(88px,12vw,168px) 0;font-family:'Archivo Variable',system-ui,sans-serif;overflow:hidden}
+.committeesb-wrap{max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.committeesb-label,.committeesb-count,.committeesb-dl dt,.committeesb-n{font:500 12px/1.2 'JetBrains Mono Variable',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+.committeesb-label{grid-column:1 / span 3;padding-top:.6em}
+.committeesb-label span{color:var(--ink);margin-right:12px}
+.committeesb-head{grid-column:4 / span 9}
+.committeesb-h{margin:0;font-size:clamp(36px,4.4vw,56px);line-height:1;font-weight:700;font-stretch:88%;letter-spacing:-.02em}
+.committeesb-sub{margin:20px 0 0;font-size:clamp(17px,1.35vw,20px);line-height:1.4;color:var(--muted)}
+
+/* the rail: full bleed, first and last plate can both reach the centre */
+.committeesb-stage{--pw:232px;--ph:148px;position:relative;margin-top:clamp(56px,7vw,88px)}
+.committeesb-rail{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;scroll-snap-type:x mandatory;cursor:grab;outline:none;
+  touch-action:pan-x pan-y;user-select:none;-webkit-user-select:none}
+.committeesb-rail::-webkit-scrollbar{display:none}
+.committeesb-rail.is-moving{scroll-snap-type:none}
+.committeesb-rail.is-drag{cursor:grabbing}
+.committeesb-rail:focus-visible .committeesb-item.is-up .committeesb-plate{outline:2px solid var(--un);outline-offset:6px}
+.committeesb-list{list-style:none;margin:0;display:flex;gap:20px;padding:40px calc(50vw - var(--pw) / 2) 0;width:max-content}
+.committeesb-item{scroll-snap-align:center;perspective:900px;perspective-origin:50% 0%}
+
+/* a plate lies back on the desk; the one in front of you stands up */
+.committeesb-plate{position:relative;width:var(--pw);height:var(--ph);display:flex;align-items:flex-end;padding:0 18px 16px;
+  background:var(--surface);border:1px solid var(--line);color:var(--muted);cursor:pointer;
+  transform-origin:50% 100%;transform:rotateX(62deg);transition:transform .55s cubic-bezier(.2,.75,.15,1),background-color .2s linear,color .2s linear}
+.committeesb-item.is-near .committeesb-plate{transform:rotateX(48deg);color:var(--ink)}
+.committeesb-item.is-up .committeesb-plate{transform:rotateX(0deg);background:var(--ink);border-color:var(--ink);color:var(--ground)}
+.committeesb-ridge{position:absolute;left:-1px;right:-1px;top:-1px;height:8px;background:var(--line)}
+.committeesb-item.is-up .committeesb-ridge{background:var(--signal)}
+.committeesb-n{position:absolute;top:22px;left:18px;color:inherit;font-size:11px}
+.committeesb-abbr{font-size:56px;line-height:.86;font-weight:800;font-stretch:72%;letter-spacing:-.01em;white-space:nowrap}
+.committeesb-plate[data-len='m'] .committeesb-abbr{font-size:50px}
+.committeesb-plate[data-len='l'] .committeesb-abbr{font-size:44px;font-stretch:66%}
+
+/* the desk edge, with a seat tick under the centre */
+.committeesb-desk{position:relative;height:1px;background:var(--line);margin-top:0}
+.committeesb-desk::after{content:'';position:absolute;left:calc(50% - var(--pw) / 2);width:var(--pw);top:0;height:1px;background:var(--ink)}
+
+/* the caption: the full name, changed only when the rail is at rest */
+.committeesb-cap{margin-top:40px;align-items:start}
+.committeesb-count{grid-column:1 / span 3;padding-top:.5em}
+.committeesb-count b{color:var(--ink);font-weight:700}
+.committeesb-name{grid-column:4 / span 6;min-height:2.3em}
+.committeesb-abbr2{margin:0 0 10px;font:600 12px/1 'JetBrains Mono Variable',ui-monospace,monospace;letter-spacing:.08em;color:var(--muted)}
+.committeesb-full{margin:0;font-size:clamp(26px,2.6vw,38px);line-height:1.08;font-weight:600;font-stretch:92%;letter-spacing:-.01em;text-wrap:balance}
+.committeesb-dl{grid-column:10 / span 2;margin:0;padding-top:.3em}
+.committeesb-dl dd{margin:8px 0 0;font-size:15px;color:var(--ink)}
+.committeesb-nav{grid-column:12 / span 1;display:flex;gap:8px;justify-content:flex-end}
+.committeesb-btn{width:48px;height:48px;flex:none;display:grid;place-items:center;background:var(--ground);border:1px solid var(--line);color:var(--ink);cursor:pointer;padding:0}
+.committeesb-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:square}
+@media (hover:hover){.committeesb-btn:hover:not(:disabled){background:var(--un);border-color:var(--un);color:var(--ground)}}
+.committeesb-btn:focus-visible{outline:2px solid var(--un);outline-offset:2px}
+.committeesb-btn:disabled{color:var(--line);cursor:default}
+
+@media (max-width:1180px){
+  .committeesb-name{grid-column:4 / span 5}
+  .committeesb-dl{grid-column:9 / span 2}
+  .committeesb-nav{grid-column:11 / span 2}
+}
+@media (max-width:860px){
+  .committeesb-wrap{display:block}
+  .committeesb-label{padding:0;margin-bottom:28px}
+  .committeesb-stage{--pw:180px;--ph:116px}
+  .committeesb-list{gap:14px;padding-top:28px}
+  .committeesb-abbr{font-size:44px}
+  .committeesb-plate[data-len='m'] .committeesb-abbr{font-size:40px}
+  .committeesb-plate[data-len='l'] .committeesb-abbr{font-size:34px}
+  .committeesb-n{top:16px}
+  .committeesb-cap{display:grid;grid-template-columns:1fr auto;gap:20px 16px;margin-top:28px}
+  .committeesb-count{grid-column:1;grid-row:1;padding:0;align-self:center}
+  .committeesb-nav{grid-column:2;grid-row:1}
+  .committeesb-name{grid-column:1 / -1;grid-row:2}
+  .committeesb-dl{grid-column:1 / -1;grid-row:3;padding:0}
+}

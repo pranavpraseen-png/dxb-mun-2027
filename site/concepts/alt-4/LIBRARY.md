@@ -1,46 +1,22 @@
-# Alt 4 · library and credits
+# Alt 4 · The Floor: library pieces
 
-Everything below was already installed in `site/node_modules`. **No package was installed** for this build, and
-`package.json` was not touched.
+## Nav + sections (version A), by the sections agent
+Files: `Nav.tsx` (`NavA`, alias `Nav`), `Sections.tsx` (`AboutA`, `CommitteesA`, `ScheduleA`, `RegisterA`, `WellnessA`, `ContactA` = resources + contact + footer, and `Sections`), `sections.css`, `sections-shots.mjs`. Everything used was already installed; no new packages.
 
-| Piece | From | How it is used |
+| Piece | Source | How it's used |
 |---|---|---|
-| React Three Fiber (`@react-three/fiber` 9) | design-resources › 3D & WebGL | `Hall.tsx`: the one fixed canvas, `useFrame`, `useThree`, `dpr={[1, 2]}`, `flat` (exact hex colours), `frameloop="never"` while the tab is hidden, pointer events on the instanced seats (`instanceId` → committee block) |
-| three.js `InstancedMesh` + `ShaderMaterial` | three.js core (MIT), design-resources › 3D & WebGL | 193 seats in one draw call, plus the dais furniture in a second one. A small flat shader shades faces by normal in three fixed steps and draws a 1.1-device-px outline on every face from `fwidth(uv)`, so the line layer moves with the springs and stays crisp at any DPR |
-| three.js `LineSegments2` / `LineMaterial` (`three/examples/jsm/lines`) | three.js examples (MIT) | `lines.tsx`: the floor plan, block outlines, degree ruler, wall joints, speakers' board, gold emblem and dais clock. Widths are in CSS px, colours are opaque, and lines draw in via `instanceCount` |
-| `mergeGeometries` (`three/examples/jsm/utils/BufferGeometryUtils`) | three.js examples (MIT) | one seat = desk block + chair back |
-| `CatmullRomCurve3` (centripetal) | three.js core | the camera path through the 8 section stations |
-| GSAP | design-resources › Motion | the phone menu's hard clip-path wipe and its item rise |
-| Lenis via `useSmoothScroll` / `scrollToSection` | `src/shared/scroll.ts` (shared) | page scroll feel and nav jumps; it starts only after the opening |
-| `isStill()`, `useWellness()` | `src/shared/hooks.ts` (shared) | calm page for `?still` and reduced motion; the wellness check-in |
-| `brand` slot | `src/shared/brand.ts` (shared) | type-only wordmark until the new logo arrives |
-| Public Sans Variable (`@fontsource-variable/public-sans/wght.css`) | Fontsource (OFL), USWDS | wordmark, headings, body and every figure (plain zero) |
-| JetBrains Mono Variable (`@fontsource-variable/jetbrains-mono/wght.css`) | Fontsource (OFL) | labels, nav, pins |
-| `links.ts` | copied from `concepts/alt-3/links.ts` (comment updated) | Register / Sign in go to `portal + '#/now'` |
+| Base UI `Dialog` | `@base-ui/react/dialog` (catalogue: Base UI, the primitive under coss ui) | Phone menu: a full-screen opaque sheet. Focus trap, Esc, a close button, focus returns to Menu. `modal="trap-focus"` + a `container` portal in `demo` mode, so it opens inside a board frame. |
+| Base UI `Tabs` (vertical) | `@base-ui/react/tabs` | Committees (wide): 19 abbreviations as a two-column index (column-major, so arrow keys run 01→19) beside a detail pane. `activateOnFocus`, so arrows browse. |
+| Base UI `Tabs` + `Tabs.Indicator` | `@base-ui/react/tabs` | Schedule day tabs; the indicator is a 2px ink rule that slides under the active day. |
+| Base UI `Accordion` | `@base-ui/react/accordion` | Committees (narrow): a compact 19-row list, one row expands (height via `--accordion-panel-height`). |
+| Base UI `Field` | `@base-ui/react/field` | The "Your name" input and its label in Register. |
+| Base UI `Checkbox` | `@base-ui/react/checkbox` | Wellness checklist rows (inside a `<label>`), wired to `useWellness()`. |
+| GSAP ScrollTrigger `batch` | `gsap` | The only motion below the hero: each `[data-reveal]` block clips in from its top edge and rises 10px, once. No opacity, no blur. Off under `?still` / reduced motion. |
+| Archivo Variable (wdth) / JetBrains Mono Variable | Fontsource (imported in `main.tsx`) | Titles 650 / wdth 100, max 56px. Placard name 720 / wdth 84. Labels in mono 11px, uppercase, 0.14em. |
+| CSS container queries | platform | Each section and the nav lay out from their own width, so a block also works alone on a design board. Committees switches Tabs → Accordion from its own width (ResizeObserver), not the window's. |
 
-## Written here (techniques credited to the references, code my own)
-- **Seat springs** (`Hall.tsx` `Seats`): one damped spring per seat (k 170, c 15). The target is the cursor's
-  distance on a plane at y 1, plus the chosen committee block and the register seat. This is the Lusion-style
-  physical response.
-- **Scroll → camera** (`Page.tsx` scroll listener, `Hall.tsx` `Rig`): the section offsets give a continuous station
-  value, eased with smootherstep inside each gap and followed with an exponential damp. This is the Igloo /
-  Iventions continuous flight, on a real page scroll.
-- **Opening** (`store.ts` clock, `Hall.tsx`, `Page.tsx` `Loader`): the plan draws, then the seat footprints, then
-  the seats rise row by row with a small overshoot while the camera descends from directly above. The dais rises,
-  the emblem draws and the slab and wordmark wipe in with a hard clip. The gauge counts seats risen (000–100) and
-  tiers filled. It is seekable through `window.__a4` for screenshots.
-- **Projected labels** (`labels.ts`): whole-pixel HTML labels, gated to their station, hidden when they touch an
-  opaque panel (`data-ko`).
-- **Calm drawings** (`Plan.tsx`): the same `layout.ts` data as an SVG floor plan and an SVG dial.
-
-## Considered and rejected
-- **drei** `<Html>`, `<Edges>`, `<Instances>`: `<Html>` writes subpixel transforms (soft text) and `<Edges>` would add
-  one line object per seat (193 extra draws). The shader outline does both jobs in one pass.
-- **Postprocessing outline / SSAO**: soft, glow-like and heavy in software WebGL. It also breaks the crisp rule.
-- **NumberFlow** for the gauge: the count changes every frame during the opening, and its digit roll would read
-  as a slot machine. A plain text write is crisper.
-- **coss ui / shadcn / Base UI** tabs and toggles: the page has only buttons, links, one tab row and three check
-  rows, all styled as square hairline controls. A kit would bring rounded pills and soft focus rings that fight
-  the institutional look.
-- **Bricolage Grotesque** (used by Chamber and likely by Alt 5), **IBM Plex Mono** (likely Alt 6), **Geist Mono**
-  (Night Lab; also has a slashed zero), **Mona Sans** and **Inter Tight** (spec).
+**Considered and rejected:**
+- coss ui / shadcn components copied in: they need Tailwind class styling, and this page is plain CSS with `f-` prefixes. Base UI is the same primitive layer with no styling to strip out.
+- NumberFlow for the stats: the stats are plain typographic facts. Counters were ruled out ("no stat counters").
+- Lenis anchors for nav jumps: `scrollToSection(id, NAV_H)` is used instead, so the offset is the same with or without Lenis.
+- A marquee or carousel for committees (combo-1): it moves under the reader and hides 18 of 19 items. An index shows them all.

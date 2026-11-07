@@ -9,8 +9,9 @@ import '@fontsource-variable/mona-sans/wdth.css';
 import '@fontsource-variable/geist-mono';
 import '@fontsource/instrument-serif/400-italic.css';
 import './admin.css';
-import { getSecretariatApi, type Me } from '@/platform/v2';
+import { getSecretariatApi, openWithoutLogin, type Me } from '@/platform/v2';
 import { SignIn } from '../portal/screens/SignIn';
+import { SecretariatCheck } from '../portal/screens/SecondStep';
 import { Button } from '../portal/ui/coss/button';
 import { ToastProvider } from './lib/toast';
 import { AdminProvider, useAdmin } from './lib/data';
@@ -30,6 +31,7 @@ import { CheckinScreen } from './screens/Checkin';
 import { TeamScreen } from './screens/Team';
 
 const api = getSecretariatApi();
+openWithoutLogin('secretariat');
 document.documentElement.classList.add('dark');
 
 function App() {
@@ -38,7 +40,7 @@ function App() {
   if (signedIn === null) return <div className="boot" aria-busy="true"><span className="sr-only">Loading</span></div>;
   return (
     <ToastProvider>
-      {signedIn ? <Gate /> : (
+      {signedIn ? <SecretariatCheck api={api}><Gate /></SecretariatCheck> : (
         <SignIn
           api={api}
           title="Secretariat dashboard"

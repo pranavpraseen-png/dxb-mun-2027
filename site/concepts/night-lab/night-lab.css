@@ -336,7 +336,8 @@ em { font-style: normal; }
 .k-logistics { --sf: var(--sand); --sk: var(--sand-ink); }
 .k-break { --sf: var(--ground); --sk: var(--ink-2); }
 .sch-name { overflow: hidden; font: 700 var(--t-slot)/0.92 var(--f-sans); font-stretch: 108%; letter-spacing: -0.04em; padding-bottom: 0.06em; }
-.sch-name-in { display: inline-block; animation: roll-in var(--ui) var(--ease) both; }
+.sch-name-in { display: inline-block; animation: roll-in 0.34s var(--ease) both; }
+.sch-name-in.is-fast { animation: none; } /* scrolling fast: swap the word in place so it is always readable */
 .sch-time { color: var(--ink); font-size: 14px; line-height: 18px; }
 .sch-dur { color: var(--ink-2); }
 .ruler { position: relative; height: 148px; border-top: 1px solid var(--line); margin: 0 calc(-1 * var(--gut)); }

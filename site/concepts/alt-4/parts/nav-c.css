@@ -1,0 +1,134 @@
+/* Nav C · command palette. A compact bar with one field; the palette drops from the bar (wide) or rises as a sheet (phones). */
+.navc {
+  position: fixed; inset: 0 0 auto 0; z-index: 40; height: 64px;
+  background: var(--ground, #03060C); color: var(--ink, #F2F5F9);
+  border-bottom: 1px solid var(--line, #16243A);
+  font-family: 'Archivo Variable', system-ui, sans-serif;
+  container-type: inline-size; container-name: navc;
+  transform: translateY(-100%); transition: transform .5s cubic-bezier(.2, .8, .2, 1);
+}
+.navc.is-in { transform: none; }
+.navc.is-demo { position: absolute; }
+.navc-in { height: 100%; display: flex; align-items: center; gap: 16px; padding: 0 24px; }
+.navc a { color: inherit; text-decoration: none; }
+.navc :focus-visible, .navc-pal :focus-visible { outline: 2px solid var(--un, #009EDB); outline-offset: 2px; }
+.navc kbd, .navc-pal kbd {
+  display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px;
+  border: 1px solid var(--line, #16243A); background: var(--ground, #03060C); color: var(--ink, #F2F5F9);
+  font: 500 11px/1 'JetBrains Mono Variable', ui-monospace, monospace;
+}
+
+.navc-home { display: inline-flex; align-items: baseline; gap: 6px; font-stretch: 80%; font-weight: 800; font-size: 19px; white-space: nowrap; }
+.navc-home span { font: 500 13px/1 'JetBrains Mono Variable', ui-monospace, monospace; color: var(--muted, #8C99AD); }
+
+/* the one field */
+.navc-go {
+  flex: 1; max-width: 560px; margin: 0 auto; height: 40px; min-width: 0;
+  display: flex; align-items: center; gap: 10px; padding: 0 8px 0 12px;
+  background: var(--surface, #08111E); border: 1px solid var(--line, #16243A); color: var(--ink, #F2F5F9);
+  font: inherit; font-size: 15px; cursor: pointer; text-align: left;
+}
+.navc-go:hover { border-color: var(--muted, #8C99AD); }
+.navc-go svg { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: square; }
+.navc-go-t { font-weight: 600; white-space: nowrap; }
+.navc-where { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted, #8C99AD); font-size: 14px; }
+.navc-where b { font: 600 12px/1 'JetBrains Mono Variable', ui-monospace, monospace; color: var(--signal, #E5591C); margin-right: 2px; }
+.navc-keys { display: inline-flex; gap: 4px; flex: none; }
+
+.navc-portal { font-size: 14px; font-weight: 500; color: var(--muted, #8C99AD) !important; white-space: nowrap; }
+.navc-portal:hover { color: var(--ink, #F2F5F9) !important; }
+.navc-reg {
+  display: inline-grid; place-items: center; height: 40px; padding: 0 18px; white-space: nowrap;
+  background: var(--un, #009EDB); color: var(--ground, #03060C) !important; font-weight: 700; font-size: 14px;
+}
+.navc-reg:hover { background: var(--ink, #F2F5F9); }
+
+@container navc (max-width: 860px) {
+  .navc-in { padding: 0 16px; gap: 12px; }
+  .navc-keys, .navc-portal { display: none; }
+}
+@container navc (max-width: 560px) {
+  .navc-where { display: none; }
+  .navc-go { flex: 1; }
+  .navc-reg { padding: 0 14px; }
+}
+
+/* backdrop: a click target only (no dimming, no see-through layer) */
+.navc-back { position: fixed; inset: 0; z-index: 59; }
+.navc-back.is-demo { position: absolute; }
+
+/* the palette: wide = full-width panel that replaces the bar */
+.navc-pal {
+  position: fixed; z-index: 60; inset: 0 0 auto 0; display: flex; flex-direction: column;
+  max-height: min(640px, calc(100% - 48px));
+  background: var(--surface, #08111E); color: var(--ink, #F2F5F9);
+  border-bottom: 1px solid var(--ink, #F2F5F9);
+  font-family: 'Archivo Variable', system-ui, sans-serif;
+  transition: transform .22s cubic-bezier(.2, .8, .2, 1);
+}
+.navc-pal.is-demo { position: absolute; max-height: calc(100% - 24px); }
+.navc-pal[data-starting-style], .navc-pal[data-ending-style] { transform: translateY(-100%); }
+.navc-pal > * { width: 100%; }
+.navc-pal-top {
+  flex: none; height: 64px; display: flex; align-items: center; gap: 14px; padding: 0 24px;
+  border-bottom: 1px solid var(--line, #16243A); box-sizing: border-box;
+}
+.navc-pal-k { font: 500 11px/1 'JetBrains Mono Variable', ui-monospace, monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--signal, #E5591C); white-space: nowrap; }
+.navc-input {
+  flex: 1; min-width: 0; height: 44px; border: 0; background: none; color: var(--ink, #F2F5F9); outline: none;
+  font: 600 22px/1 'Archivo Variable', system-ui, sans-serif; font-stretch: 90%;
+}
+.navc-pal .navc-input:focus-visible { outline: none; }
+.navc-pal-top:focus-within { box-shadow: inset 0 -2px 0 var(--un, #009EDB); }
+.navc-input::placeholder { color: var(--muted, #8C99AD); font-weight: 400; }
+.navc-esc { background: none; border: 0; padding: 0; cursor: pointer; }
+.navc-close-t { display: none; }
+.navc-pal.is-sheet .navc-esc kbd { display: none; }
+.navc-pal.is-sheet .navc-close-t { display: inline-grid; place-items: center; height: 36px; padding: 0 12px; border: 1px solid var(--ink, #F2F5F9); color: var(--ink, #F2F5F9); font: 500 12px/1 'JetBrains Mono Variable', ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; }
+.navc-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.navc-list-wrap { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.navc-list { max-width: 1040px; margin: 0 auto; padding: 8px 24px 12px; box-sizing: border-box; }
+.navc-list:empty { display: none; }
+.navc-group + .navc-group { margin-top: 6px; }
+.navc-glabel {
+  padding: 12px 0 6px; font: 500 11px/1 'JetBrains Mono Variable', ui-monospace, monospace;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--muted, #8C99AD);
+}
+.navc-item {
+  display: grid; grid-template-columns: 92px minmax(0, 1fr) auto; align-items: center; gap: 12px;
+  min-height: 40px; padding: 0 12px; cursor: pointer; user-select: none;
+  border-left: 3px solid transparent; scroll-margin-block: 8px;
+}
+.navc-item[data-highlighted] { background: var(--line, #16243A); border-left-color: var(--signal, #E5591C); }
+.navc-code { font: 500 12px/1 'JetBrains Mono Variable', ui-monospace, monospace; color: var(--muted, #8C99AD); letter-spacing: .02em; }
+.navc-item[data-highlighted] .navc-code { color: var(--ink, #F2F5F9); }
+.navc-label { font-size: 16px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.navc-hint { font: 500 11px/1 'JetBrains Mono Variable', ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; color: var(--muted, #8C99AD); }
+.navc-item.is-here .navc-hint { color: var(--ink, #F2F5F9); }
+.navc-pal mark { background: none; color: var(--ink, #F2F5F9); font-weight: inherit; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; text-decoration-color: var(--signal, #E5591C); }
+.navc-empty { max-width: 1040px; margin: 0 auto; padding: 28px 24px; color: var(--muted, #8C99AD); box-sizing: border-box; }
+
+.navc-foot {
+  flex: none; display: flex; align-items: center; gap: 20px; padding: 10px 24px; border-top: 1px solid var(--line, #16243A);
+  font: 500 11px/1 'JetBrains Mono Variable', ui-monospace, monospace; color: var(--muted, #8C99AD); letter-spacing: .04em; box-sizing: border-box;
+}
+.navc-foot span { display: inline-flex; align-items: center; gap: 4px; }
+.navc-count { margin-left: auto; }
+
+/* phones: a bottom sheet you can reach with a thumb */
+.navc-pal.is-sheet {
+  inset: auto 0 0 0; max-height: none; height: min(82%, 640px);
+  border-bottom: 0; border-top: 1px solid var(--ink, #F2F5F9);
+}
+.navc-pal.is-sheet[data-starting-style], .navc-pal.is-sheet[data-ending-style] { transform: translateY(100%); }
+.navc-pal.is-sheet .navc-pal-top { padding: 0 16px; }
+.navc-pal.is-sheet .navc-input { font-size: 18px; }
+.navc-pal.is-sheet .navc-list { padding: 4px 8px 16px; }
+.navc-pal.is-sheet .navc-item { grid-template-columns: 74px minmax(0, 1fr); min-height: 48px; }
+.navc-pal.is-sheet .navc-hint { display: none; }
+.navc-pal.is-sheet .navc-foot { display: none; }
+.navc-pal.is-sheet .navc-pal-k { display: none; }
+.navc-pal:not(.is-demo).is-sheet { height: min(82svh, 640px); }
+
+@media (prefers-reduced-motion: reduce) { .navc, .navc-pal { transition: none; } }

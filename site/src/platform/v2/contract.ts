@@ -23,14 +23,38 @@ export type Person = { id: string; fullName: string | null; email: string };
 
 export type Me = { id: string; email: string; fullName: string | null; role: Role; isCore: boolean };
 
-/** Sign-in is the same everywhere: email, then the 6–10 digit code from the email. */
+/** Sign in with a Google or Microsoft account (Supabase providers 'google' and 'azure'). */
+export type AuthProvider = 'google' | 'microsoft';
+/** aal2 = signed in AND passed the authenticator-app step this session. */
+export type MfaState = { level: 'aal1' | 'aal2'; enrolled: boolean };
+/** A new authenticator-app link: show `qr` (an image URL) and `secret` (to type in by hand). */
+export type MfaEnrollment = { factorId: string; qr: string; secret: string };
+
+/**
+ * Sign-in is the same everywhere: email, then the 6–10 digit code from the email; or a Google / Microsoft account.
+ * Secretariat accounts add an authenticator-app code (mfa); the database only treats them as admins at aal2.
+ * Added 2026-11-07 (owner picked the recommended sign-in setup): providers, remember me, captcha token, mfa.
+ */
 export interface AuthApi {
   readonly mode: 'demo' | 'live';
-  sendCode(email: string): Promise<void>;
+  /** `captchaToken`: the bot-check token, when the bot check is switched on. */
+  sendCode(email: string, captchaToken?: string): Promise<void>;
   verifyCode(email: string, code: string): Promise<void>;
+  /** Leaves the page for the provider's sign-in, then comes back here signed in. */
+  signInWith(provider: AuthProvider): Promise<void>;
+  /** Remember me: true keeps the sign-in after the browser closes; false ends it with the browser tab. */
+  setRemember(on: boolean): void;
+  remembered(): boolean;
   signOut(): Promise<void>;
   onAuth(cb: (signedIn: boolean) => void): Unsubscribe;
   me(): Promise<Me>;
+  mfa: {
+    state(): Promise<MfaState>;
+    /** Starts linking an authenticator app (drops any half-finished link first). */
+    enroll(): Promise<MfaEnrollment>;
+    /** Checks a 6-digit authenticator code; `factorId` when finishing a new link, else the linked app. */
+    verify(code: string, factorId?: string): Promise<void>;
+  };
 }
 
 // ───────────────────────── Conference-day building blocks ─────────────────────────

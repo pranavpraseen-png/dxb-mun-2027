@@ -1,0 +1,89 @@
+/* Wellness C · recess switch panel. Flat hardware: hard edges, engraved mono marks, a square indicator that lights orange. */
+.wellc {
+  background: var(--ground, #03060C); color: var(--ink, #F2F5F9);
+  font-family: 'Archivo Variable', system-ui, sans-serif;
+  padding: 112px 0 120px; border-top: 1px solid var(--line, #16243A);
+}
+.wellc-wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px; box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 24px 56px; align-items: start; }
+.wellc-head { grid-column: 1; }
+.wellc-panel { grid-column: 2; grid-row: 1 / span 2; }
+.wellc-status { grid-column: 1; grid-row: 2; align-self: end; }
+.wellc-label {
+  display: flex; gap: 12px; margin: 0 0 20px;
+  font: 500 12px/1 'JetBrains Mono Variable', ui-monospace, monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--muted, #8C99AD);
+}
+.wellc-label span { color: var(--ink, #F2F5F9); }
+.wellc-h { margin: 0; font-size: clamp(36px, 4.4vw, 56px); line-height: 1; font-weight: 700; font-stretch: 85%; letter-spacing: -.01em; }
+.wellc-sub { margin: 14px 0 0; font-size: 18px; color: var(--muted, #8C99AD); max-width: 30ch; }
+
+/* the panel */
+.wellc-panel { background: var(--surface, #08111E); border: 1px solid var(--line, #16243A); }
+.wellc-panel-top {
+  display: flex; justify-content: space-between; padding: 12px 18px; border-bottom: 1px solid var(--line, #16243A);
+  font: 500 11px/1 'JetBrains Mono Variable', ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--muted, #8C99AD);
+}
+.wellc-units { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.wellc-unit { display: grid; justify-items: center; gap: 14px; padding: 22px 16px 24px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+.wellc-unit + .wellc-unit { border-left: 1px solid var(--line, #16243A); }
+.wellc-unit-top { justify-self: stretch; display: flex; justify-content: space-between; align-items: center; }
+.wellc-unit-n { font: 500 11px/1 'JetBrains Mono Variable', ui-monospace, monospace; letter-spacing: .1em; color: var(--muted, #8C99AD); }
+.wellc-led { width: 12px; height: 12px; background: var(--ground, #03060C); border: 1px solid var(--line, #16243A); transition: background-color 0s .08s; }
+.wellc-unit.is-on .wellc-led { background: var(--signal, #E5591C); border-color: var(--signal, #E5591C); }
+
+/* the throw: a deep vertical slot, a heavy block thumb */
+.wellc-throw { display: flex; align-items: stretch; gap: 12px; }
+.wellc-switch {
+  position: relative; display: block; width: 76px; height: 156px; box-sizing: border-box; padding: 6px;
+  background: var(--ground, #03060C); border: 1px solid var(--line, #16243A); cursor: pointer; outline: none;
+}
+.wellc-switch:focus-visible { outline: 2px solid var(--un, #009EDB); outline-offset: 3px; }
+.wellc-switch::before { /* the slot */
+  content: ''; position: absolute; left: 50%; top: 14px; bottom: 14px; width: 4px; margin-left: -2px; background: var(--line, #16243A);
+}
+.wellc-thumb {
+  position: absolute; left: 6px; right: 6px; height: 68px; top: auto; bottom: 6px;
+  display: grid; align-content: center; gap: 5px; justify-items: center;
+  background: var(--muted, #8C99AD); transform: translateY(0);
+  transition: transform .17s cubic-bezier(.45, 1.9, .5, .78), background-color .1s;
+}
+.wellc-thumb i { display: block; width: 34px; height: 2px; background: var(--ground, #03060C); }
+.wellc-thumb[data-checked] { transform: translateY(-74px); background: var(--ink, #F2F5F9); }
+.wellc.is-still .wellc-thumb { transition: none; }
+.wellc-marks { display: flex; flex-direction: column; justify-content: space-between; padding: 10px 0; font: 600 11px/1 'JetBrains Mono Variable', ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--muted, #8C99AD); }
+.wellc-unit.is-on .wellc-marks span:first-child { color: var(--ink, #F2F5F9); }
+.wellc-unit:not(.is-on) .wellc-marks span:last-child { color: var(--ink, #F2F5F9); }
+.wellc-unit-l { font-size: 28px; font-weight: 700; font-stretch: 85%; line-height: 1; }
+.wellc-unit-s { font: 500 11px/1 'JetBrains Mono Variable', ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--muted, #8C99AD); }
+.wellc-unit.is-on .wellc-unit-s { color: var(--ink, #F2F5F9); }
+
+.wellc-gauge { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 0 18px 18px; }
+.wellc-gauge span { height: 6px; background: var(--line, #16243A); }
+.wellc-gauge span.is-on { background: var(--ink, #F2F5F9); }
+
+.wellc-status { margin: 0; display: grid; gap: 6px; font: 500 12px/1.4 'JetBrains Mono Variable', ui-monospace, monospace; color: var(--muted, #8C99AD); }
+.wellc-status-k { letter-spacing: .1em; text-transform: uppercase; }
+.wellc-status-v { font: 600 20px/1.2 'Archivo Variable', system-ui, sans-serif; color: var(--ink, #F2F5F9); }
+
+@media (max-width: 960px) {
+  .wellc { padding: 80px 0 88px; }
+  .wellc-wrap { grid-template-columns: minmax(0, 1fr); padding: 0 16px; gap: 28px; }
+  .wellc-head, .wellc-panel, .wellc-status { grid-column: 1; grid-row: auto; }
+}
+@media (max-width: 560px) {
+  /* phones: three rows, the throw turned sideways so each row is a big thumb target */
+  .wellc-units { grid-template-columns: minmax(0, 1fr); }
+  .wellc-unit + .wellc-unit { border-left: 0; border-top: 1px solid var(--line, #16243A); }
+  .wellc-unit { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: 'throw l n' 'throw s led'; justify-items: start; align-items: center; gap: 6px 16px; padding: 16px; }
+  .wellc-unit-top { display: contents; }
+  .wellc-unit-n { grid-area: n; justify-self: end; }
+  .wellc-led { grid-area: led; justify-self: end; }
+  .wellc-throw { grid-area: throw; }
+  .wellc-unit-l { grid-area: l; font-size: 24px; }
+  .wellc-unit-s { grid-area: s; }
+  .wellc-switch { width: 128px; height: 60px; }
+  .wellc-switch::before { left: 14px; right: 14px; top: 50%; bottom: auto; width: auto; height: 4px; margin: -2px 0 0; }
+  .wellc-thumb { top: 6px; bottom: 6px; left: 6px; right: auto; width: 54px; height: auto; grid-auto-flow: column; align-content: stretch; align-items: center; }
+  .wellc-thumb i { width: 2px; height: 26px; }
+  .wellc-thumb[data-checked] { transform: translateX(60px); }
+  .wellc-marks { display: none; }
+}

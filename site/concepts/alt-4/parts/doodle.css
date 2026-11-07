@@ -1,0 +1,44 @@
+/* Doodle · the wordmark as a tiny chamber. Everything extra is absolutely placed, so the mark keeps its exact size. */
+.doodle { position: relative; display: inline-flex; align-items: baseline; gap: 6px; }
+.doodle-word { display: inline-block; font: inherit; white-space: nowrap; }
+.doodle-l { position: relative; display: inline-block; isolation: isolate; transform-origin: 50% 100%; }
+.doodle-ch { position: relative; }
+.doodle-gap { display: inline-block; width: .26em; }
+
+/* the placard: a clip box from the baseline up, so it rises out of the U and sinks back into it */
+.doodle-placard {
+  position: absolute; z-index: -1; left: 50%; bottom: calc(.26em + 7px); width: 15px; height: 20px; margin-left: -7.5px;
+  overflow: hidden; pointer-events: none;
+}
+.doodle-placard-in { position: absolute; inset: 0; visibility: hidden; transform-origin: 50% 100%; }
+.doodle-pole { position: absolute; left: 7px; top: 8px; bottom: 0; width: 1px; background: var(--un, #009EDB); }
+.doodle-cloth { position: absolute; left: 1px; top: 0; width: 13px; height: 8px; background: var(--un, #009EDB); }
+.doodle-cloth::after { content: ''; position: absolute; left: 3px; right: 3px; top: 3px; height: 1px; background: var(--ground, #03060C); }
+
+/* the year: struck by the gavel */
+.doodle-yr {
+  position: relative; display: inline-block;
+  font-family: 'JetBrains Mono Variable', ui-monospace, monospace; font-weight: 500; font-size: 13px; line-height: 1;
+  color: var(--muted, #8C99AD);
+}
+.doodle-yr-t { display: inline-block; transform-origin: 50% 100%; }
+
+.doodle-gavel {
+  position: absolute; left: 2px; bottom: calc(100% - 2px); width: 24px; height: 11px; line-height: 0;
+  color: var(--ink, #F2F5F9); pointer-events: none;
+  visibility: hidden; opacity: 0; transform-origin: 23.5px 5.5px;
+}
+.doodle-gavel svg { display: block; overflow: visible; }
+
+/* the strike: three short orange ticks flick out from the point of impact, once */
+.doodle-hit { position: absolute; inset: 0; pointer-events: none; }
+.doodle-hit i { position: absolute; height: 1px; width: 4px; background: var(--signal, #E5591C); visibility: hidden; opacity: 0; }
+.doodle-hit i:nth-child(1) { right: calc(100% - 2px); top: -2px; transform-origin: 100% 50%; rotate: 38deg; }
+.doodle-hit i:nth-child(2) { right: calc(100% + 1px); top: 2px; transform-origin: 100% 50%; rotate: 8deg; }
+.doodle-hit i:nth-child(3) { left: calc(100% + 1px); top: 2px; transform-origin: 0 50%; rotate: -12deg; }
+
+/* reduced motion: the plain wordmark, nothing else */
+html.still .doodle-gavel, html.still .doodle-hit, html.still .doodle-placard { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .doodle-gavel, .doodle-hit, .doodle-placard { display: none; }
+}

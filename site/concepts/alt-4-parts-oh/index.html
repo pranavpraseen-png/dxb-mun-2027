@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="data:,">
+<meta name="theme-color" content="#03060C">
+<title>Alt 4 parts · opening + hero B/C</title>
+<style>
+:root {
+  --ground: #03060C; --surface: #08111E; --line: #16243A; --ink: #F2F5F9; --muted: #8C99AD;
+  --un: #009EDB; --signal: #E5591C; --brown: #2A1A12; --maroon: #600E0E; --gold: #FFB606;
+  --f-sans: 'Archivo Variable', 'Archivo', system-ui, sans-serif;
+  --f-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace;
+}
+html, body { background: var(--ground); color: var(--ink); margin: 0; font-family: var(--f-sans); -webkit-font-smoothing: antialiased; }
+.oh-done, .oh-next, .oh-index { min-height: 100svh; display: grid; place-content: center; gap: 14px; text-align: center; font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.oh-done b { color: var(--ink); font-weight: 600; font-size: 14px; }
+.oh-done a, .oh-index a { color: var(--un); }
+.oh-next { border-top: 1px solid var(--line); }
+.oh-index ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="module" src="./main.tsx"></script>
+</body>
+</html>

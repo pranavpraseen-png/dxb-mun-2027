@@ -9,7 +9,7 @@ import {
   type LucideProps,
 } from 'lucide-react';
 import type { ComponentType } from 'react';
-import type { DelegateApi } from '@/platform/v2';
+import { NO_LOGIN, type DelegateApi } from '@/platform/v2';
 import { useConf } from './lib/conf';
 import { useLoad } from './lib/data';
 import { href, useRoute, type Place } from './lib/route';
@@ -109,9 +109,11 @@ export function Shell({ api, badges, children }: { api: DelegateApi; badges: Par
             <Button variant="outline" className="w-full justify-start" onClick={() => setSeatOpen(true)}>
               <QrCode aria-hidden="true" /> My seat and QR
             </Button>
-            <Button variant="ghost" className="w-full justify-start" onClick={signOut}>
-              <LogOut aria-hidden="true" /> Sign out
-            </Button>
+            {!NO_LOGIN && (
+              <Button variant="ghost" className="w-full justify-start" onClick={signOut}>
+                <LogOut aria-hidden="true" /> Sign out
+              </Button>
+            )}
             <HostMark className="w-full" />
           </SidebarFooter>
         </Sidebar>
@@ -209,9 +211,11 @@ export function Shell({ api, badges, children }: { api: DelegateApi; badges: Par
               <button type="button" className={MORE_BTN} onClick={() => { setMore(false); setSeatOpen(true); }}>
                 <QrCode aria-hidden="true" className="size-6 text-primary" /> My seat and QR
               </button>
-              <button type="button" className={MORE_BTN} onClick={signOut}>
-                <LogOut aria-hidden="true" className="size-6 text-muted-foreground" /> Sign out
-              </button>
+              {!NO_LOGIN && (
+                <button type="button" className={MORE_BTN} onClick={signOut}>
+                  <LogOut aria-hidden="true" className="size-6 text-muted-foreground" /> Sign out
+                </button>
+              )}
             </nav>
           </SheetPanel>
         </SheetPopup>

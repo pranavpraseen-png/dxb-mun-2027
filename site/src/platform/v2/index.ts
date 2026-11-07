@@ -11,13 +11,28 @@ import { createDemoChairApi } from './demo-chair';
 import { createDemoDelegateApi } from './demo-delegate';
 import { createDemoSecretariatApi } from './demo-secretariat';
 import { createSupabaseChairApi, createSupabaseDelegateApi, createSupabaseSecretariatApi } from './supabase';
+import { signInWithoutCode } from './demo-common';
+import { DEMO_EMAILS } from './demo-seed';
 
 export * from './contract';
 export { DEMO_CODE } from './demo-common';
 export { DEMO_EMAILS } from './demo-seed';
 export { currentDemoScenario, demoScenarios, resetDemoData, type DemoScenario } from './demo-store';
 
+/**
+ * No-login mode (VITE_NO_LOGIN=1, set by scripts/deploy.mjs). Owner, 2026-11-07: "for now leave the dashboard w/o login".
+ * The dashboards open straight in, on the sample data (the live database needs a signed-in user, so it is not used),
+ * and the sign-out buttons are hidden. Remove the flag to bring sign-in and the live data back.
+ */
+export const NO_LOGIN = import.meta.env.VITE_NO_LOGIN === '1';
+
+/** In no-login mode, sign this tab in as the sample person for `role` before the dashboard renders. */
+export function openWithoutLogin(role: 'delegate' | 'chair' | 'secretariat') {
+  if (NO_LOGIN) signInWithoutCode(DEMO_EMAILS[role]);
+}
+
 function liveConfig(): { url: string; key: string } | null {
+  if (NO_LOGIN) return null;
   const url = import.meta.env.VITE_SUPABASE_URL?.trim();
   const key = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim();
   return url && key ? { url, key } : null;

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="data:,">
+<meta name="theme-color" content="#03060C">
+<title>Alt 4 parts · nav, register, wellness, contact (B + C)</title>
+<style>
+:root {
+  --ground: #03060C; --surface: #08111E; --line: #16243A; --ink: #F2F5F9; --muted: #8C99AD;
+  --un: #009EDB; --signal: #E5591C; --brown: #2A1A12; --maroon: #600E0E; --gold: #FFB606; --cream: #DCBDAB;
+}
+html, body { background: var(--ground); color: var(--ink); margin: 0; }
+body { font-family: 'Archivo Variable', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+*, *::before, *::after { box-sizing: border-box; }
+.h-tag {
+  position: relative; z-index: 1; display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap;
+  padding: 14px 24px; background: var(--brown); border-top: 1px solid var(--signal);
+  font: 500 12px/1.4 'JetBrains Mono Variable', ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--cream);
+}
+.h-tag b { color: var(--ink); font-weight: 700; }
+.h-frame { position: relative; height: 400px; margin: 24px; border: 1px solid var(--line); overflow: hidden; background: var(--ground); }
+.h-frame-fill { position: absolute; inset: 64px 0 0; display: grid; place-items: center; color: var(--muted);
+  font: 500 12px/1.4 'JetBrains Mono Variable', ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; text-align: center; padding: 16px; }
+.is-nav-only [data-part] { position: sticky; top: 0; z-index: 5; background: var(--ground); }
+.h-stub { height: 640px; padding: 32px 24px; border-top: 1px solid var(--line); color: var(--muted);
+  font: 500 14px/1.4 'JetBrains Mono Variable', ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; }
+.h-stub span { color: var(--ink); margin-right: 12px; }
+@media (max-width: 600px) { .h-frame { margin: 16px; } .h-tag { padding: 12px 16px; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="module" src="./main.tsx"></script>
+</body>
+</html>

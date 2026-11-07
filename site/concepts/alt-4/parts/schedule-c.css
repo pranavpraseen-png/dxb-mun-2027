@@ -1,0 +1,75 @@
+/* Schedule · C · Now boarding. Prefix: schedulec- */
+.schedulec{background:var(--ground);color:var(--ink);padding:clamp(88px,12vw,168px) 0;font-family:'Archivo Variable',system-ui,sans-serif}
+.schedulec-wrap{max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.schedulec-label,.schedulec-bar,.schedulec-cols,.schedulec-day,.schedulec-key{font-family:'JetBrains Mono Variable',ui-monospace,monospace;font-size:12px;line-height:1.2;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:var(--muted);margin:0}
+.schedulec-label{grid-column:1 / span 3;padding-top:.6em}
+.schedulec-label span{color:var(--ink);margin-right:12px}
+.schedulec-head{grid-column:4 / span 9}
+.schedulec-h2{margin:0;font-size:clamp(36px,4.4vw,56px);line-height:1;font-weight:700;font-stretch:88%;letter-spacing:-.02em}
+.schedulec-sub{margin:20px 0 0;font-size:clamp(17px,1.35vw,20px);line-height:1.4;color:var(--muted)}
+.schedulec-sr{position:absolute;left:0;top:0;display:block;width:1px;height:1px;max-width:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+
+/* day picker */
+.schedulec-tabs{grid-column:1 / -1;margin-top:clamp(48px,6vw,80px)}
+.schedulec-days{display:flex;border:1px solid var(--line);border-bottom:0;width:max-content}
+.schedulec-day{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:baseline;gap:12px;padding:16px 28px 15px;color:var(--ink);font-size:13px;font-weight:600;
+  border-right:1px solid var(--line);min-height:48px}
+.schedulec-day:last-child{border-right:0}
+.schedulec-day span{color:var(--muted);font-weight:500}
+.schedulec-day:hover{color:var(--un)}
+.schedulec-day[data-active]{background:var(--ink);color:var(--ground)}
+.schedulec-day[data-active] span{color:var(--ground)}
+.schedulec-day:focus-visible{outline:2px solid var(--un);outline-offset:-2px}
+
+/* the board. Cell size comes from the board width (container units) so the grid always fills it exactly. */
+.schedulec-board{--pad:24px;--g:2px;--fg:18px;--c:min(28px,calc((100cqw - 2 * var(--pad) - 4px - 4 * var(--fg) - 37 * var(--g)) / 41));--hh:calc(var(--c) * 1.46);
+  container-type:inline-size;border:1px solid var(--line);background:var(--ground);padding:0 0 var(--pad)}
+.schedulec-panel{outline:none}
+.schedulec-bar{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:18px var(--pad) 16px;border-bottom:1px solid var(--line)}
+.schedulec-bar b{font-family:'Archivo Variable',system-ui,sans-serif;font-size:clamp(22px,2vw,28px);font-weight:800;font-stretch:80%;letter-spacing:.04em;color:var(--ink)}
+.schedulec-cols,.schedulec-row{display:flex;align-items:center;gap:var(--fg);padding:0 var(--pad)}
+.schedulec-cols{padding-top:18px;padding-bottom:10px;font-size:11px}
+.schedulec-cols::before{content:'';width:4px;flex:none}
+.schedulec-f{flex:none;width:calc(var(--k) * var(--c) + (var(--k) - 1) * var(--g));display:flex;gap:var(--g)}
+.schedulec-cols .schedulec-f.is-time,.schedulec-cols .schedulec-f.is-until,.schedulec-cols .schedulec-f.is-dur{justify-content:flex-end}
+.schedulec-rows{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.schedulec-mark{flex:none;width:4px;align-self:stretch;background:transparent}
+.schedulec-row.is-session .schedulec-mark{background:var(--signal)}
+
+.schedulec-cell{position:relative;display:block;flex:none;width:var(--c);height:var(--hh)}
+.schedulec-h{position:absolute;left:0;right:0;height:calc(50% - .5px);overflow:hidden;background:var(--surface);backface-visibility:hidden}
+.schedulec-t{top:0;transform-origin:50% calc(100% + .5px)}
+.schedulec-b{bottom:0;transform-origin:50% -.5px}
+.schedulec-h > span{position:absolute;left:0;right:0;height:var(--hh);line-height:var(--hh);text-align:center;
+  font-size:calc(var(--hh) * .66);font-weight:700;font-stretch:84%;color:var(--ink)}
+.schedulec-t > span{top:0}
+.schedulec-b > span{bottom:0}
+.schedulec-row.is-session .is-event .schedulec-h > span{color:var(--signal)}
+.schedulec-row .is-dur .schedulec-h > span,.schedulec-row .is-until .schedulec-h > span{color:var(--muted)}
+.schedulec-fall{z-index:2;animation:schedulec-fall 23ms ease-in both}
+.schedulec-land{z-index:2;animation:schedulec-land 23ms ease-out 23ms both}
+@keyframes schedulec-fall{from{transform:perspective(500px) rotateX(0deg)}to{transform:perspective(500px) rotateX(-90deg)}}
+@keyframes schedulec-land{from{transform:perspective(500px) rotateX(90deg)}to{transform:perspective(500px) rotateX(0deg)}}
+
+.schedulec-key{grid-column:1 / -1;margin-top:20px;display:flex;align-items:center;gap:10px;font-size:11px}
+.schedulec-key i{display:inline-block;width:4px;height:14px;background:var(--signal)}
+
+/* phones: each slot takes two lines (time + length, then the event); "until" is in the readable table and the time column */
+@media (max-width:860px){
+  .schedulec-wrap{display:block}
+  .schedulec-label{padding:0;margin-bottom:28px}
+  .schedulec-days{width:100%}
+  .schedulec-day{flex:1;justify-content:center;padding:14px 8px 13px;gap:8px;font-size:12px}
+  .schedulec-board{--pad:12px;--fg:12px;--c:calc((100cqw - 2 * var(--pad) - 4px - var(--fg) - 18 * var(--g)) / 19);--hh:calc(var(--c) * 1.5)}
+  .schedulec-bar{flex-direction:column;gap:6px;padding:14px var(--pad)}
+  .schedulec-bar span{font-size:10px}
+  .schedulec-cols{display:none}
+  .schedulec-rows{gap:12px;padding-top:14px}
+  .schedulec-row{display:grid;grid-template-columns:4px auto 1fr;grid-template-areas:'m t d' 'm e e';gap:4px var(--fg)}
+  .schedulec-mark{grid-area:m}
+  .schedulec-row .is-time{grid-area:t}
+  .schedulec-row .is-event{grid-area:e}
+  .schedulec-row .is-until{display:none}
+  .schedulec-row .is-dur{grid-area:d;justify-self:end}
+  .schedulec-row.is-empty{display:none}
+}

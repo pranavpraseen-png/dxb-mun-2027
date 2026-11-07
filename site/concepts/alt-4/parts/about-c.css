@@ -1,0 +1,59 @@
+/* About · C · The flap board. Prefix: aboutc- */
+.aboutc{background:var(--ground);color:var(--ink);padding:clamp(88px,12vw,168px) 0;font-family:'Archivo Variable',system-ui,sans-serif}
+.aboutc-wrap{max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.aboutc-label,.aboutc-cap{font:500 12px/1.2 'JetBrains Mono Variable',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+.aboutc-label{grid-column:1 / span 3;padding-top:.6em}
+.aboutc-label span,.aboutc-cap span{color:var(--ink);margin-right:12px}
+.aboutc-head{grid-column:4 / span 9}
+.aboutc-h{margin:0;font-size:clamp(36px,4.4vw,56px);line-height:1;font-weight:700;font-stretch:88%;letter-spacing:-.02em}
+.aboutc-sub{margin:20px 0 0;font-size:clamp(17px,1.35vw,20px);line-height:1.4;color:var(--muted);display:flex;align-items:baseline;gap:10px}
+.aboutc-host{flex:none;display:inline-block;width:8px;height:8px;background:var(--maroon);outline:1px solid #DCBDAB;outline-offset:-1px;transform:translateY(-1px)}
+.aboutc-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;margin:0}
+
+/* the board. Tile sizes come from the board's own width (container units), so it always fills the grid exactly. */
+.aboutc-board{grid-column:1 / -1;margin-top:clamp(56px,7vw,96px);container-type:inline-size;position:relative}
+.aboutc-row{--gap:6px;--sep:56px;--w:min(132px,calc((100cqw - 6 * var(--gap) - 3 * var(--sep)) / 10));--h:calc(var(--w) * 1.42);
+  display:flex;gap:0 var(--sep)}
+.aboutc-group{position:relative;flex:none}
+.aboutc-group + .aboutc-group::before{content:'';position:absolute;left:calc(var(--sep) / -2 - 4px);top:calc(var(--h) / 2 - 4px);width:8px;height:8px;background:var(--line)}
+.aboutc-tiles{display:flex;gap:var(--gap)}
+.aboutc-cap{margin-top:18px;padding-top:12px;border-top:1px solid var(--line)}
+.aboutc-group.is-signal .aboutc-cap{border-top-color:var(--ink)}
+
+.aboutc-tile{position:relative;display:block;width:var(--w);height:var(--h);flex:none}
+.aboutc-tile::before,.aboutc-tile::after{content:'';position:absolute;top:calc(50% - 5px);width:3px;height:10px;background:var(--line);z-index:3}
+.aboutc-tile::before{left:0}
+.aboutc-tile::after{right:0}
+.aboutc-half{position:absolute;left:0;right:0;height:calc(50% - 1px);overflow:hidden;background:var(--surface);backface-visibility:hidden}
+.aboutc-top{top:0;transform-origin:50% calc(100% + 1px)}
+.aboutc-bot{bottom:0;transform-origin:50% -1px}
+.aboutc-half > span{position:absolute;left:0;right:0;height:var(--h);line-height:var(--h);text-align:center;
+  font-size:calc(var(--h) * .8);font-weight:800;font-stretch:70%;letter-spacing:0;font-variant-numeric:tabular-nums;color:var(--ink)}
+.aboutc-top > span{top:0}
+.aboutc-bot > span{bottom:0}
+.aboutc-group.is-signal .aboutc-half > span{color:var(--signal)}
+.aboutc-fall{z-index:2;animation:aboutc-fall 31ms ease-in both}
+.aboutc-land{z-index:2;animation:aboutc-land 31ms ease-out 31ms both}
+@keyframes aboutc-fall{from{transform:perspective(900px) rotateX(0deg)}to{transform:perspective(900px) rotateX(-90deg)}}
+@keyframes aboutc-land{from{transform:perspective(900px) rotateX(90deg)}to{transform:perspective(900px) rotateX(0deg)}}
+
+/* the small row: the dates, spelled in letters */
+.aboutc-dates{margin-top:clamp(40px,5vw,64px);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;align-items:center}
+.aboutc-cap--row{grid-column:1 / span 3;margin:0;padding:0;border:0}
+.aboutc-small{grid-column:4 / span 9;--w:min(34px,calc((75cqw - 14 * 4px) / 15));--h:calc(var(--w) * 1.36);display:flex;gap:4px}
+.aboutc-small .aboutc-half > span{font-weight:700;font-stretch:84%;font-size:calc(var(--h) * .62)}
+.aboutc-small .aboutc-tile::before,.aboutc-small .aboutc-tile::after{width:2px;height:6px;top:calc(50% - 3px)}
+
+@media (max-width:860px){
+  .aboutc-wrap{display:block}
+  .aboutc-label{padding:0;margin-bottom:28px}
+  .aboutc-row{--gap:4px;--sep:22px;--w:calc((100cqw - 3 * var(--gap) - 2 * var(--sep)) / 6);display:grid;grid-template-columns:repeat(3,auto);justify-content:space-between;row-gap:36px}
+  .aboutc-group{width:calc(2 * var(--w) + var(--gap))}
+  .aboutc-group + .aboutc-group::before{display:none}
+  .aboutc-group.is-wide{grid-column:1 / -1;width:auto}
+  .aboutc-group.is-wide .aboutc-tiles{--w:calc((100cqw - 3 * 6px) / 4);--h:calc(var(--w) * 1.3);gap:6px}
+  .aboutc-cap{font-size:11px;margin-top:14px}
+  .aboutc-dates{display:block}
+  .aboutc-cap--row{margin-bottom:14px}
+  .aboutc-small{--w:calc((100cqw - 14 * 3px) / 15);gap:3px}
+}

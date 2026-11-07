@@ -5,7 +5,7 @@ import type { ComponentType, ReactNode } from 'react';
 import {
   Ellipsis, FileText, Files, Gavel, LogOut, Medal, MessageSquareText, RotateCcw, ScrollText, Timer, Vote, type LucideProps,
 } from 'lucide-react';
-import { resetDemoData, type ChairRole } from '@/platform/v2';
+import { NO_LOGIN, resetDemoData, type ChairRole } from '@/platform/v2';
 import { Confirm } from './ui/confirm';
 import { cn } from '../portal/ui/coss/utils';
 import {
@@ -127,7 +127,7 @@ export function Shell({ children }: { children: ReactNode }) {
               <p className="truncate font-semibold text-foreground">{me.fullName ?? me.email}</p>
               <p className="text-muted-foreground">{ROLE_WORD[committee.myRole]}, {committee.abbr}</p>
             </div>
-            <Button variant="outline" size="sm" className="w-full" onClick={signOut}><LogOut aria-hidden="true" /> Sign out</Button>
+            {!NO_LOGIN && <Button variant="outline" size="sm" className="w-full" onClick={signOut}><LogOut aria-hidden="true" /> Sign out</Button>}
             <HostMark className="w-full" />
           </SidebarFooter>
         </Sidebar>
@@ -182,7 +182,7 @@ export function Shell({ children }: { children: ReactNode }) {
                 );
               })}
               <p className="mt-3 px-3 text-sm text-muted-foreground">{me.fullName ?? me.email} · {ROLE_WORD[committee.myRole]}, {committee.abbr}</p>
-              <Button variant="outline" className="mt-1" onClick={signOut}><LogOut aria-hidden="true" /> Sign out</Button>
+              {!NO_LOGIN && <Button variant="outline" className="mt-1" onClick={signOut}><LogOut aria-hidden="true" /> Sign out</Button>}
             </SheetPanel>
           </SheetPopup>
         </Sheet>

@@ -101,14 +101,31 @@ let memoryEmail: string | null = null;
 function session(): Storage | null {
   try { return typeof sessionStorage === 'undefined' ? null : sessionStorage; } catch { return null; }
 }
+function local(): Storage | null {
+  try { return typeof localStorage === 'undefined' ? null : localStorage; } catch { return null; }
+}
+// Remember me (same key as the live adapter): remembered sign-ins go to localStorage, others stay in this tab.
+const REMEMBER_KEY = 'dxbmun-remember';
+const demoRemembered = () => { try { return local()?.getItem(REMEMBER_KEY) === '1'; } catch { return false; } };
 export function currentEmail(): string | null {
-  try { return session()?.getItem(AUTH_KEY) ?? memoryEmail; } catch { return memoryEmail; }
+  try { return session()?.getItem(AUTH_KEY) ?? local()?.getItem(AUTH_KEY) ?? memoryEmail; } catch { return memoryEmail; }
 }
 function setEmail(e: string | null) {
   memoryEmail = e;
-  try { const ss = session(); if (ss) { if (e === null) ss.removeItem(AUTH_KEY); else ss.setItem(AUTH_KEY, e); } } catch { /* memory only */ }
+  try {
+    session()?.removeItem(AUTH_KEY); local()?.removeItem(AUTH_KEY); session()?.removeItem(MFA_LEVEL_KEY);
+    if (e !== null) (demoRemembered() ? local() : session())?.setItem(AUTH_KEY, e);
+  } catch { /* memory only */ }
   for (const cb of [...authListeners]) { try { cb(e !== null); } catch (err) { console.error(err); } }
 }
+// Demo authenticator app: linked per email on this device; the code is always 123456.
+const MFA_LEVEL_KEY = 'dxbmun.v2.aal2';
+const mfaLinkedKey = (e: string) => `dxbmun.v2.mfa.${e}`;
+const DEMO_QR = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" shape-rendering="crispEdges"><rect width="21" height="21" fill="#fff"/>' +
+  [...Array(441).keys()].filter((i) => { const x = i % 21, y = Math.floor(i / 21); const eye = (a: number, b: number) => x >= a && x < a + 7 && y >= b && y < b + 7;
+    if (eye(0, 0) || eye(14, 0) || eye(0, 14)) { const ex = x % 14 % 7, ey = y % 14 % 7; return ex === 0 || ex === 6 || ey === 0 || ey === 6 || (ex > 1 && ex < 5 && ey > 1 && ey < 5); }
+    return (x * 7 + y * 13 + x * y) % 3 === 0; }).map((i) => `<rect x="${i % 21}" y="${Math.floor(i / 21)}" width="1" height="1"/>`).join('') + '</svg>');
 const authListeners = new Set<(signedIn: boolean) => void>();
 
 /**
@@ -144,15 +161,44 @@ export function meView(s: DemoState): Me {
   return { id: p.id, email: currentEmail()!, fullName: p.fullName, role: p.role, isCore: p.role === 'admin' && p.isCore };
 }
 
+/** No-login mode (VITE_NO_LOGIN): sign this tab in as `email` straight away, no code. */
+export function signInWithoutCode(email: string) { setEmail(cleanEmail(email)); }
+
 export const demoAuth: AuthApi = {
   mode: 'demo',
-  async sendCode(email) { cleanEmail(email); await pause(); },
+  async sendCode(email, _captchaToken) { cleanEmail(email); await pause(); },
   async verifyCode(email, code) {
     const e = cleanEmail(email);
     const c = cleanCode(code);
     await pause();
     if (c !== DEMO_CODE) fail("That code isn't right. Check the email and try again.");
     setEmail(e);
+  },
+  async signInWith() {
+    await pause();
+    // Demo: Google / Microsoft sign in as the sample person for this page.
+    const path = typeof location === 'undefined' ? '' : location.pathname;
+    setEmail(path.includes('/admin') ? 'admin@demo.test' : path.includes('/chair') ? 'chair@demo.test' : 'delegate1@demo.test');
+  },
+  setRemember(on) { try { local()?.setItem(REMEMBER_KEY, on ? '1' : '0'); } catch { /* this tab only */ } },
+  remembered: demoRemembered,
+  mfa: {
+    async state() {
+      await pause();
+      const e = currentEmail();
+      if (!e) fail('Please sign in first.');
+      const enrolled = local()?.getItem(mfaLinkedKey(e)) === '1';
+      return { level: enrolled && session()?.getItem(MFA_LEVEL_KEY) === '1' ? 'aal2' : 'aal1', enrolled };
+    },
+    async enroll() { await pause(); return { factorId: 'demo-factor', qr: DEMO_QR, secret: 'DEMO DEMO DEMO DEMO' }; },
+    async verify(code) {
+      await pause();
+      const e = currentEmail();
+      if (!e) fail('Please sign in first.');
+      if (code.replace(/\D/g, '') !== DEMO_CODE) fail("That code isn't right. Codes change every 30 seconds: use the one showing now.");
+      local()?.setItem(mfaLinkedKey(e), '1');
+      session()?.setItem(MFA_LEVEL_KEY, '1');
+    },
   },
   async signOut() { await pause(); setEmail(null); },
   onAuth(cb) {

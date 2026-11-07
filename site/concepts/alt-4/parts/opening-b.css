@@ -1,0 +1,31 @@
+/* Opening B · Roll call. A split-flap board on canvas; labels and controls in the DOM. Crisp: solid colours only. */
+.openingb {
+  position: fixed; inset: 0; z-index: 50; background: #03060C; color: #F2F5F9;
+  font-family: 'JetBrains Mono Variable', ui-monospace, monospace;
+  user-select: none; -webkit-user-select: none; cursor: pointer; overflow: hidden;
+}
+.openingb-cv { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.openingb-m { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1; }
+.openingb-m i { font-style: normal; color: #8C99AD; }
+.openingb-top, .openingb-bot {
+  position: absolute; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  padding: 0 clamp(16px, 4vw, 56px);
+}
+.openingb-top { top: 0; height: 64px; border-bottom: 1px solid #16243A; }
+.openingb-bot { bottom: 0; height: 64px; border-top: 1px solid #16243A; }
+.openingb-count { color: #8C99AD; }
+.openingb-count b { color: #F2F5F9; font-weight: 700; font-variant-numeric: tabular-nums; }
+.openingb-now { color: #F2F5F9; min-width: 0; white-space: nowrap; overflow: hidden; }
+.openingb-ctl { display: flex; gap: 4px; flex: none; }
+.openingb-btn {
+  font-family: inherit; background: #03060C; color: #8C99AD; border: 1px solid #16243A; border-radius: 0;
+  min-height: 44px; padding: 0 14px; cursor: pointer;
+}
+.openingb-btn:hover { color: #F2F5F9; border-color: #8C99AD; }
+.openingb-btn:focus-visible { outline: 2px solid #009EDB; outline-offset: 2px; }
+.openingb-btn[aria-pressed='true'] { color: #F2F5F9; border-color: #F2F5F9; }
+.openingb-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: 0; }
+@media (max-width: 520px) {
+  .openingb-wide { display: none; }
+  .openingb-btn { padding: 0 10px; }
+}

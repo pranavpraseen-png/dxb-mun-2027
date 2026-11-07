@@ -19,12 +19,37 @@ export type Sb = SupabaseClient;
 /** One auth storage key for every dashboard on this origin. */
 export const AUTH_STORAGE_KEY = 'dxbmun-auth';
 
+// Remember me: the session lives in localStorage (kept after the browser closes) or sessionStorage (this tab only).
+// The choice itself is kept on the device, so ticking it once sticks. Default: not remembered (safer on shared PCs).
+const REMEMBER_KEY = 'dxbmun-remember';
+const store = (kind: 'local' | 'session'): Storage | null => {
+  try { return kind === 'local' ? localStorage : sessionStorage; } catch { return null; }
+};
+export function rememberOn(): boolean {
+  try { return store('local')?.getItem(REMEMBER_KEY) === '1'; } catch { return false; }
+}
+export function setRememberOn(on: boolean) {
+  try { store('local')?.setItem(REMEMBER_KEY, on ? '1' : '0'); } catch { /* private mode: this tab only */ }
+}
+const authStorage = {
+  getItem: (k: string) => store('session')?.getItem(k) ?? store('local')?.getItem(k) ?? null,
+  setItem: (k: string, v: string) => {
+    const keep = rememberOn() ? store('local') : store('session');
+    const drop = rememberOn() ? store('session') : store('local');
+    try { keep?.setItem(k, v); drop?.removeItem(k); } catch { /* full or blocked: Supabase keeps it in memory */ }
+  },
+  removeItem: (k: string) => { try { store('session')?.removeItem(k); store('local')?.removeItem(k); } catch { /* ignore */ } },
+};
+
 const clients = new Map<string, SupabaseClient>();
 export function getClient(url: string, anonKey: string): SupabaseClient {
   const key = `${url}|${anonKey}`;
   let c = clients.get(key);
   if (!c) {
-    c = createClient(url, anonKey, { auth: { persistSession: true, autoRefreshToken: true, storageKey: AUTH_STORAGE_KEY } });
+    // PKCE: Google / Microsoft come back with ?code= (not tokens in the #hash, which the dashboards use for pages).
+    c = createClient(url, anonKey, {
+      auth: { persistSession: true, autoRefreshToken: true, storageKey: AUTH_STORAGE_KEY, storage: authStorage, flowType: 'pkce' },
+    });
     clients.set(key, c);
   }
   return c;
@@ -179,11 +204,12 @@ export async function loadMe(sb: Sb): Promise<Me> {
 export function makeAuth(sb: Sb, onChange: () => void): AuthApi {
   return {
     mode: 'live',
-    async sendCode(email) {
-      const { error } = await sb.auth.signInWithOtp({ email: cleanEmail(email), options: { shouldCreateUser: true } });
+    async sendCode(email, captchaToken) {
+      const { error } = await sb.auth.signInWithOtp({ email: cleanEmail(email), options: { shouldCreateUser: true, captchaToken } });
       if (error) {
         console.error('[supabase auth]', error);
         if (error.status === 429) fail('Too many codes asked for. Wait a minute and try again.');
+        if (/captcha/i.test(error.message)) fail("The robot check didn't go through. Wait a moment and try again.");
         fail("We couldn't send the code. Check the email and try again.");
       }
     },
@@ -195,6 +221,51 @@ export function makeAuth(sb: Sb, onChange: () => void): AuthApi {
         fail("That code isn't right, or it has expired. Check the email and try again.");
       }
       onChange();
+    },
+    async signInWith(provider) {
+      // Back to this same page (minus any #page), signed in. The URL must be in Supabase's Redirect URLs list.
+      const redirectTo = location.origin + location.pathname;
+      const { error } = await sb.auth.signInWithOAuth({
+        provider: provider === 'microsoft' ? 'azure' : 'google',
+        options: { redirectTo, scopes: provider === 'microsoft' ? 'email' : undefined },
+      });
+      if (error) {
+        console.error('[supabase auth]', error);
+        fail(`${provider === 'microsoft' ? 'Microsoft' : 'Google'} sign-in isn't available right now. Use the email code instead.`);
+      }
+    },
+    setRemember: setRememberOn,
+    remembered: rememberOn,
+    mfa: {
+      async state() {
+        const { data, error } = await sb.auth.mfa.getAuthenticatorAssuranceLevel();
+        if (error || !data) { console.error('[supabase mfa]', error); fail("We couldn't check your sign-in. Reload and try again."); }
+        const f = await sb.auth.mfa.listFactors();
+        return { level: data.currentLevel === 'aal2' ? 'aal2' : 'aal1', enrolled: (f.data?.totp.length ?? 0) > 0 };
+      },
+      async enroll() {
+        // A half-finished link (QR shown, never confirmed) blocks a new one, so drop it first.
+        const f = await sb.auth.mfa.listFactors();
+        for (const x of f.data?.all ?? []) if (x.status === 'unverified') await sb.auth.mfa.unenroll({ factorId: x.id });
+        const { data, error } = await sb.auth.mfa.enroll({ factorType: 'totp', friendlyName: `DXB MUN ${new Date().toISOString().slice(0, 10)}` });
+        if (error || !data) { console.error('[supabase mfa]', error); fail("We couldn't start the authenticator link. Reload and try again."); }
+        return { factorId: data.id, qr: data.totp.qr_code, secret: data.totp.secret };
+      },
+      async verify(code, factorId) {
+        let id = factorId;
+        if (!id) {
+          const f = await sb.auth.mfa.listFactors();
+          id = f.data?.totp[0]?.id;
+          if (!id) fail('No authenticator app is linked to this account yet.');
+        }
+        const { error } = await sb.auth.mfa.challengeAndVerify({ factorId: id, code: code.replace(/\D/g, '') });
+        if (error) {
+          console.error('[supabase mfa]', error);
+          if (error.status === 429) fail('Too many tries. Wait a minute and try again.');
+          fail("That code isn't right. Codes change every 30 seconds: use the one showing now.");
+        }
+        onChange();
+      },
     },
     async signOut() {
       const { error } = await sb.auth.signOut();

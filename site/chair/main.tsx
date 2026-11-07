@@ -10,9 +10,10 @@ import '@fontsource-variable/geist-mono';
 import '@fontsource/instrument-serif/400-italic.css';
 import './chair.css';
 import '../portal/portal.css';
-import { getChairApi, type ChairCommittee, type Me } from '@/platform/v2';
+import { getChairApi, openWithoutLogin, type ChairCommittee, type Me } from '@/platform/v2';
 import { ToastProvider } from '../portal/lib/toast';
 import { SignIn } from '../portal/screens/SignIn';
+import { SecretariatCheck } from '../portal/screens/SecondStep';
 import { Button } from '../portal/ui/coss/button';
 import { ChairProvider } from './lib/data';
 import { useRoute, type Page } from './lib/route';
@@ -27,6 +28,7 @@ import { AwardsScreen } from './screens/Awards';
 import { DocsScreen } from './screens/Docs';
 
 const api = getChairApi();
+openWithoutLogin('chair');
 document.documentElement.classList.add('dark');
 
 const TITLES: Record<Page, string> = {
@@ -40,7 +42,7 @@ function App() {
   if (signedIn === null) return <div className="boot" aria-busy="true"><span className="sr-only">Loading</span></div>;
   return (
     <ToastProvider>
-      {signedIn ? <Gate /> : (
+      {signedIn ? <SecretariatCheck api={api}><Gate /></SecretariatCheck> : (
         <SignIn
           api={api}
           title="Chair dashboard"

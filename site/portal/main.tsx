@@ -9,7 +9,7 @@ import '@fontsource-variable/geist-mono';
 import '@fontsource/instrument-serif/400-italic.css';
 import './theme.css';
 import './portal.css';
-import { getDelegateApi, type DelegateApi } from '@/platform/v2';
+import { getDelegateApi, openWithoutLogin, type DelegateApi } from '@/platform/v2';
 import { DataProvider, useApi, useBump, useLoad } from './lib/data';
 import { ToastProvider, useToast } from './lib/toast';
 import { ConfProvider, useConf } from './lib/conf';
@@ -29,6 +29,7 @@ import { ErrorBox, ScreenSkeleton } from './ui/kit';
 import { readSeenChits } from './screens/Notes';
 
 const api = getDelegateApi();
+openWithoutLogin('delegate');
 // The dashboard is dark only: coss ui reads its dark variants from this class.
 document.documentElement.classList.add('dark');
 

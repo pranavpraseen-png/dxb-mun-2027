@@ -54,14 +54,16 @@ function Ruler({ ppm }: { ppm: number }) {
   );
 }
 
-function Readout({ i }: { i: number }) {
+// `fast`: the slot changed while scrolling quickly, so the name swaps in place instead of rolling in
+// (a 0.75 s roll on every slot made the word unreadable at speed; the owner couldn't see it, 2026-11-06).
+function Readout({ i, fast }: { i: number; fast: boolean }) {
   const s = RULER[i];
   return (
     <div className="sch-read" aria-live="polite">
       <p className="mono sch-day">
         <span className="sch-nw">Day <NumberFlow value={s.day} format={{ minimumIntegerDigits: 2 }} /> / {String(schedule.length).padStart(2, '0')}</span>
       </p>
-      <p className="sch-name"><span key={s.idx} className="sch-name-in">{s.name}</span></p>
+      <p className="sch-name"><span key={s.idx} className={'sch-name-in' + (fast ? ' is-fast' : '')}>{s.name}</span></p>
       <p className="mono sch-time">{s.time} <span className="sch-dur">· {s.duration}</span></p>
     </div>
   );
@@ -88,24 +90,29 @@ export function Schedule() {
   const phone = useMedia('(max-width: 767px)');
   const ppm = phone ? 1.5 : 2.4;
   const sec = useRef<HTMLElement>(null);
-  const [cur, setCur] = useState(0);
+  const [cur, setCur] = useState({ i: 0, fast: false });
 
   useLayoutEffect(() => {
     const el = sec.current;
     if (!el || still) return;
     const strip = el.querySelector<HTMLElement>('.ruler-strip');
     const head = el.querySelector<HTMLElement>('.ph-time');
-    let last = -1;
+    let last = -1, lastAt = 0;
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
-        id: 'schedule', trigger: el, start: 'top top', end: () => '+=' + Math.round(window.innerHeight * (phone ? 1.6 : 1.9)),
+        id: 'schedule', trigger: el, start: 'top top', end: () => '+=' + Math.round(window.innerHeight * (phone ? 2 : 2.4)),
         pin: true, scrub: true,
         onUpdate: (st) => {
           const x = FIRST + (LAST - FIRST) * st.progress; // ruler minutes
           if (strip) strip.style.transform = `translate3d(${(-x * ppm).toFixed(1)}px, 0, 0)`;
           let i = 0;
           for (let k = 0; k < RULER.length; k++) if (RULER[k].x0 <= x + 0.01) i = k;
-          if (i !== last) { last = i; setCur(i); }
+          if (i !== last) {
+            const now = performance.now();
+            const fast = Math.abs(st.getVelocity()) > 450 || now - lastAt < 260;
+            last = i; lastAt = now;
+            setCur({ i, fast });
+          }
           if (head) {
             const di = Math.min(schedule.length - 1, Math.max(0, Math.floor(x / (DAY_SPAN + DAY_GAP))));
             const local = Math.min(DAY_SPAN, x - dayX(di)) + DAY_START;
@@ -126,7 +133,7 @@ export function Schedule() {
       <h2 id="sch-h" className="sch-h">
         <NumberFlow value={stats[1].value} /> days. <NumberFlow value={stats[2].value} /> <em>committee</em> sessions.
       </h2>
-      <Readout i={cur} />
+      <Readout i={cur.i} fast={cur.fast} />
       <div className="ruler" aria-hidden="true">
         <div className="ruler-win">
           <Ruler ppm={ppm} />

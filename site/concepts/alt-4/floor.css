@@ -1,0 +1,143 @@
+/* Alt 4 · The Floor: tokens, the gate and the hero overlay (option A). Crisp: no blur, glow, gradients or alpha layers. */
+:root {
+  --ground: #03060C; --surface: #08111E; --line: #16243A; --ink: #F2F5F9; --muted: #8C99AD;
+  --un: #009EDB; --signal: #E5591C; --brown: #2A1A12; --maroon: #600E0E; --gold: #FFB606;
+  --f-sans: 'Archivo Variable', 'Archivo', system-ui, sans-serif;
+  --f-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace;
+  --gut: clamp(16px, 4vw, 56px);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+html { background: var(--ground); color: var(--ink); font-family: var(--f-sans); -webkit-font-smoothing: antialiased; }
+body { margin: 0; }
+html.is-gated body { overflow: hidden; touch-action: none; }
+.mono { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: -9999px; top: 8px; z-index: 200; background: var(--ink); color: var(--ground); padding: 8px 12px; }
+.skip:focus { left: 8px; }
+
+/* ---------------------------------------------------------------- hero shell */
+.fl-hero { position: relative; height: 100svh; min-height: 560px; overflow: hidden; }
+.fl-canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
+main > section:not(.fl-hero):not(.fl-reel) { position: relative; z-index: 1; background: var(--ground); }
+
+/* The reel (Reel.tsx): pinned over the turning floor; the statement fills word by word. */
+.fl-reel { position: relative; z-index: 1; height: 290vh; pointer-events: none; }
+.fl-reel-pin { position: sticky; top: 0; height: 100svh; display: flex; flex-direction: column; justify-content: center; gap: 28px; padding: 64px var(--gut) 0; }
+.fl-reel-k { margin: 0; color: var(--muted); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+.fl-reel-k span { color: var(--signal); }
+.fl-reel-text { margin: 0; max-width: 11.5em; font-weight: 640; font-stretch: 104%; letter-spacing: -0.035em; line-height: 1.02; font-size: clamp(34px, 4.4vw, 76px); }
+.fl-reel-text span { --f: 0; color: color-mix(in srgb, var(--ink) calc(18% + var(--f) * 82%), transparent); }
+.fl-reel-text span.is-num { color: color-mix(in srgb, var(--un) calc(18% + var(--f) * 82%), transparent); }
+.still .fl-reel { height: auto; }
+.still .fl-reel-pin { position: relative; height: auto; padding: 120px var(--gut); }
+@media (max-width: 760px) {
+  .fl-reel { height: 250vh; }
+  .fl-reel-pin { justify-content: flex-start; padding-top: 104px; gap: 18px; }
+  .fl-reel-text { font-size: clamp(32px, 9.4vw, 44px); max-width: none; }
+}
+
+/* ---------------------------------------------------------------- gate */
+.fl-gate {
+  position: fixed; inset: 0; z-index: 40; display: grid; place-items: center;
+  grid-template-rows: auto 1fr auto auto auto; padding: 18px var(--gut) 20px; user-select: none; -webkit-user-select: none;
+}
+.fl-gate-top, .fl-gate-bot { width: 100%; display: flex; justify-content: space-between; gap: 16px; color: var(--muted); }
+.fl-gate-top i { font-style: normal; color: var(--signal); }
+.fl-gate-line {
+  align-self: start; margin: 7vh 0 0; text-align: center; font-weight: 640; font-stretch: 112%;
+  font-size: clamp(30px, 5.2vw, 76px); line-height: 0.95; letter-spacing: -0.035em;
+}
+.fl-gate-line em { font-style: normal; color: var(--signal); }
+.fl-hold {
+  position: relative; width: 132px; height: 132px; border: 0; border-radius: 50%; padding: 0; cursor: pointer;
+  background: var(--ground); color: var(--ink); display: grid; place-items: center; touch-action: none;
+  transition: transform 0.25s var(--ease);
+}
+.fl-hold:active { transform: scale(0.94); }
+.fl-hold:focus-visible { outline: 2px solid var(--un); outline-offset: 6px; }
+.fl-hold svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.fl-hold-track { fill: none; stroke: var(--line); stroke-width: 2; }
+.fl-hold-fill { fill: none; stroke: var(--signal); stroke-width: 3; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.fl-hold-n { font-size: 30px; letter-spacing: 0.02em; font-weight: 500; line-height: 1; margin-top: 10px; }
+.fl-hold-l { color: var(--muted); font-size: 10px; margin-top: -26px; }
+.fl-gate-cta { margin: 18px 0 0; color: var(--ink); }
+.fl-gate-cta span { color: var(--muted); }
+.fl-gate-cta.is-hint { color: var(--signal); }
+.fl-gate-bot { align-self: end; margin-top: 3vh; }
+.fl-gate-bot button {
+  background: none; border: 0; color: var(--muted); font: inherit; letter-spacing: inherit; text-transform: inherit;
+  padding: 10px 0; cursor: pointer; min-height: 44px;
+}
+.fl-gate-bot button:hover, .fl-gate-bot button:focus-visible { color: var(--ink); }
+/* the breath + the hit: the gate's text snaps away, the ring blasts outward */
+.is-breath .fl-gate > :not(.fl-hold), .is-struck .fl-gate > :not(.fl-hold), .is-open .fl-gate { visibility: hidden; }
+.is-breath .fl-gate { visibility: hidden; } /* the cut to black: nothing on screen for the held breath */
+.is-struck .fl-hold { animation: fl-blast 0.5s cubic-bezier(0.2, 0.9, 0.2, 1) forwards; pointer-events: none; }
+.is-struck .fl-hold > span { visibility: hidden; }
+@keyframes fl-blast { to { transform: scale(9); visibility: hidden; } }
+.is-struck .fl-hold-fill { stroke-width: 0.6; }
+
+/* ---------------------------------------------------------------- hero copy */
+.fl-copy {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 0 var(--gut) 22px;
+  display: grid; gap: 22px; pointer-events: none;
+}
+.fl-copy a { pointer-events: auto; }
+.fl-copy-row { display: flex; align-items: end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.fl-title { margin: 0; font-weight: 660; font-stretch: 108%; letter-spacing: -0.04em; line-height: 0.92; font-size: clamp(40px, 6.4vw, 104px); }
+.fl-title > span { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.06em; }
+.fl-title > span > span { display: inline-block; transform: translateY(105%); }
+.is-open .fl-title > span > span { transform: none; transition: transform 0.9s var(--ease); }
+.is-open .fl-title > span:nth-child(2) > span { transition-delay: 0.08s; }
+.fl-ctas { display: flex; gap: 10px; clip-path: inset(0 0 100% 0); }
+.is-open .fl-ctas { clip-path: inset(0 0 0 0); transition: clip-path 0.7s var(--ease) 0.25s; }
+.fl-btn {
+  display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; border-radius: 2px;
+  background: var(--un); color: #fff; text-decoration: none; font-weight: 600; font-size: 15px; letter-spacing: 0.01em;
+  border: 1px solid var(--un);
+}
+.fl-btn:hover { background: #0089BF; border-color: #0089BF; }
+.fl-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.fl-btn-ghost { background: var(--ground); color: var(--ink); border-color: var(--line); }
+.fl-btn-ghost:hover { background: var(--surface); border-color: var(--muted); }
+.fl-facts {
+  margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0;
+  border-top: 1px solid var(--line); clip-path: inset(0 100% 0 0);
+}
+.is-open .fl-facts { clip-path: inset(0 0 0 0); transition: clip-path 1.1s var(--ease) 0.35s; }
+.fl-facts div { padding: 12px 16px 0 0; }
+.fl-facts dt { color: var(--muted); }
+.fl-facts dd { margin: 4px 0 0; color: var(--ink); }
+.fl-host { color: var(--ink); }
+.fl-host::before { content: ''; display: inline-block; width: 8px; height: 8px; background: var(--maroon); margin-right: 8px; vertical-align: 0; box-shadow: 0 0 0 1px #8A2A2A; }
+.fl-copy[aria-hidden='true'] { visibility: hidden; }
+.fl-scroll { position: absolute; right: var(--gut); top: 50%; z-index: 2; color: var(--muted); writing-mode: vertical-rl; visibility: hidden; }
+.is-open .fl-scroll { visibility: visible; }
+.fl-fallback { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; font-weight: 900; font-stretch: 125%; font-size: 17vw; letter-spacing: -0.05em; }
+
+/* ---------------------------------------------------------------- video cursor (capture mode only) */
+.fl-cursor {
+  position: fixed; left: -9px; top: -9px; width: 18px; height: 18px; z-index: 300; pointer-events: none;
+  border: 2px solid var(--ink); border-radius: 50%; background: var(--ground); transition: width 0.12s, height 0.12s, left 0.12s, top 0.12s;
+}
+.fl-cursor.is-down { width: 12px; height: 12px; left: -6px; top: -6px; background: var(--ink); }
+
+/* ---------------------------------------------------------------- still */
+.still .fl-title > span > span { transform: none; }
+.still .fl-ctas, .still .fl-facts { clip-path: none; }
+
+@media (max-width: 760px) {
+  .fl-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 10px; }
+  .fl-copy { gap: 16px; padding-bottom: 18px; }
+  .fl-copy-row { flex-direction: column; align-items: start; }
+  .fl-gate-top span:last-child { display: none; }
+  .fl-scroll { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fl-title > span > span { transform: none !important; transition: none !important; }
+  .fl-ctas, .fl-facts { clip-path: none !important; transition: none !important; }
+}
+
+/* overlay: the floor as the opening only, above another hero */
+.fl-overlay { position: fixed; inset: 0; z-index: 60; height: auto; min-height: 0; background: var(--ground); }
+.fl-overlay .fl-canvas { position: absolute; }

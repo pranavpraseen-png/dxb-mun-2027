@@ -1,0 +1,87 @@
+/* Schedule · B · One clock. Prefix: scheduleb- */
+.scheduleb{background:var(--ground);color:var(--ink);padding:clamp(88px,12vw,168px) 0;font-family:'Archivo Variable',system-ui,sans-serif}
+.scheduleb-wrap{max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.scheduleb-label,.scheduleb-hour,.scheduleb-day span,.scheduleb-tag,.scheduleb-time,.scheduleb-read-t span,.scheduleb-cell-d,.scheduleb-cell-m,.scheduleb-key{
+  font-family:'JetBrains Mono Variable',ui-monospace,monospace;font-size:12px;line-height:1.2;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:var(--muted);margin:0}
+.scheduleb-label{grid-column:1 / span 3;padding-top:.6em}
+.scheduleb-label span{color:var(--ink);margin-right:12px}
+.scheduleb-head{grid-column:4 / span 9}
+.scheduleb-h{margin:0;font-size:clamp(36px,4.4vw,56px);line-height:1;font-weight:700;font-stretch:88%;letter-spacing:-.02em}
+.scheduleb-sub{margin:20px 0 0;font-size:clamp(17px,1.35vw,20px);line-height:1.4;color:var(--muted)}
+
+/* chart: day names hang in the left margin, the hour scale runs along the top */
+.scheduleb-chart{--dw:clamp(96px,10vw,148px);--th:92px;--tg:10px;grid-column:1 / -1;margin-top:clamp(56px,7vw,88px);padding-left:var(--dw)}
+.scheduleb-scale{position:relative;height:28px}
+.scheduleb-hour{position:absolute;left:calc(var(--a) * 100%);top:0;transform:translateX(-50%);font-size:11px;white-space:nowrap}
+.scheduleb-hour:first-child{transform:none}
+.scheduleb-hour:last-child{transform:translateX(-100%)}
+.scheduleb-area{position:relative;height:calc(var(--n) * var(--th) + (var(--n) - 1) * var(--tg));outline:none;cursor:crosshair;touch-action:pan-y}
+.scheduleb-area:focus-visible{outline:2px solid var(--un);outline-offset:6px}
+.scheduleb-grid{position:absolute;top:-6px;bottom:0;left:calc(var(--a) * 100%);width:1px;background:var(--line)}
+.scheduleb-row{position:absolute;left:0;right:0;top:calc(var(--i) * (var(--th) + var(--tg)));height:var(--th)}
+.scheduleb-day{position:absolute;right:calc(100% + 20px);top:0;bottom:0;margin:0;width:calc(var(--dw) - 20px);display:flex;flex-direction:column;justify-content:center;gap:6px;
+  border-top:1px solid var(--line)}
+.scheduleb-day b{font-size:20px;font-weight:700;font-stretch:88%;letter-spacing:-.01em}
+.scheduleb-day span{font-size:11px}
+.scheduleb-track{list-style:none;margin:0;padding:0;position:absolute;inset:0}
+.scheduleb-slot{position:absolute;top:0;bottom:0;left:calc(var(--a) * 100%);width:calc(var(--b) * 100%);padding-right:2px}
+.scheduleb-btn{all:unset;box-sizing:border-box;width:100%;height:100%;display:flex;flex-direction:column;justify-content:space-between;gap:4px;padding:10px 8px 9px;cursor:pointer;
+  background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);overflow:hidden}
+.scheduleb-name{font-size:13px;line-height:1.15;font-weight:600;font-stretch:84%;overflow:hidden;overflow-wrap:normal}
+.scheduleb-time{font-size:10px;letter-spacing:.04em;color:inherit}
+.scheduleb-slot.is-pause .scheduleb-btn{background:var(--ground);box-shadow:none;border:1px dashed #2A3A52;color:var(--muted)}
+.scheduleb-slot.is-session .scheduleb-btn{background:var(--signal);box-shadow:none;color:var(--ground)}
+.scheduleb-slot.is-session .scheduleb-name{font-weight:700}
+.scheduleb-slot.is-live .scheduleb-btn{box-shadow:inset 0 0 0 1px var(--ink)}
+.scheduleb-slot.is-session.is-live .scheduleb-btn{box-shadow:inset 0 0 0 2px var(--ink)}
+.scheduleb-slot.is-pin .scheduleb-btn,.scheduleb-btn:focus-visible{box-shadow:inset 0 0 0 2px var(--un)}
+.scheduleb-slot.is-pause.is-live .scheduleb-btn{border-color:var(--ink)}
+
+/* the time cursor: one hard line across all three days */
+.scheduleb-cursor{position:absolute;top:-6px;bottom:-30px;left:calc(var(--a) * 100%);width:1px;background:var(--ink);pointer-events:none;z-index:2}
+.scheduleb-tag{position:absolute;bottom:0;left:0;transform:translateX(-50%);background:var(--ink);color:var(--ground);padding:5px 7px 4px;font-size:11px;font-weight:700;white-space:nowrap;letter-spacing:.04em}
+
+/* the readout */
+.scheduleb-read{grid-column:1 / -1;margin-top:64px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.scheduleb-read-t{grid-column:1 / span 3;margin:0;display:flex;flex-direction:column;gap:10px}
+.scheduleb-read-t b{font-size:clamp(28px,2.6vw,38px);line-height:1;font-weight:700;font-stretch:84%;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.scheduleb-cell{grid-column:span 3;border-top:1px solid var(--line);padding-top:14px;min-height:110px}
+.scheduleb-cell.is-session{border-top-color:var(--signal)}
+.scheduleb-cell-n{margin:12px 0 0;font-size:clamp(19px,1.6vw,23px);line-height:1.15;font-weight:600;font-stretch:92%}
+.scheduleb-cell-n.is-none{color:var(--muted);font-weight:400}
+.scheduleb-cell-m{margin-top:10px;display:flex;flex-wrap:wrap;gap:4px 14px;text-transform:none;letter-spacing:.02em}
+.scheduleb-key{grid-column:4 / -1;margin-top:28px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 10px;font-size:11px}
+.scheduleb-key i{display:inline-block;width:14px;height:10px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);margin-left:14px}
+.scheduleb-key i:first-child{margin-left:0}
+.scheduleb-key i.is-session{background:var(--signal);box-shadow:none}
+.scheduleb-key i.is-pause{background:var(--ground);box-shadow:none;border:1px dashed #2A3A52}
+
+/* phones: the same clock turned upright, the three days side by side */
+@media (max-width:860px){
+  .scheduleb-wrap{display:block}
+  .scheduleb-label{padding:0;margin-bottom:28px}
+  .scheduleb-chart{--dw:44px;--cg:6px;position:relative;padding:44px 0 0 var(--dw);margin-top:44px}
+  .scheduleb-scale{position:absolute;left:0;top:44px;width:var(--dw);height:calc(var(--span) * 1px)}
+  .scheduleb-hour{left:0;top:calc(var(--a) * 100%);transform:translateY(-50%);font-size:10px;letter-spacing:.02em}
+  .scheduleb-hour:first-child{transform:none}
+  .scheduleb-hour:last-child{transform:translateY(-100%)}
+  .scheduleb-area{height:calc(var(--span) * 1px);cursor:default}
+  .scheduleb-grid{top:calc(var(--a) * 100%);bottom:auto;left:-6px;right:0;width:auto;height:1px}
+  .scheduleb-row{top:0;bottom:0;height:auto;left:calc(var(--i) * (100% + var(--cg)) / var(--n));width:calc((100% - (var(--n) - 1) * var(--cg)) / var(--n));right:auto}
+  .scheduleb-day{right:0;left:0;top:auto;bottom:calc(100% + 10px);width:auto;border:0;flex-direction:row;align-items:baseline;justify-content:space-between;gap:4px}
+  .scheduleb-day b{font-size:16px}
+  .scheduleb-day span{font-size:9px;letter-spacing:.02em}
+  .scheduleb-slot{left:0;right:0;width:auto;top:calc(var(--a) * 100%);height:calc(var(--b) * 100%);bottom:auto;padding:0 0 2px}
+  .scheduleb-btn{padding:6px 6px 5px;justify-content:flex-start}
+  .scheduleb-name{font-size:12px;white-space:normal;line-height:1.1}
+  .scheduleb-cursor{left:-6px;right:0;width:auto;top:calc(var(--a) * 100%);bottom:auto;height:1px}
+  .scheduleb-tag{display:none}
+  .scheduleb-read{display:block;margin-top:40px}
+  .scheduleb-read-t{flex-direction:row;align-items:baseline;gap:12px;margin-bottom:18px}
+  .scheduleb-read-t b{font-size:28px}
+  .scheduleb-cell{display:grid;grid-template-columns:64px 1fr;column-gap:12px;min-height:0;padding:12px 0 14px}
+  .scheduleb-cell-d{grid-row:1 / span 2;padding-top:4px}
+  .scheduleb-cell-n{margin:0;font-size:18px}
+  .scheduleb-cell-m{grid-column:2;margin-top:6px}
+  .scheduleb-key{margin-top:24px}
+}

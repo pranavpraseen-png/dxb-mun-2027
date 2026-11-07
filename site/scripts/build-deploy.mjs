@@ -39,4 +39,6 @@ const url = /VITE_SUPABASE_URL=(\S+)/.exec(env)?.[1] ?? '';
 const js = readdirSync(resolve(out, 'assets')).filter((f) => f.endsWith('.js'));
 const liveBaked = js.some((f) => readFileSync(resolve(out, 'assets', f), 'utf8').includes(url));
 console.log(`\nDeploy build ready in site/deploy/: ${pages.join(', ')}`);
-console.log(`Supabase URL baked into the bundle: ${liveBaked ? 'yes' : 'NO'}`);
+console.log(process.env.VITE_NO_LOGIN === '1'
+  ? 'Dashboards: no sign-in, sample data (VITE_NO_LOGIN=1)'
+  : `Supabase URL baked into the bundle: ${liveBaked ? 'yes' : 'NO'}`);

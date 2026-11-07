@@ -1,0 +1,44 @@
+/* Opening C · The vote. Canvas scene + shards; vote buttons and controls in the DOM. Crisp: solid colours only. */
+.openingc {
+  position: fixed; inset: 0; z-index: 50; background: #03060C; color: #F2F5F9;
+  font-family: 'JetBrains Mono Variable', ui-monospace, monospace;
+  user-select: none; -webkit-user-select: none; overflow: hidden;
+}
+/* Once the shards let go, the overlay is see-through only where glass has fallen away (the canvas draws the rest). */
+.openingc.is-fall { background: none; pointer-events: none; }
+.openingc.is-fall .openingc-ctl { pointer-events: auto; }
+.openingc-cv { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.openingc-m { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1; margin: 0; }
+.openingc-vote { position: absolute; inset: 0; pointer-events: none; }
+.openingc-btn {
+  position: absolute; height: 48px; pointer-events: auto; cursor: pointer;
+  font-family: inherit; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  background: #03060C; color: #F2F5F9; border: 1.5px solid #009EDB; border-radius: 0; padding: 0 10px;
+}
+.openingc-btn:hover:not(:disabled) { background: #009EDB; color: #03060C; }
+.openingc-btn:focus-visible { outline: 2px solid #F2F5F9; outline-offset: 2px; }
+.openingc-btn:disabled { cursor: default; border-color: #16243A; color: #8C99AD; }
+.openingc-btn.is-mine, .openingc-btn.is-mine:disabled { background: #009EDB; border-color: #009EDB; color: #03060C; }
+.openingc-bot {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 64px; border-top: 1px solid #16243A;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 0 clamp(16px, 4vw, 56px);
+}
+.openingc.is-hit .openingc-bot, .openingc.is-fall .openingc-bot { border-top-color: transparent; }
+.openingc.is-hit .openingc-hint, .openingc.is-fall .openingc-hint { visibility: hidden; }
+.openingc-hint { color: #8C99AD; min-width: 0; white-space: nowrap; overflow: hidden; }
+.openingc-hint b { color: #F2F5F9; font-weight: 700; }
+.openingc-hint i { font-style: normal; color: #8C99AD; }
+.openingc-ctl { display: flex; gap: 4px; flex: none; }
+.openingc-small {
+  font-family: inherit; background: #03060C; color: #8C99AD; border: 1px solid #16243A; border-radius: 0;
+  min-height: 44px; padding: 0 14px; cursor: pointer;
+}
+.openingc-small:hover { color: #F2F5F9; border-color: #8C99AD; }
+.openingc-small:focus-visible { outline: 2px solid #009EDB; outline-offset: 2px; }
+.openingc-small[aria-pressed='true'] { color: #F2F5F9; border-color: #F2F5F9; }
+.openingc-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: 0; }
+@media (max-width: 520px) {
+  .openingc-hint i { display: none; }
+  .openingc-btn { font-size: 11px; letter-spacing: 0.04em; padding: 0 4px; }
+  .openingc-small { padding: 0 10px; }
+}

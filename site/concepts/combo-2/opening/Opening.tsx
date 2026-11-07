@@ -13,6 +13,7 @@ import { getLenis } from '@/shared/scroll';
 import { COORDS } from '../data';
 import { EASE, ScrollTrigger, UI, ease, gsap } from '../motion';
 import { phaseStore } from '../store';
+import { ORDER_LOADER, OrderLoader } from './OrderLoader';
 import { go, useMedia } from '../ui';
 import { World } from './World';
 import { FOV, PLEXUS, frame, isPhone, stations } from './space';
@@ -259,6 +260,12 @@ function Live() {
     ScrollTrigger.refresh();
   }, []);
 
+  // The ORDER, ORDER loader ends on a hard cut: start the opening build there, then free the page.
+  const orderDone = useCallback(() => {
+    if (intro.t0 === Infinity) intro.t0 = now() - (PHASE_AT[1] - 0.25);
+    loaderDone();
+  }, [loaderDone]);
+
   // Hold the page still while the loader runs.
   useLayoutEffect(() => {
     const root = document.documentElement;
@@ -329,7 +336,7 @@ function Live() {
       </div>
       <Labels />
       <Hero />
-      {booted && <Loader onDone={loaderDone} />}
+      {booted && (ORDER_LOADER ? <OrderLoader onDone={orderDone} /> : <Loader onDone={loaderDone} />)}
     </section>
   );
 }
