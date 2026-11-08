@@ -35,4 +35,6 @@ run(`${vercel} link --yes --project ${project}`, out);
 // `vercel link` writes an OIDC token to .env.local and a .gitignore; neither may be uploaded.
 for (const f of ['.env.local', '.gitignore']) rmSync(resolve(out, f), { force: true });
 writeFileSync(resolve(out, '.vercelignore'), '.env*\n.gitignore\n');
+// The project also owns unofficialdxbmun.vercel.app (owner, 2026-11-08: "the website link name only"; added once with
+// `vercel domains add unofficialdxbmun.vercel.app dxbmun-2027`), so every production deploy answers on both addresses.
 run(`${vercel} deploy --prod --yes`, out);

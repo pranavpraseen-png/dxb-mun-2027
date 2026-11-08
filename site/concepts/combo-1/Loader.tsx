@@ -14,20 +14,9 @@ const phone = () => innerWidth < 720;
 export function Loader({ onDone }: { onDone: () => void }) {
   const root = useRef<HTMLDivElement>(null);
   const [strike, setStrike] = useState(0);
-  // The wordmark it lands on is the website name (conference.edition). Extra words before "DXB MUN" get a row of their
-  // own above it (owner, 2026-11-08: "Unofficial DXB MUN"); that row appears with the letter swaps.
-  const [lines] = useState(() => {
-    const words = conference.edition.toUpperCase().split(' ');
-    const year = words.pop()!;
-    const lead = words.length > 2 ? [words.slice(0, -2).join(' ')] : [];
-    const mark = words.slice(-2).join(' ');
-    return phone()
-      ? { src: ['ORDER,', 'ORDER'], dst: [...lead, mark, year] }
-      : { src: ['ORDER, ORDER'], dst: [...lead, `${mark} ${year}`] };
-  });
-  // Source rows line up with the last destination rows; earlier destination rows start empty.
-  const pad = Math.max(0, lines.dst.length - lines.src.length);
-  const srcRows = [...Array<string>(pad).fill(''), ...lines.src];
+  const [lines] = useState(() => (phone()
+    ? { src: ['ORDER,', 'ORDER'], dst: ['DXB MUN', '2027'] }
+    : { src: ['ORDER, ORDER'], dst: ['DXB MUN 2027'] }));
 
   useEffect(() => {
     const html = document.documentElement;
@@ -56,23 +45,16 @@ export function Loader({ onDone }: { onDone: () => void }) {
       const W = (innerWidth - gut * 2) * 0.96;
       const widest = Math.max(...lines.src.map((s) => textWidth(s, phone() ? 54 : 70, 900, -0.01)));
       const F = Math.min(W / widest, innerHeight * (phone() ? 0.17 : 0.34));
-      // The landing name may need a smaller size than ORDER, ORDER: every row must fit at normal width, and all rows
-      // together must fit the screen height.
-      const widestDst = Math.max(...lines.dst.map((s) => textWidth(s, 100, 900, -0.01)));
-      const FD = Math.min(F, W / widestDst, (innerHeight * 0.62) / (lines.dst.length * 0.86));
-      const fs = { v: F };
-      const size = () => { rows.forEach((row) => { row.style.fontSize = fs.v.toFixed(1) + 'px'; }); };
-      size();
+      rows.forEach((row) => { row.style.fontSize = F.toFixed(1) + 'px'; });
       const fitSrc = Math.min(...lines.src.map((s) => solveWidth(s, W / F, 900, -0.01)));
-      const fitDst = Math.min(...lines.dst.map((s) => solveWidth(s, W / FD, 900, -0.01)));
+      const fitDst = Math.min(...lines.dst.map((s) => solveWidth(s, W / F, 900, -0.01)));
       const ax = { w: solveWidth(lines.src[0].slice(0, 6), W / F, 900, -0.01), g: 900 };
       const paint = () => { for (const s of all) s.style.fontVariationSettings = `"wdth" ${ax.w.toFixed(1)}, "wght" ${ax.g.toFixed(0)}`; };
       paint();
       // which letters belong to strike 1 and strike 2
       const first: HTMLElement[] = [], second: HTMLElement[] = [];
-      const live = spans.slice(pad);
-      if (live.length === 1) live[0].forEach((s, i) => (i < 6 ? first : second).push(s));
-      else { first.push(...live[0]); second.push(...live[1]); }
+      if (rows.length === 1) spans[0].forEach((s, i) => (i < 6 ? first : second).push(s));
+      else { first.push(...spans[0]); second.push(...spans[1]); }
       second.forEach((s) => { s.style.display = 'none'; });
       const hit = (n: number) => () => {
         setStrike(n);
@@ -98,13 +80,12 @@ export function Loader({ onDone }: { onDone: () => void }) {
           const ch = dst[i];
           tl!.call(() => {
             if (ch === undefined) s.style.display = 'none';
-            else { s.textContent = ch === ' ' ? ' ' : ch; s.style.display = 'inline-block'; s.style.visibility = 'visible'; }
+            else { s.textContent = ch === ' ' ? ' ' : ch; s.style.display = 'inline-block'; }
           }, undefined, 1.55 + k * 0.028);
           k++;
         });
       });
       tl.to(ax, { w: fitDst, g: 900, duration: 0.6, ease: 'expo.out' }, 1.55 + k * 0.028 + 0.02)
-        .to(fs, { v: FD, duration: 0.6, ease: 'expo.out', onUpdate: size }, 1.55 + k * 0.028 + 0.02)
         .to({}, { duration: 0.32 });
       window.__alt5Loader = tl;
       if (window.__alt5Pause) tl.pause();
@@ -118,13 +99,13 @@ export function Loader({ onDone }: { onDone: () => void }) {
   }, [lines, onDone]);
 
   return (
-    <div className="loader" ref={root} role="status" aria-label={`Loading ${conference.edition}`}>
-      <span className="ld-corner ld-tl mono">{conference.edition}{phone() ? '' : ` · ${conference.kind}`}</span>
+    <div className="loader" ref={root} role="status" aria-label="Loading DXB MUN 2027">
+      <span className="ld-corner ld-tl mono">{conference.edition} · {conference.kind}</span>
       <span className="ld-corner ld-tr mono">Gavel <b>{strike}</b> / 3</span>
       <span className="ld-corner ld-bl mono">{strike < 3 ? 'The chair calls the house to order' : 'The floor is open'}</span>
       <span className="ld-corner ld-br mono">{matchMedia('(pointer: coarse)').matches ? 'Tap to skip' : 'Press any key to skip'}</span>
       <div className="ld-lines" aria-hidden="true">
-        {srcRows.map((s, ri) => {
+        {lines.src.map((s, ri) => {
           const n = Math.max(s.length, lines.dst[ri].length);
           return (
             <div className="ld-row" key={ri}>
