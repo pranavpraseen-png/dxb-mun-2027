@@ -7,6 +7,11 @@ import { committees, stats } from './data';
 import { register, signIn } from './links';
 import { BIG, EASE, ScrollTrigger, gsap, still } from './motion';
 
+/** The pass heading breaks after any words before "DXB MUN" ("Unofficial" / "DXB MUN 2027"). */
+const NAME_WORDS = conference.name.split(' ');
+const LEAD = NAME_WORDS.slice(0, -2).join(' ');
+const MARK = NAME_WORDS.slice(-2).join(' ');
+
 export function Pass() {
   const sec = useRef<HTMLElement>(null);
   const [n, setN] = useState(still ? committees.length : 0);
@@ -40,7 +45,7 @@ export function Pass() {
       <a className="pass" href={register} aria-labelledby="reg-h">
         <span className="pass-main">
           <span className="pass-k mono">{conference.edition} · Delegate pass</span>
-          <span id="reg-h" className="pass-h">{conference.name} <em>{conference.year}</em></span>
+          <span id="reg-h" className="pass-h">{LEAD && <>{LEAD}<br /></>}{MARK} <em>{conference.year}</em></span>
           <span className="pass-rows">
             {rows.map(([k, v]) => (
               <span key={k} className="pass-row"><span className="mono pr-k">{k}</span><span className="pr-v">{v}</span></span>

@@ -86,7 +86,7 @@ export function SignIn({
         <main id="main" tabIndex={-1} className="grid flex-1 place-items-center px-4 pt-8 pb-12 outline-none max-md:place-items-start max-md:pt-5">
           <Card className={`w-full max-w-[460px] rounded-sm shadow-none before:hidden ${backdrop ? 'bg-card/72' : ''}`}>
             <CardHeader className="gap-2 p-7 pb-0 max-md:p-5 max-md:pb-0">
-              <p className="font-mono text-[14px] font-medium uppercase text-muted-foreground tracking-[0.08em]">{conference.edition} · {title}</p>
+              <p className="font-mono text-[14px] font-medium uppercase text-muted-foreground tracking-[0.08em]">{conference.dashEdition} · {title}</p>
               <CardTitle render={<h1 />} className="font-heading font-wide text-[56px] font-extrabold leading-[1.05] max-md:text-[46px] tracking-[-0.02em]">Sign in</CardTitle>
               <CardDescription className="text-lg text-muted-foreground">
                 {step === 'email'
@@ -162,7 +162,7 @@ function HostPanel({ tagline }: { tagline: string }) {
     <aside aria-label="Host school" className="bg-maroon text-foreground md:sticky md:top-0 md:flex md:h-svh md:flex-col md:justify-between md:p-10 max-md:order-first">
       <span className="max-md:hidden"><Wordmark /></span>
       <div className="max-md:hidden">
-        <p className="font-mono text-[14px] font-medium uppercase text-cream tracking-[0.08em]">{conference.edition} · {conference.city}</p>
+        <p className="font-mono text-[14px] font-medium uppercase text-cream tracking-[0.08em]">{conference.dashEdition} · {conference.city}</p>
         <p className="mt-3 font-serif text-[64px] font-normal italic leading-[1.05] lg:text-[80px] tracking-[-0.01em]">{conference.motto}</p>
         <p className="mt-4 max-w-[34ch] text-lg text-cream">{tagline}</p>
       </div>

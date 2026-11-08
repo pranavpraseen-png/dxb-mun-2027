@@ -28,7 +28,15 @@ const FINE = typeof matchMedia !== 'undefined' && matchMedia('(pointer: fine)').
 const TYPED = 'DXBMUN27';
 const WORD = 'DXB MUN';
 const DUBAI_LABEL = '25.2048° N · 55.2708° E';
-const TITLE = [conference.edition.slice(0, conference.edition.lastIndexOf(' ')), conference.edition.slice(conference.edition.lastIndexOf(' ') + 1)];
+/** Title lines (the website name, owner 2026-11-08). Portrait: "Unofficial" / "DXB MUN" / "2027";
+ *  landscape: "Unofficial" over "DXB MUN 2027" (one line would run off the screen). */
+const TITLE = (() => {
+  const words = conference.edition.split(' ');
+  const year = words.pop()!;
+  const lead = words.length > 2 ? [words.slice(0, -2).join(' ')] : [];
+  return [...lead, words.slice(-2).join(' '), year];
+})();
+const TITLE_WIDE = TITLE.length > 2 ? [TITLE.slice(0, -2).join(' '), TITLE.slice(-2).join(' ')] : [TITLE.join(' ')];
 /** Alt 5's kinetic settings on Night Lab's title. It rests a little narrower and lighter than Night Lab's (wdth 106,
  *  wght 760) so the letters under the cursor have room to swell to 125 / 900; the line keeps its resting length. */
 const TITLE_K = { mode: 'fit' as const, natural: 106, weight: 760, track: -0.045, cursor: 1, wave: 1 };
@@ -189,8 +197,8 @@ function Hero() {
         {/* Alt 5's kinetic line: letters near the cursor swell, the rest squeeze; a phone breaks before the year */}
         <div className="op-title" aria-hidden="true">
           {portrait
-            ? <><KLine text={TITLE[0]} className="op-k" opts={TITLE_K} stretchFrom={0.62} play={on} /><KLine text={TITLE[1]} className="op-k" opts={TITLE_K} stretchFrom={0.5} play={on} /></>
-            : <KLine text={conference.edition} className="op-k" opts={TITLE_K} stretchFrom={0.62} play={on} />}
+            ? <>{TITLE.map((t, i) => <KLine key={t} text={t} className="op-k" opts={TITLE_K} stretchFrom={i === TITLE.length - 1 ? 0.5 : 0.62} play={on} />)}</>
+            : <>{TITLE_WIDE.map((t) => <KLine key={t} text={t} className="op-k" opts={TITLE_K} stretchFrom={0.62} play={on} />)}</>}
         </div>
         <p className="op-line">{on && <><em><Scramble text="Diplomacy" delay={0.3} /></em> <Scramble text="around us." delay={0.4} /></>}</p>
       </div>
